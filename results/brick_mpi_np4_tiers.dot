@@ -1,0 +1,101 @@
+digraph RecipeResults {
+  graph [rankdir=TB, labelloc=t, fontsize=20, fontname="Arial"];
+  node [fontname="Arial"];
+  edge [fontname="Arial"];
+  label="Little Alchemy Recipe Search";
+
+  subgraph cluster_recipe_1 {
+    label="Recipe 1";
+    color="#adb5bd";
+    n0 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n1 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n2 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n2;
+    n3 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n3;
+    n0 -> n1;
+    n4 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n0 -> n4;
+  }
+
+  subgraph cluster_recipe_2 {
+    label="Recipe 2";
+    color="#adb5bd";
+    n5 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n6 [label="Clay", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n7 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n6 -> n7 [style=dashed];
+    n8 [label="Stone", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n9 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n8 -> n9;
+    n10 [label="Lava", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n11 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n10 -> n11;
+    n12 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n10 -> n12;
+    n8 -> n10;
+    n6 -> n8;
+    n5 -> n6;
+    n13 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n5 -> n13;
+  }
+
+  subgraph cluster_recipe_3 {
+    label="Recipe 3";
+    color="#adb5bd";
+    n14 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n15 [label="Clay", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n16 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n15 -> n16 [style=dashed];
+    n17 [label="Stone", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n18 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n17 -> n18;
+    n19 [label="Pressure", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n20 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n19 -> n20;
+    n21 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n19 -> n21;
+    n17 -> n19;
+    n15 -> n17;
+    n14 -> n15;
+    n22 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n14 -> n22;
+  }
+
+  subgraph cluster_recipe_4 {
+    label="Recipe 4";
+    color="#adb5bd";
+    n23 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n24 [label="Clay", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n25 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n24 -> n25 [style=dashed];
+    n26 [label="Sand", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n27 [label="Stone\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n26 -> n27 [style=dashed];
+    n28 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n26 -> n28;
+    n24 -> n26;
+    n23 -> n24;
+    n29 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n23 -> n29;
+  }
+
+  subgraph cluster_recipe_5 {
+    label="Recipe 5";
+    color="#adb5bd";
+    n30 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n31 [label="Clay", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n32 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n31 -> n32 [style=dashed];
+    n33 [label="Sand", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n34 [label="Stone\n(shared, see Recipe 3)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n33 -> n34 [style=dashed];
+    n35 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n33 -> n35;
+    n31 -> n33;
+    n30 -> n31;
+    n36 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n30 -> n36;
+  }
+
+}

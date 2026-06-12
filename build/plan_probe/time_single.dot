@@ -1,0 +1,8 @@
+digraph RecipeResults {
+  graph [rankdir=TB, labelloc=t, fontsize=20, fontname="Arial"];
+  node [fontname="Arial"];
+  edge [fontname="Arial"];
+  label="Little Alchemy Recipe Search";
+
+  empty [label="No valid recipe found", shape=box, style=filled, fillcolor="#f8d7da"];
+}

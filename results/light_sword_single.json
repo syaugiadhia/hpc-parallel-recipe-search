@@ -1,0 +1,141 @@
+{
+  "algorithm": "bfs",
+  "limit": 5,
+  "mode": "single",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Air"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Air"
+                              }
+                            ],
+                            "name": "Pressure"
+                          }
+                        ],
+                        "name": "Stone"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Metal"
+                  }
+                ],
+                "name": "Blade"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Metal"
+              }
+            ],
+            "name": "Sword"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Fire"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Energy"
+          }
+        ],
+        "name": "Light sword"
+      }
+    }
+  ],
+  "recipes_found": 1,
+  "statistics": {
+    "cache_entries": 971,
+    "cache_entries_by_rank": [],
+    "cache_hits": 4558,
+    "cache_hits_by_rank": [],
+    "communication_ms": 0.0,
+    "efficiency": 0.0,
+    "nodes_visited": 971,
+    "nodes_visited_by_rank": [],
+    "processes": 1,
+    "speedup": 0.0,
+    "tasks_processed": 0,
+    "tasks_processed_by_rank": [],
+    "time_ms": 24.6877
+  },
+  "target": "Light sword",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

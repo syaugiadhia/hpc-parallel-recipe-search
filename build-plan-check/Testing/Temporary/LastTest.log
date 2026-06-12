@@ -1,0 +1,19 @@
+Start testing: Jun 12 18:09 SE Asia Standard Time
+----------------------------------------------------------
+1/1 Testing: alchemy_tests
+1/1 Test: alchemy_tests
+Command: "C:/Users/HP/Documents/C++/HPC/Tubes/build-plan-check/alchemy_tests.exe"
+Directory: C:/Users/HP/Documents/C++/HPC/Tubes
+"alchemy_tests" start time: Jun 12 18:09 SE Asia Standard Time
+Output:
+----------------------------------------------------------
+alchemy tests passed
+<end of output>
+Test time =   0.24 sec
+----------------------------------------------------------
+Test Passed.
+"alchemy_tests" end time: Jun 12 18:09 SE Asia Standard Time
+"alchemy_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jun 12 18:09 SE Asia Standard Time

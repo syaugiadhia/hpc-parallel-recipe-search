@@ -1,0 +1,41 @@
+digraph RecipeResults {
+  graph [rankdir=TB, labelloc=t, fontsize=20, fontname="Arial"];
+  node [fontname="Arial"];
+  edge [fontname="Arial"];
+  label="Little Alchemy Recipe Search";
+
+  subgraph cluster_recipe_1 {
+    label="Recipe 1";
+    color="#adb5bd";
+    n0 [label="Light sword", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n1 [label="Sword", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n2 [label="Blade", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n3 [label="Stone", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n4 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n3 -> n4;
+    n5 [label="Pressure", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n6 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n5 -> n6;
+    n7 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n5 -> n7;
+    n3 -> n5;
+    n2 -> n3;
+    n8 [label="Metal", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n9 [label="Stone\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n8 -> n9 [style=dashed];
+    n10 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n8 -> n10;
+    n2 -> n8;
+    n1 -> n2;
+    n11 [label="Metal\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n1 -> n11 [style=dashed];
+    n0 -> n1;
+    n12 [label="Energy", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n13 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n12 -> n13;
+    n14 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n12 -> n14;
+    n0 -> n12;
+  }
+
+}

@@ -1,0 +1,62 @@
+{
+  "algorithm": "bfs",
+  "limit": 5,
+  "mode": "single",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "basic": true,
+        "name": "Fire"
+      }
+    }
+  ],
+  "recipes_found": 1,
+  "statistics": {
+    "cache_entries": 0,
+    "cache_entries_by_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cache_hits": 0,
+    "cache_hits_by_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "communication_ms": 0.4534999970928766,
+    "direct_recipes_available": 0,
+    "efficiency": 0.0,
+    "nodes_visited": 0,
+    "nodes_visited_by_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "processes": 6,
+    "speedup": 0.0,
+    "tasks_processed": 1,
+    "tasks_processed_by_rank": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "time_ms": 0.46209999709390104
+  },
+  "target": "Fire",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

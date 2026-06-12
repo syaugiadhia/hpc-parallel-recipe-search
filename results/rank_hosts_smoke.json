@@ -1,0 +1,412 @@
+{
+  "algorithm": "bfs",
+  "direct_recipes_available": 5,
+  "limit": null,
+  "mode": "all",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 2,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 3,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 4,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 5,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    }
+  ],
+  "recipes_found": 5,
+  "statistics": {
+    "cache_entries": 213,
+    "cache_entries_by_rank": [
+      0,
+      213
+    ],
+    "cache_hits": 592,
+    "cache_hits_by_rank": [
+      0,
+      592
+    ],
+    "communication_ms": 10.633000019879546,
+    "direct_recipes_available": 5,
+    "efficiency": 0.0,
+    "nodes_visited": 218,
+    "nodes_visited_by_rank": [
+      0,
+      218
+    ],
+    "processes": 2,
+    "rank_hostnames": [
+      "DESKTOP-S3PFJIN",
+      "DESKTOP-S3PFJIN"
+    ],
+    "speedup": 0.0,
+    "tasks_processed": 5,
+    "tasks_processed_by_rank": [
+      0,
+      5
+    ],
+    "time_ms": 10.737199998402502
+  },
+  "target": "Brick",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

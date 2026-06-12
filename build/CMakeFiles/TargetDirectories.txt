@@ -1,0 +1,7 @@
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/alchemy_common.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/alchemy_serial.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/alchemy_mpi.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/alchemy_tests.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/test.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/edit_cache.dir
+C:/Users/HP/Documents/C++/HPC/Tubes/build/CMakeFiles/rebuild_cache.dir

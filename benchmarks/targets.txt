@@ -1,0 +1,7 @@
+# One target per line. Empty lines and comments are ignored.
+Fire
+Brick
+Mud
+Stone
+Clay
+Lava

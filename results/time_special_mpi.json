@@ -1,0 +1,45 @@
+{
+  "algorithm": "bfs",
+  "limit": 5,
+  "mode": "single",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "basic": true,
+        "name": "Time"
+      }
+    }
+  ],
+  "recipes_found": 1,
+  "statistics": {
+    "cache_entries": 0,
+    "cache_entries_by_rank": [
+      0,
+      0
+    ],
+    "cache_hits": 0,
+    "cache_hits_by_rank": [
+      0,
+      0
+    ],
+    "communication_ms": 1.6303000011248514,
+    "efficiency": 0.0,
+    "nodes_visited": 0,
+    "nodes_visited_by_rank": [
+      0,
+      0
+    ],
+    "processes": 2,
+    "speedup": 0.0,
+    "tasks_processed": 1,
+    "tasks_processed_by_rank": [
+      0,
+      1
+    ],
+    "time_ms": 1.4637999993283302
+  },
+  "target": "Time",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

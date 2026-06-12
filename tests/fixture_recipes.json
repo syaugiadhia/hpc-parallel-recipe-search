@@ -1,0 +1,18 @@
+{
+  "Mud": [["Water", "Earth"]],
+  "Time": [],
+  "Old": [["Time", "Fire"]],
+  "B": [["Air", "Earth"]],
+  "C": [["Fire", "Water"]],
+  "D": [["Air", "Water"]],
+  "A": [["B", "C"], ["C", "D"]],
+  "Lava": [["Earth", "Fire"]],
+  "Stone": [["Air", "Lava"]],
+  "Clay": [["Mud", "Stone"]],
+  "Brick": [["Mud", "Fire"], ["Clay", "Stone"]],
+  "Branch": [["B", "C"], ["C", "D"], ["Mud", "Stone"]],
+  "DirectAll": [["Branch", "Fire"], ["C", "D"]],
+  "CycleDirect": [["X", "Fire"], ["Mud", "Fire"]],
+  "X": [["Y", "Fire"]],
+  "Y": [["X", "Water"]]
+}

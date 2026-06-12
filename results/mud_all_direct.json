@@ -1,0 +1,177 @@
+{
+  "algorithm": "bfs",
+  "direct_recipes_available": 2,
+  "limit": null,
+  "mode": "all",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "children": [
+          {
+            "basic": true,
+            "name": "Water"
+          },
+          {
+            "basic": true,
+            "name": "Earth"
+          }
+        ],
+        "name": "Mud"
+      }
+    },
+    {
+      "id": 2,
+      "tree": {
+        "children": [
+          {
+            "basic": true,
+            "name": "Water"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Puddle"
+                                  },
+                                  {
+                                    "children": [
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Puddle"
+                                  }
+                                ],
+                                "name": "Pond"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Lake"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Puddle"
+                                  },
+                                  {
+                                    "children": [
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Puddle"
+                                  }
+                                ],
+                                "name": "Pond"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Lake"
+                          }
+                        ],
+                        "name": "Sea"
+                      }
+                    ],
+                    "name": "Primordial soup"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Time"
+                  }
+                ],
+                "name": "Life"
+              }
+            ],
+            "name": "Soil"
+          }
+        ],
+        "name": "Mud"
+      }
+    }
+  ],
+  "recipes_found": 2,
+  "statistics": {
+    "cache_entries": 1018,
+    "cache_entries_by_rank": [],
+    "cache_hits": 18830,
+    "cache_hits_by_rank": [],
+    "communication_ms": 0.0,
+    "direct_recipes_available": 2,
+    "efficiency": 0.0,
+    "nodes_visited": 2474,
+    "nodes_visited_by_rank": [],
+    "processes": 1,
+    "speedup": 0.0,
+    "tasks_processed": 0,
+    "tasks_processed_by_rank": [],
+    "time_ms": 89.9552
+  },
+  "target": "Mud",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

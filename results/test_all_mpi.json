@@ -1,0 +1,133 @@
+{
+  "algorithm": "bfs",
+  "limit": null,
+  "mode": "all",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 2,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    }
+  ],
+  "recipes_found": 2,
+  "statistics": {
+    "cache_entries": 154,
+    "cache_entries_by_rank": [
+      0,
+      154
+    ],
+    "cache_hits": 56,
+    "cache_hits_by_rank": [
+      0,
+      56
+    ],
+    "communication_ms": 4.874800008110469,
+    "efficiency": 0.0,
+    "nodes_visited": 156,
+    "nodes_visited_by_rank": [
+      0,
+      156
+    ],
+    "processes": 2,
+    "speedup": 0.0,
+    "tasks_processed": 2,
+    "tasks_processed_by_rank": [
+      0,
+      2
+    ],
+    "time_ms": 4.6159000012266915
+  },
+  "target": "Brick",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}

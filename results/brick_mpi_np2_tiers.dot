@@ -1,0 +1,173 @@
+digraph RecipeResults {
+  graph [rankdir=TB, labelloc=t, fontsize=20, fontname="Arial"];
+  node [fontname="Arial"];
+  edge [fontname="Arial"];
+  label="Little Alchemy Recipe Search";
+
+  subgraph cluster_recipe_1 {
+    label="Recipe 1";
+    color="#adb5bd";
+    n0 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n1 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n2 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n2;
+    n3 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n3;
+    n0 -> n1;
+    n4 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n0 -> n4;
+  }
+
+  subgraph cluster_recipe_2 {
+    label="Recipe 2";
+    color="#adb5bd";
+    n5 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n6 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n7 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n6 -> n7;
+    n8 [label="Soil", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n9 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n8 -> n9;
+    n10 [label="Life", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n11 [label="Primordial soup", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n12 [label="Lava", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n13 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n12 -> n13;
+    n14 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n12 -> n14;
+    n11 -> n12;
+    n15 [label="Sea", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n16 [label="Lake", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n17 [label="Pond", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n18 [label="Puddle", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n19 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n18 -> n19;
+    n20 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n18 -> n20;
+    n17 -> n18;
+    n21 [label="Puddle\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n17 -> n21 [style=dashed];
+    n16 -> n17;
+    n22 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n16 -> n22;
+    n15 -> n16;
+    n23 [label="Lake", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n24 [label="Pond\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n23 -> n24 [style=dashed];
+    n25 [label="Pond\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n23 -> n25 [style=dashed];
+    n15 -> n23;
+    n11 -> n15;
+    n10 -> n11;
+    n26 [label="Time", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n10 -> n26;
+    n8 -> n10;
+    n6 -> n8;
+    n5 -> n6;
+    n27 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n5 -> n27;
+  }
+
+  subgraph cluster_recipe_3 {
+    label="Recipe 3";
+    color="#adb5bd";
+    n28 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n29 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n30 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n29 -> n30;
+    n31 [label="Soil", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n32 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n31 -> n32;
+    n33 [label="Life", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n34 [label="Primordial soup", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n35 [label="Lava\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n34 -> n35 [style=dashed];
+    n36 [label="Sea", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n37 [label="Lake\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n36 -> n37 [style=dashed];
+    n38 [label="Lake", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n39 [label="Pond\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n38 -> n39 [style=dashed];
+    n40 [label="Pond", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n41 [label="Puddle\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n40 -> n41 [style=dashed];
+    n42 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n40 -> n42;
+    n38 -> n40;
+    n36 -> n38;
+    n34 -> n36;
+    n33 -> n34;
+    n43 [label="Time", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n33 -> n43;
+    n31 -> n33;
+    n29 -> n31;
+    n28 -> n29;
+    n44 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n28 -> n44;
+  }
+
+  subgraph cluster_recipe_4 {
+    label="Recipe 4";
+    color="#adb5bd";
+    n45 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n46 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n47 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n46 -> n47;
+    n48 [label="Soil", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n49 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n48 -> n49;
+    n50 [label="Life", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n51 [label="Primordial soup", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n52 [label="Lava\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n51 -> n52 [style=dashed];
+    n53 [label="Sea", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n54 [label="Lake\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n53 -> n54 [style=dashed];
+    n55 [label="Lake\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n53 -> n55 [style=dashed];
+    n51 -> n53;
+    n50 -> n51;
+    n56 [label="Time", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n50 -> n56;
+    n48 -> n50;
+    n46 -> n48;
+    n45 -> n46;
+    n57 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n45 -> n57;
+  }
+
+  subgraph cluster_recipe_5 {
+    label="Recipe 5";
+    color="#adb5bd";
+    n58 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n59 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n60 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n59 -> n60;
+    n61 [label="Soil", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n62 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n61 -> n62;
+    n63 [label="Life", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n64 [label="Primordial soup", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n65 [label="Lava\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n64 -> n65 [style=dashed];
+    n66 [label="Sea", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n67 [label="Lake\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n66 -> n67 [style=dashed];
+    n68 [label="Lake", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n69 [label="Pond\n(shared, see Recipe 3)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n68 -> n69 [style=dashed];
+    n70 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n68 -> n70;
+    n66 -> n68;
+    n64 -> n66;
+    n63 -> n64;
+    n71 [label="Time", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n63 -> n71;
+    n61 -> n63;
+    n59 -> n61;
+    n58 -> n59;
+    n72 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n58 -> n72;
+  }
+
+}

@@ -1,0 +1,89 @@
+digraph RecipeResults {
+  graph [rankdir=TB, labelloc=t, fontsize=20, fontname="Arial"];
+  node [fontname="Arial"];
+  edge [fontname="Arial"];
+  label="Little Alchemy Recipe Search";
+
+  subgraph cluster_recipe_1 {
+    label="Recipe 1";
+    color="#adb5bd";
+    n0 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n1 [label="Mud", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n2 [label="Water", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n2;
+    n3 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n1 -> n3;
+    n0 -> n1;
+    n4 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n0 -> n4;
+  }
+
+  subgraph cluster_recipe_2 {
+    label="Recipe 2";
+    color="#adb5bd";
+    n5 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n6 [label="Clay", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n7 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n6 -> n7 [style=dashed];
+    n8 [label="Stone", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n9 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n8 -> n9;
+    n10 [label="Pressure", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n11 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n10 -> n11;
+    n12 [label="Air", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n10 -> n12;
+    n8 -> n10;
+    n6 -> n8;
+    n5 -> n6;
+    n13 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n5 -> n13;
+  }
+
+  subgraph cluster_recipe_3 {
+    label="Recipe 3";
+    color="#adb5bd";
+    n14 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n15 [label="Clay\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n14 -> n15 [style=dashed];
+    n16 [label="Stone\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n14 -> n16 [style=dashed];
+  }
+
+  subgraph cluster_recipe_4 {
+    label="Recipe 4";
+    color="#adb5bd";
+    n17 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n18 [label="Clay\n(shared, see Recipe 2)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n17 -> n18 [style=dashed];
+    n19 [label="Sun", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n20 [label="Planet", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n21 [label="Continent", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n22 [label="Land", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n23 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n22 -> n23;
+    n24 [label="Earth", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n22 -> n24;
+    n21 -> n22;
+    n25 [label="Land\n(shared, see Recipe 4)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n21 -> n25 [style=dashed];
+    n20 -> n21;
+    n26 [label="Continent\n(shared, see Recipe 4)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n20 -> n26 [style=dashed];
+    n19 -> n20;
+    n27 [label="Fire", shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"];
+    n19 -> n27;
+    n17 -> n19;
+  }
+
+  subgraph cluster_recipe_5 {
+    label="Recipe 5";
+    color="#adb5bd";
+    n28 [label="Brick", shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"];
+    n29 [label="Mud\n(shared, see Recipe 1)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n28 -> n29 [style=dashed];
+    n30 [label="Sun\n(shared, see Recipe 4)", shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"];
+    n28 -> n30 [style=dashed];
+  }
+
+}
