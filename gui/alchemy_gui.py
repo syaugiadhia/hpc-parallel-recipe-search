@@ -3,8 +3,8 @@ import concurrent.futures
 import ipaddress
 import json
 import os
-import platform
 import queue
+import re
 import shlex
 import shutil
 import socket
@@ -55,16 +55,16 @@ def shell_join(args) -> str:
 
 
 TIER_ORDER = ["all", "starter", "special"] + [f"tier{i}" for i in range(1, 16)]
+SLAVE_AGENT_PORT = 50555
+SLAVE_DISCOVERY_PORT = 50556
+INVITE_TIMEOUT_SECONDS = 30
+DISCOVERY_MESSAGE = b"ALCHEMY_HPC_DISCOVER_V1"
 
 
 def local_ipv4_subnets():
     networks = []
     seen = set()
-    try:
-        _, _, addresses = socket.gethostbyname_ex(socket.gethostname())
-    except OSError:
-        addresses = []
-    for address in addresses:
+    for address in local_ipv4_addresses():
         try:
             ip = ipaddress.ip_address(address)
         except ValueError:
@@ -77,6 +77,115 @@ def local_ipv4_subnets():
             seen.add(key)
             networks.append(network)
     return networks
+
+
+def local_ipv4_addresses():
+    addresses = set()
+    try:
+        _, _, values = socket.gethostbyname_ex(socket.gethostname())
+    except OSError:
+        values = []
+    for value in values:
+        try:
+            ip = ipaddress.ip_address(value)
+        except ValueError:
+            continue
+        if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+            addresses.add(value)
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            value = info[4][0]
+            ip = ipaddress.ip_address(value)
+            if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+                addresses.add(value)
+    except OSError:
+        pass
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.connect(("8.8.8.8", 80))
+            value = sock.getsockname()[0]
+            ip = ipaddress.ip_address(value)
+            if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+                addresses.add(value)
+    except OSError:
+        pass
+    if os.name == "nt":
+        try:
+            output = subprocess.check_output(
+                ["ipconfig"],
+                text=True,
+                encoding="utf-8",
+                errors="ignore",
+                timeout=3,
+            )
+            for value in re.findall(r"IPv4[^:\n]*:\s*([0-9]+(?:\.[0-9]+){3})", output):
+                ip = ipaddress.ip_address(value)
+                if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+                    addresses.add(value)
+        except Exception:
+            pass
+    return sorted(addresses)
+
+
+def primary_local_ip():
+    addresses = local_ipv4_addresses()
+    if addresses:
+        return addresses[0]
+    return "127.0.0.1"
+
+
+def send_json_line(sock, payload):
+    data = (json.dumps(payload) + "\n").encode("utf-8")
+    sock.sendall(data)
+
+
+def recv_json_line(sock, timeout=None):
+    if timeout is not None:
+        sock.settimeout(timeout)
+    chunks = []
+    while True:
+        chunk = sock.recv(4096)
+        if not chunk:
+            break
+        chunks.append(chunk)
+        if b"\n" in chunk:
+            break
+    if not chunks:
+        raise ConnectionError("empty response")
+    line = b"".join(chunks).split(b"\n", 1)[0]
+    return json.loads(line.decode("utf-8"))
+
+
+def discover_slave_agents(timeout=1.2):
+    discovered = {}
+    broadcasts = {"255.255.255.255"}
+    for network in local_ipv4_subnets():
+        broadcasts.add(str(network.broadcast_address))
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.settimeout(0.2)
+        for broadcast in broadcasts:
+            try:
+                sock.sendto(DISCOVERY_MESSAGE, (broadcast, SLAVE_DISCOVERY_PORT))
+            except OSError:
+                pass
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            try:
+                data, addr = sock.recvfrom(4096)
+            except socket.timeout:
+                continue
+            except OSError:
+                break
+            try:
+                payload = json.loads(data.decode("utf-8"))
+            except Exception:
+                continue
+            if payload.get("type") != "alchemy_slave":
+                continue
+            host = addr[0]
+            discovered[host] = (host, str(payload.get("slots", 1)), "candidate")
+    return list(discovered.values())
 
 
 def ping_host(host, timeout_ms=300):
@@ -111,7 +220,11 @@ def scan_lan_hosts(timeout_ms=300, workers=64):
                 if future.result():
                     found.append(host)
     found = sorted(set(found), key=lambda value: tuple(int(part) for part in value.split(".")))
-    return [("localhost", str(os.cpu_count() or 1), "manual")] + [(host, "1", "reachable") for host in found if host != "127.0.0.1"]
+    discovered = {host: (host, slots, status) for host, slots, status in discover_slave_agents()}
+    for host in found:
+        if host != "127.0.0.1" and host not in discovered:
+            discovered[host] = (host, "1", "candidate")
+    return list(discovered.values())
 
 
 def load_recipe_names(data_path: Path):
@@ -198,6 +311,13 @@ class AlchemyGui(ctk.CTk):
         self.preview_pil_image = None
         self.preview_image = None
         self.run_started_at = None
+        self.slave_stop_event = threading.Event()
+        self.slave_server_socket = None
+        self.slave_threads = []
+        self.pending_invite = None
+        self.pending_invite_active = False
+        self.pending_invite_lock = threading.Lock()
+        self.slave_advertised_slots = str(os.cpu_count() or 1)
 
         self._build_vars()
         self._build_layout()
@@ -206,6 +326,7 @@ class AlchemyGui(ctk.CTk):
         self.after(100, self._drain_log_queue)
 
     def _build_vars(self):
+        self.cluster_role = ctk.StringVar(value="Master")
         self.run_kind = ctk.StringVar(value="target")
         self.engine = ctk.StringVar(value="serial")
         self.data_path = ctk.StringVar(value=str(ROOT_DIR / "data" / "recipes.json"))
@@ -227,6 +348,9 @@ class AlchemyGui(ctk.CTk):
         self.split_depth = ctk.StringVar(value="1")
         self.multi_node_enabled = ctk.BooleanVar(value=False)
         self.manual_host = ctk.StringVar(value="")
+        self.slave_slots = ctk.StringVar(value=str(os.cpu_count() or 1))
+        self.slave_status = ctk.StringVar(value="Slave stopped")
+        self.incoming_invite_text = ctk.StringVar(value="No incoming master request.")
         self.baseline_enabled = ctk.BooleanVar(value=False)
         self.baseline_ms = ctk.StringVar(value="")
         self.status = ctk.StringVar(value="Idle")
@@ -266,6 +390,8 @@ class AlchemyGui(ctk.CTk):
 
         row = 0
         row = self._section(row, "Run")
+        self._segmented(row, "Role", self.cluster_role, ["Master", "Slave"], self._refresh_mode_state)
+        row += 1
         self._segmented(row, "Run type", self.run_kind, ["target", "benchmark"], self._refresh_mode_state)
         row += 1
         self._segmented(row, "Engine", self.engine, ["serial", "mpi"], self._refresh_mode_state)
@@ -331,10 +457,17 @@ class AlchemyGui(ctk.CTk):
         row += 1
         ctk.CTkCheckBox(
             self.controls,
-            text="Use multi-node MS-MPI host list",
+            text="Use accepted master/slave host list",
             variable=self.multi_node_enabled,
             command=self._refresh_mode_state,
         ).grid(row=row, column=0, sticky="ew", padx=8, pady=4)
+        row += 1
+        ctk.CTkLabel(
+            self.controls,
+            text="Master invites specific slaves. Slave must accept within 30 seconds.",
+            anchor="w",
+            wraplength=300,
+        ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
         row += 1
         manual_frame = ctk.CTkFrame(self.controls, fg_color="transparent")
         manual_frame.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
@@ -346,13 +479,36 @@ class AlchemyGui(ctk.CTk):
         host_button_grid.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
         host_button_grid.grid_columnconfigure((0, 1, 2), weight=1)
         ctk.CTkButton(host_button_grid, text="Scan LAN", command=self.scan_hosts).grid(row=0, column=0, sticky="ew", padx=(0, 3))
-        ctk.CTkButton(host_button_grid, text="Test/Connect", command=self.test_hosts).grid(row=0, column=1, sticky="ew", padx=3)
+        ctk.CTkButton(host_button_grid, text="Connect Listed", command=self.test_hosts).grid(row=0, column=1, sticky="ew", padx=3)
         ctk.CTkButton(host_button_grid, text="Clear Hosts", command=self.clear_hosts).grid(row=0, column=2, sticky="ew", padx=(3, 0))
         row += 1
         self.hosts_frame = ctk.CTkFrame(self.controls)
         self.hosts_frame.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
         self.hosts_frame.grid_columnconfigure(0, weight=1)
-        self._replace_hosts([("localhost", str(os.cpu_count() or 1), "manual")])
+        self._replace_hosts([(socket.gethostname(), str(os.cpu_count() or 1), "master")])
+        row += 1
+        slave_panel = ctk.CTkFrame(self.controls)
+        slave_panel.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
+        slave_panel.grid_columnconfigure(0, weight=1)
+        ctk.CTkLabel(slave_panel, text="Slave Agent", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, sticky="w", padx=8, pady=(6, 2))
+        ctk.CTkLabel(slave_panel, textvariable=self.slave_status, anchor="w").grid(row=1, column=0, sticky="ew", padx=8, pady=2)
+        ctk.CTkLabel(slave_panel, text=f"IP: {primary_local_ip()}  Port: {SLAVE_AGENT_PORT}", anchor="w").grid(row=2, column=0, sticky="ew", padx=8, pady=2)
+        slot_frame = ctk.CTkFrame(slave_panel, fg_color="transparent")
+        slot_frame.grid(row=3, column=0, sticky="ew", padx=8, pady=2)
+        slot_frame.grid_columnconfigure(1, weight=1)
+        ctk.CTkLabel(slot_frame, text="Offered slots").grid(row=0, column=0, sticky="w", padx=(0, 8))
+        ctk.CTkEntry(slot_frame, textvariable=self.slave_slots, width=80).grid(row=0, column=1, sticky="e")
+        slave_buttons = ctk.CTkFrame(slave_panel, fg_color="transparent")
+        slave_buttons.grid(row=4, column=0, sticky="ew", padx=8, pady=4)
+        slave_buttons.grid_columnconfigure((0, 1), weight=1)
+        ctk.CTkButton(slave_buttons, text="Start Slave", command=self.start_slave_agent).grid(row=0, column=0, sticky="ew", padx=(0, 4))
+        ctk.CTkButton(slave_buttons, text="Stop Slave", command=self.stop_slave_agent).grid(row=0, column=1, sticky="ew", padx=(4, 0))
+        ctk.CTkLabel(slave_panel, textvariable=self.incoming_invite_text, anchor="w", wraplength=285).grid(row=5, column=0, sticky="ew", padx=8, pady=(4, 2))
+        invite_buttons = ctk.CTkFrame(slave_panel, fg_color="transparent")
+        invite_buttons.grid(row=6, column=0, sticky="ew", padx=8, pady=(2, 8))
+        invite_buttons.grid_columnconfigure((0, 1), weight=1)
+        ctk.CTkButton(invite_buttons, text="Accept", command=self.accept_invite).grid(row=0, column=0, sticky="ew", padx=(0, 4))
+        ctk.CTkButton(invite_buttons, text="Reject", command=self.reject_invite).grid(row=0, column=1, sticky="ew", padx=(4, 0))
         row += 1
         baseline_frame = ctk.CTkFrame(self.controls, fg_color="transparent")
         baseline_frame.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
@@ -445,7 +601,8 @@ class AlchemyGui(ctk.CTk):
         ctk.CTkEntry(frame, textvariable=host_var).grid(row=0, column=0, sticky="ew", padx=(0, 4))
         ctk.CTkEntry(frame, textvariable=slots_var, width=54).grid(row=0, column=1, padx=4)
         ctk.CTkLabel(frame, textvariable=status_var, width=82).grid(row=0, column=2, padx=4)
-        ctk.CTkButton(frame, text="x", width=28, command=lambda: self._remove_host_row(frame)).grid(row=0, column=3)
+        ctk.CTkButton(frame, text="Connect", width=70, command=lambda: self.connect_host_row(frame)).grid(row=0, column=3, padx=(0, 4))
+        ctk.CTkButton(frame, text="x", width=28, command=lambda: self._remove_host_row(frame)).grid(row=0, column=4)
         self.host_rows.append({"frame": frame, "host": host_var, "slots": slots_var, "status": status_var})
 
     def _remove_host_row(self, frame):
@@ -459,7 +616,7 @@ class AlchemyGui(ctk.CTk):
             if not host:
                 continue
             status = row["status"].get().strip().lower()
-            if connected_only and status != "connected":
+            if connected_only and status not in {"connected", "master"}:
                 continue
             try:
                 slots = int(row["slots"].get().strip())
@@ -477,6 +634,22 @@ class AlchemyGui(ctk.CTk):
                 row["status"].set(status)
                 return
 
+    def _set_host_slots(self, host, slots):
+        key = host.strip().lower()
+        for row in self.host_rows:
+            if row["host"].get().strip().lower() == key:
+                row["slots"].set(str(slots))
+                return
+
+    def _merge_hosts(self, hosts):
+        existing = {row["host"].get().strip().lower() for row in self.host_rows}
+        for host, slots, status in hosts:
+            key = host.strip().lower()
+            if not key or key in existing:
+                continue
+            self._append_host_row(host, slots, status)
+            existing.add(key)
+
     def _add_manual_host(self):
         host = self.manual_host.get().strip()
         if not host:
@@ -485,21 +658,21 @@ class AlchemyGui(ctk.CTk):
             if existing.lower() == host.lower():
                 self.manual_host.set("")
                 return
-        self._append_host_row(host, "1", "manual")
+        self._append_host_row(host, "1", "candidate")
         self.manual_host.set("")
 
     def clear_hosts(self):
-        self._replace_hosts([])
+        self._replace_hosts([(socket.gethostname(), str(os.cpu_count() or 1), "master")])
 
     def scan_hosts(self):
         self.multi_node_enabled.set(True)
         self.status.set("Scanning LAN...")
-        self._log("Scanning LAN for reachable hosts...\n")
+        self._log("Scanning LAN for slave agents and reachable hosts...\n")
 
         def worker():
             try:
                 hosts = scan_lan_hosts()
-                self.log_queue.put(("hosts_replace", hosts))
+                self.log_queue.put(("hosts_merge", hosts))
                 self.log_queue.put(("log", f"Scan found {len(hosts)} host entries.\n"))
             except Exception as exc:
                 self.log_queue.put(("log", f"Scan failed: {exc}\n"))
@@ -508,20 +681,41 @@ class AlchemyGui(ctk.CTk):
 
         threading.Thread(target=worker, daemon=True).start()
 
-    def _test_single_host(self, host, slots):
-        command = ["mpiexec", "-hosts", "1", host, str(slots), "hostname"]
+    def _invite_slave(self, host, slots):
+        payload = {
+            "type": "invite",
+            "master_hostname": socket.gethostname(),
+            "master_ip": primary_local_ip(),
+            "requested_slots": slots,
+            "project_path": str(ROOT_DIR),
+            "timeout_seconds": INVITE_TIMEOUT_SECONDS,
+        }
         try:
-            result = subprocess.run(
-                command,
-                cwd=str(ROOT_DIR),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                timeout=15,
-            )
-            return result.returncode == 0, result.stdout.strip()
+            with socket.create_connection((host, SLAVE_AGENT_PORT), timeout=5) as sock:
+                send_json_line(sock, payload)
+                return recv_json_line(sock, timeout=INVITE_TIMEOUT_SECONDS + 5)
+        except socket.timeout:
+            return {"status": "timeout", "message": "No response before timeout"}
         except Exception as exc:
-            return False, str(exc)
+            return {"status": "failed", "message": str(exc)}
+
+    def connect_host_row(self, frame):
+        row = next((item for item in self.host_rows if item["frame"] is frame), None)
+        if row is None:
+            return
+        host = row["host"].get().strip()
+        status = row["status"].get().strip().lower()
+        if status == "master":
+            self._log("This computer is already the master host.\n")
+            return
+        try:
+            slots = int(row["slots"].get().strip())
+            if slots < 1:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Invalid slots", f"Invalid slot count for host {host}")
+            return
+        self._connect_hosts([(host, slots)])
 
     def test_hosts(self):
         try:
@@ -533,19 +727,232 @@ class AlchemyGui(ctk.CTk):
             messagebox.showwarning("No hosts", "Add or scan at least one host first.")
             return
         self.multi_node_enabled.set(True)
-        self.status.set("Testing hosts...")
-        self._log("Testing MS-MPI host connectivity...\n")
+        targets = [(host, slots) for host, slots, status in entries if status not in {"master", "connected"}]
+        self._connect_hosts(targets)
+
+    def _connect_hosts(self, targets):
+        if not targets:
+            self._log("No candidate slave hosts to invite.\n")
+            return
+        self.multi_node_enabled.set(True)
+        self.status.set("Waiting slave approval...")
+        self._log("Sending master invite. Slave must accept within 30 seconds.\n")
 
         def worker():
-            for host, slots, _ in entries:
-                self.log_queue.put(("host_status", (host, "testing")))
-                ok, output = self._test_single_host(host, slots)
-                self.log_queue.put(("host_status", (host, "connected" if ok else "failed")))
-                detail = output.replace("\n", " ").strip()
-                self.log_queue.put(("log", f"{host} slots={slots}: {'connected' if ok else 'failed'} {detail}\n"))
+            for host, slots in targets:
+                self.log_queue.put(("host_status", (host, "waiting approval")))
+                response = self._invite_slave(host, slots)
+                status = response.get("status", "failed")
+                if status == "accepted":
+                    actual_slots = response.get("slots", slots)
+                    self.log_queue.put(("host_slots", (host, str(actual_slots))))
+                    self.log_queue.put(("host_status", (host, "connected")))
+                    self.log_queue.put(("log", f"{host}: connected ({response.get('hostname', 'unknown')}, slots={actual_slots})\n"))
+                elif status == "rejected":
+                    self.log_queue.put(("host_status", (host, "rejected")))
+                    self.log_queue.put(("log", f"{host}: rejected by slave\n"))
+                elif status == "timeout":
+                    self.log_queue.put(("host_status", (host, "timeout")))
+                    self.log_queue.put(("log", f"{host}: invite timed out\n"))
+                elif status == "busy":
+                    self.log_queue.put(("host_status", (host, "busy")))
+                    self.log_queue.put(("log", f"{host}: slave is busy with another invite\n"))
+                else:
+                    self.log_queue.put(("host_status", (host, "failed")))
+                    self.log_queue.put(("log", f"{host}: failed {response.get('message', '')}\n"))
             self.log_queue.put(("status", "Idle"))
 
         threading.Thread(target=worker, daemon=True).start()
+
+    def start_slave_agent(self):
+        if self.slave_threads:
+            self._log("Slave agent is already running.\n")
+            return
+        try:
+            slots = int(self.slave_slots.get().strip())
+            if slots < 1:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Invalid slots", "Offered slots must be a positive integer.")
+            return
+
+        self.cluster_role.set("Slave")
+        self.slave_advertised_slots = str(slots)
+        self.slave_stop_event.clear()
+        self.slave_status.set(f"Slave waiting on {primary_local_ip()}:{SLAVE_AGENT_PORT}")
+        self._log(f"Slave agent started at {primary_local_ip()}:{SLAVE_AGENT_PORT}. Waiting for master invite.\n")
+
+        tcp_thread = threading.Thread(target=self._slave_tcp_server, daemon=True)
+        udp_thread = threading.Thread(target=self._slave_discovery_server, daemon=True)
+        self.slave_threads = [tcp_thread, udp_thread]
+        tcp_thread.start()
+        udp_thread.start()
+
+    def stop_slave_agent(self):
+        self.slave_stop_event.set()
+        try:
+            if self.slave_server_socket is not None:
+                self.slave_server_socket.close()
+        except Exception:
+            pass
+        self.slave_server_socket = None
+        self.slave_threads = []
+        if self.pending_invite:
+            self._respond_to_invite({"status": "rejected", "message": "slave stopped"})
+        self._clear_pending_invite("Slave stopped.")
+        self.slave_status.set("Slave stopped")
+        self._log("Slave agent stopped.\n")
+
+    def _slave_tcp_server(self):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+                self.slave_server_socket = server
+                server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                server.bind(("", SLAVE_AGENT_PORT))
+                server.listen()
+                server.settimeout(0.5)
+                while not self.slave_stop_event.is_set():
+                    try:
+                        client, addr = server.accept()
+                    except socket.timeout:
+                        continue
+                    except OSError:
+                        break
+                    threading.Thread(target=self._handle_slave_client, args=(client, addr), daemon=True).start()
+        except Exception as exc:
+            self.log_queue.put(("log", f"Slave TCP server failed: {exc}\n"))
+            self.log_queue.put(("slave_status", "Slave stopped"))
+
+    def _slave_discovery_server(self):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                sock.bind(("", SLAVE_DISCOVERY_PORT))
+                sock.settimeout(0.5)
+                while not self.slave_stop_event.is_set():
+                    try:
+                        data, addr = sock.recvfrom(4096)
+                    except socket.timeout:
+                        continue
+                    except OSError:
+                        break
+                    if data != DISCOVERY_MESSAGE:
+                        continue
+                    payload = {
+                        "type": "alchemy_slave",
+                        "hostname": socket.gethostname(),
+                        "ip": primary_local_ip(),
+                        "port": SLAVE_AGENT_PORT,
+                        "slots": self.slave_advertised_slots,
+                        "project_path": str(ROOT_DIR),
+                    }
+                    try:
+                        sock.sendto(json.dumps(payload).encode("utf-8"), addr)
+                    except OSError:
+                        pass
+        except Exception as exc:
+            self.log_queue.put(("log", f"Slave discovery server failed: {exc}\n"))
+
+    def _handle_slave_client(self, client, addr):
+        with client:
+            try:
+                request = recv_json_line(client, timeout=5)
+                if request.get("type") != "invite":
+                    send_json_line(client, {"status": "failed", "message": "unknown request"})
+                    return
+
+                with self.pending_invite_lock:
+                    if self.pending_invite_active:
+                        send_json_line(client, {"status": "busy", "message": "another invite is pending"})
+                        return
+                    self.pending_invite_active = True
+
+                response_queue = queue.Queue(maxsize=1)
+                invite = {
+                    "master_hostname": request.get("master_hostname", "unknown"),
+                    "master_ip": request.get("master_ip", addr[0]),
+                    "requested_slots": request.get("requested_slots", 1),
+                    "deadline": time.monotonic() + INVITE_TIMEOUT_SECONDS,
+                    "response_queue": response_queue,
+                }
+                self.log_queue.put(("incoming_invite", invite))
+                try:
+                    response = response_queue.get(timeout=INVITE_TIMEOUT_SECONDS)
+                except queue.Empty:
+                    response = {"status": "timeout", "message": "slave approval timed out"}
+                    self.log_queue.put(("invite_expired", None))
+                send_json_line(client, response)
+            except Exception as exc:
+                try:
+                    send_json_line(client, {"status": "failed", "message": str(exc)})
+                except Exception:
+                    pass
+            finally:
+                with self.pending_invite_lock:
+                    self.pending_invite_active = False
+
+    def _handle_incoming_invite(self, invite):
+        self.cluster_role.set("Slave")
+        self.pending_invite = invite
+        self._tick_invite_countdown()
+        self._log(f"Incoming invite from {invite['master_hostname']} ({invite['master_ip']}). Accept within 30 seconds.\n")
+
+    def _tick_invite_countdown(self):
+        if not self.pending_invite:
+            return
+        remaining = int(max(0, self.pending_invite["deadline"] - time.monotonic()))
+        self.incoming_invite_text.set(
+            f"Incoming master request:\n"
+            f"{self.pending_invite['master_hostname']} ({self.pending_invite['master_ip']})\n"
+            f"Requested slots: {self.pending_invite['requested_slots']}\n"
+            f"Accept within: {remaining}s"
+        )
+        if remaining <= 0:
+            self._clear_pending_invite("Invite timed out.")
+            return
+        self.after(1000, self._tick_invite_countdown)
+
+    def _slave_ready_payload(self):
+        try:
+            slots = int(self.slave_slots.get().strip())
+            if slots < 1:
+                raise ValueError
+        except ValueError:
+            slots = 1
+        exe = executable_path("alchemy_mpi")
+        return {
+            "status": "accepted",
+            "hostname": socket.gethostname(),
+            "ip": primary_local_ip(),
+            "slots": slots,
+            "project_path": str(ROOT_DIR),
+            "executable_exists": exe.exists(),
+        }
+
+    def accept_invite(self):
+        if not self.pending_invite:
+            self._log("No pending invite to accept.\n")
+            return
+        self._respond_to_invite(self._slave_ready_payload())
+        self._clear_pending_invite("Connected to master. Waiting for MPI launch.")
+        self.slave_status.set("Slave accepted master. Waiting for MPI launch.")
+
+    def reject_invite(self):
+        if not self.pending_invite:
+            self._log("No pending invite to reject.\n")
+            return
+        self._respond_to_invite({"status": "rejected"})
+        self._clear_pending_invite("Invite rejected.")
+
+    def _respond_to_invite(self, response):
+        try:
+            self.pending_invite["response_queue"].put_nowait(response)
+        except Exception:
+            pass
+
+    def _clear_pending_invite(self, text="No incoming master request."):
+        self.pending_invite = None
+        self.incoming_invite_text.set(text)
 
     def _browse_data(self):
         path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json"), ("All files", "*.*")])
@@ -729,9 +1136,20 @@ class AlchemyGui(ctk.CTk):
                     self._log(payload)
                 elif kind == "hosts_replace":
                     self._replace_hosts(payload)
+                elif kind == "hosts_merge":
+                    self._merge_hosts(payload)
                 elif kind == "host_status":
                     host, status = payload
                     self._set_host_status(host, status)
+                elif kind == "host_slots":
+                    host, slots = payload
+                    self._set_host_slots(host, slots)
+                elif kind == "incoming_invite":
+                    self._handle_incoming_invite(payload)
+                elif kind == "invite_expired":
+                    self._clear_pending_invite("Invite timed out.")
+                elif kind == "slave_status":
+                    self.slave_status.set(payload)
                 elif kind == "status":
                     self.status.set(payload)
                 elif kind == "done":

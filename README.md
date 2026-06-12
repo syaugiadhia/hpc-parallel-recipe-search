@@ -80,7 +80,7 @@ Fitur GUI:
 - Search nama elemen supaya tidak perlu scroll daftar panjang.
 - Atur algorithm, mode search, trace mode, visual mode, output format, dan output prefix.
 - Atur MPI process count, split depth, dan baseline time.
-- Scan LAN, test/connect host Windows MS-MPI, lalu run MPI multi-komputer dari GUI.
+- Pilih role `Master` atau `Slave`; master mengundang slave, slave harus accept dalam 30 detik, lalu MPI multi-komputer dijalankan dari master.
 - Build project, run command, stop process, dan buka file JSON/DOT/image/CSV.
 - Target dropdown otomatis dimuat dari `data/tiers.json`, lalu divalidasi terhadap `recipes.json`.
 
@@ -147,6 +147,8 @@ Via script:
 
 ## Menjalankan MPI Multi-Komputer
 
+Panduan lengkap GUI master/slave ada di [`tutor_multi_pc.md`](tutor_multi_pc.md).
+
 Gunakan hostfile, misalnya `hosts.txt`:
 
 ```text
@@ -175,21 +177,24 @@ python scripts\scan_hosts.py --output hosts.txt
 powershell -ExecutionPolicy Bypass -File scripts\run_mpi_hosts.ps1 -Hostfile hosts.txt --target Brick --limit 10
 ```
 
-Di GUI, pilih engine `mpi`, centang `Use multi-node MS-MPI host list`, lalu:
+Di GUI, buka aplikasi di semua komputer. Laptop utama pilih role `Master`; laptop teman pilih role `Slave`.
 
-1. Klik `Scan LAN` untuk mencari host yang merespons ping.
-2. Atur `slots` per host jika perlu.
-3. Klik `Test/Connect`; host dengan status `connected` akan dipakai.
-4. Klik `Run`.
+1. Di komputer slave, klik `Start Slave`.
+2. Di komputer master, pilih engine `mpi`, centang `Use accepted master/slave host list`.
+3. Klik `Scan LAN` atau masukkan IP slave secara manual.
+4. Klik `Connect` pada IP slave. Slave akan menerima invite dan harus klik `Accept` dalam 30 detik.
+5. Atur `slots` master dan slave sesuai kebutuhan.
+6. Klik `Run` dari komputer master.
 
 Untuk multi-node, pastikan:
 
 - MS-MPI atau MPI yang sesuai terinstall di semua komputer.
 - Path project dan `data/recipes.json` tersedia di semua komputer.
 - `build/alchemy_mpi.exe`, `data/recipes.json`, dan `data/tiers.json` ada pada path project yang sama di semua komputer.
-- Firewall mengizinkan MS-MPI dan ping/ICMP jika ingin memakai auto scan. Jika ping diblokir, tambahkan host manual di GUI.
+- Firewall mengizinkan MS-MPI, TCP `50555` untuk invite slave, UDP `50556` untuk discovery GUI, dan ping/ICMP jika ingin memakai auto scan. Jika ping diblokir, tambahkan host manual di GUI.
 - SSH passwordless antar node sudah siap untuk OpenMPI/MPICH. Untuk MS-MPI, pastikan konfigurasi host/user sesuai mekanisme Microsoft MPI.
 - Hostfile menentukan jumlah process per komputer lewat `slots`.
+- Dalam GUI role baru, host pertama selalu komputer master sehingga rank 0 berada di laptop master. Slave hanya dipakai jika statusnya `connected`.
 
 Jika MS-MPI menampilkan `CreateRpcBinding error 1749` saat memakai `mpiexec -hosts`, berarti mode launch ke host tersebut belum berhasil dibuat oleh MS-MPI. Cek hostname/IP, firewall, izin akun, dan konfigurasi MS-MPI di komputer target. `mpiexec -n N` lokal bisa tetap berhasil walaupun mode `-hosts` belum siap.
 
