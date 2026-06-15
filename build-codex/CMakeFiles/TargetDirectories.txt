@@ -1,0 +1,7 @@
+C:/tubes-2/build-codex/CMakeFiles/alchemy_common.dir
+C:/tubes-2/build-codex/CMakeFiles/alchemy_serial.dir
+C:/tubes-2/build-codex/CMakeFiles/alchemy_mpi.dir
+C:/tubes-2/build-codex/CMakeFiles/alchemy_tests.dir
+C:/tubes-2/build-codex/CMakeFiles/test.dir
+C:/tubes-2/build-codex/CMakeFiles/edit_cache.dir
+C:/tubes-2/build-codex/CMakeFiles/rebuild_cache.dir

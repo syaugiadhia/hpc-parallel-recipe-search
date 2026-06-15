@@ -37,6 +37,7 @@ private:
 
     std::unordered_map<std::string, std::string> canonicalByLower_;
     std::unordered_map<std::string, std::vector<RecipePair>> recipesByResult_;
+    std::unordered_map<std::string, std::unordered_set<std::string>> recipePairKeysByResult_;
     std::unordered_set<std::string> basicLower_;
     std::unordered_set<std::string> terminalLower_;
     std::vector<std::string> insertionOrder_;

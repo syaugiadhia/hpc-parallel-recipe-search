@@ -243,7 +243,7 @@ void SearchEngine::printBfsProgress(int depth, std::size_t recipesFound) const {
 }
 
 SearchEngine::ExpandResult SearchEngine::expandElementAny(const std::string& name, int limit, std::unordered_set<std::string>& active) {
-    if (options_.algorithm == Algorithm::Dfs) {
+    if (options_.mode != SearchMode::All && options_.algorithm == Algorithm::Dfs) {
         return expandElementDfs(name, limit, active);
     }
     if (limit == 0) {
@@ -335,16 +335,14 @@ SearchEngine::ExpandResult SearchEngine::expandDirectRecipes(const std::string& 
     options_.progress = progressEnabled;
 
     result.trees = dedupeAndClip(result.trees, 0);
-    if (options_.algorithm == Algorithm::Bfs) {
-        std::stable_sort(result.trees.begin(), result.trees.end(), [](const RecipeTree& left, const RecipeTree& right) {
-            const int leftDepth = treeDepth(left);
-            const int rightDepth = treeDepth(right);
-            if (leftDepth != rightDepth) {
-                return leftDepth < rightDepth;
-            }
-            return treeSignature(left) < treeSignature(right);
-        });
-    }
+    std::stable_sort(result.trees.begin(), result.trees.end(), [](const RecipeTree& left, const RecipeTree& right) {
+        const int leftDepth = treeDepth(left);
+        const int rightDepth = treeDepth(right);
+        if (leftDepth != rightDepth) {
+            return leftDepth < rightDepth;
+        }
+        return treeSignature(left) < treeSignature(right);
+    });
     return result;
 }
 

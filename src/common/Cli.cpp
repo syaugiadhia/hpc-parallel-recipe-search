@@ -114,6 +114,7 @@ AppOptions parseArgs(int argc, char** argv, bool mpiMode) {
     }
     if (options.mode == SearchMode::All) {
         options.progress = true;
+        options.algorithm = Algorithm::Bfs;
     }
     return options;
 }

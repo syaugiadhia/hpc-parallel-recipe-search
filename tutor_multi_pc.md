@@ -206,7 +206,7 @@ Contoh target `Brick`:
 
 Semakin banyak komputer atau process, biasanya butuh task lebih banyak supaya semua worker kebagian kerja. Nilai `2` sering cukup untuk tes. Nilai terlalu besar bisa menambah overhead.
 
-Khusus `--mode all`, split depth diabaikan karena `all` berarti semua recipe langsung target dari JSON.
+Khusus `--mode all`, split depth diabaikan karena `all` berarti direct recipe unik target dari JSON dengan subtree representatif terpendek, bukan semua kombinasi subtree.
 
 ## Cara Mengecek Komputer Benar-Benar Dipakai
 

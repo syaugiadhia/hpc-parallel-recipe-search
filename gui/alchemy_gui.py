@@ -10,6 +10,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 from pathlib import Path
@@ -310,6 +311,9 @@ class AlchemyGui(ctk.CTk):
         self.last_format = "png"
         self.preview_pil_image = None
         self.preview_image = None
+        self.preview_json_data = None
+        self.preview_recipes = []
+        self.preview_page_index = 0
         self.run_started_at = None
         self.slave_stop_event = threading.Event()
         self.slave_server_socket = None
@@ -332,7 +336,6 @@ class AlchemyGui(ctk.CTk):
         self.data_path = ctk.StringVar(value=str(ROOT_DIR / "data" / "recipes.json"))
         self.tiers_path = ctk.StringVar(value=str(ROOT_DIR / "data" / "tiers.json"))
         self.tier_filter = ctk.StringVar(value="all")
-        self.target_search = ctk.StringVar(value="")
         self.target = ctk.StringVar(value="Brick")
         self.benchmark_path = ctk.StringVar(value=str(ROOT_DIR / "benchmarks" / "targets.txt"))
         self.algorithm = ctk.StringVar(value="bfs")
@@ -354,6 +357,9 @@ class AlchemyGui(ctk.CTk):
         self.baseline_enabled = ctk.BooleanVar(value=False)
         self.baseline_ms = ctk.StringVar(value="")
         self.status = ctk.StringVar(value="Idle")
+        self.image_recipes_per_page = ctk.StringVar(value="1")
+        self.image_page = ctk.StringVar(value="1")
+        self.image_page_status = ctk.StringVar(value="No recipe preview.")
         self.target_catalog = {"all": ["Brick"]}
         self.filtered_targets = ["Brick"]
         self.host_rows = []
@@ -379,8 +385,9 @@ class AlchemyGui(ctk.CTk):
         self.result_box = ctk.CTkTextbox(self.tabs.tab("Results"), wrap="word")
         self.result_box.grid(row=0, column=0, sticky="nsew")
 
-        self.image_label = ctk.CTkLabel(self.tabs.tab("Image"), text="Run a search, then open or preview the rendered image.")
-        self.image_label.grid(row=0, column=0, sticky="nsew", padx=12, pady=12)
+        self.tabs.tab("Image").grid_rowconfigure(0, weight=0)
+        self.tabs.tab("Image").grid_rowconfigure(1, weight=1)
+        self._build_image_tab()
 
         self.csv_box = ctk.CTkTextbox(self.tabs.tab("CSV"), wrap="none")
         self.csv_box.grid(row=0, column=0, sticky="nsew")
@@ -404,22 +411,20 @@ class AlchemyGui(ctk.CTk):
         row += 1
         self._option_row(row, "Tier", self.tier_filter, TIER_ORDER, self._apply_target_filter)
         row += 1
-        self.search_entry = self._entry_row(row, "Search target", self.target_search)
-        self.target_search.trace_add("write", lambda *_: self._apply_target_filter())
-        row += 1
-        self.target_menu = self._option_row(row, "Target", self.target, ["Brick"])
+        self.target_combo = self._combo_row(row, "Target", self.target, ["Brick"])
+        self.target_combo.bind("<KeyRelease>", lambda _event: self._apply_target_filter(keep_text=True))
         row += 1
         self._path_row(row, "Benchmark", self.benchmark_path, self._browse_benchmark, None)
         row += 1
 
         row = self._section(row, "Search")
-        self._option_row(row, "Algorithm", self.algorithm, ["bfs", "dfs"])
+        self.algorithm_menu = self._option_row(row, "Algorithm", self.algorithm, ["bfs", "dfs"])
         row += 1
         self._option_row(row, "Mode", self.search_mode, ["single", "multiple", "all"], self._refresh_mode_state)
         row += 1
         ctk.CTkLabel(
             self.controls,
-            text="Mode all = all direct recipes for the selected element.",
+            text="Mode all = unique direct recipes + shortest subtree; not all possible combinations.",
             anchor="w",
             wraplength=300,
         ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
@@ -450,7 +455,7 @@ class AlchemyGui(ctk.CTk):
         row += 1
         ctk.CTkLabel(
             self.controls,
-            text="Split depth expands MPI tasks for single/multiple. Mode all ignores it.",
+            text="Split depth expands MPI tasks for single/multiple. Mode all uses direct recipes and ignores it.",
             anchor="w",
             wraplength=300,
         ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
@@ -537,6 +542,28 @@ class AlchemyGui(ctk.CTk):
         row += 1
         ctk.CTkLabel(self.controls, textvariable=self.status, anchor="w").grid(row=row, column=0, sticky="ew", padx=8, pady=(8, 4))
 
+    def _build_image_tab(self):
+        image_tab = self.tabs.tab("Image")
+        controls = ctk.CTkFrame(image_tab, fg_color="transparent")
+        controls.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 0))
+        controls.grid_columnconfigure(6, weight=1)
+
+        ctk.CTkLabel(controls, text="Recipes/page").grid(row=0, column=0, sticky="w", padx=(0, 6))
+        per_page_entry = ctk.CTkEntry(controls, textvariable=self.image_recipes_per_page, width=58)
+        per_page_entry.grid(row=0, column=1, sticky="w", padx=(0, 8))
+        per_page_entry.bind("<Return>", lambda _event: self._go_preview_page())
+        ctk.CTkButton(controls, text="Prev", width=58, command=lambda: self._change_preview_page(-1)).grid(row=0, column=2, padx=3)
+        ctk.CTkButton(controls, text="Next", width=58, command=lambda: self._change_preview_page(1)).grid(row=0, column=3, padx=3)
+        ctk.CTkLabel(controls, text="Page").grid(row=0, column=4, sticky="w", padx=(8, 6))
+        page_entry = ctk.CTkEntry(controls, textvariable=self.image_page, width=58)
+        page_entry.grid(row=0, column=5, sticky="w", padx=(0, 4))
+        page_entry.bind("<Return>", lambda _event: self._go_preview_page())
+        ctk.CTkButton(controls, text="Go", width=46, command=self._go_preview_page).grid(row=0, column=6, sticky="w", padx=(0, 8))
+        ctk.CTkLabel(controls, textvariable=self.image_page_status, anchor="e").grid(row=0, column=7, sticky="e")
+
+        self.image_label = ctk.CTkLabel(image_tab, text="Run a search, then preview recipe pages here.")
+        self.image_label.grid(row=1, column=0, sticky="nsew", padx=12, pady=12)
+
     def _section(self, row, title):
         label = ctk.CTkLabel(self.controls, text=title, font=ctk.CTkFont(weight="bold"))
         label.grid(row=row, column=0, sticky="w", padx=8, pady=(14, 4))
@@ -557,6 +584,15 @@ class AlchemyGui(ctk.CTk):
         menu = ctk.CTkOptionMenu(frame, values=values, variable=variable, command=lambda _=None: command() if command else None)
         menu.grid(row=0, column=1, sticky="ew")
         return menu
+
+    def _combo_row(self, row, label, variable, values, command=None):
+        frame = ctk.CTkFrame(self.controls, fg_color="transparent")
+        frame.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
+        frame.grid_columnconfigure(1, weight=1)
+        ctk.CTkLabel(frame, text=label).grid(row=0, column=0, sticky="w", padx=(0, 8))
+        combo = ctk.CTkComboBox(frame, values=values, variable=variable, command=lambda _=None: command() if command else None)
+        combo.grid(row=0, column=1, sticky="ew")
+        return combo
 
     def _entry_row(self, row, label, variable):
         frame = ctk.CTkFrame(self.controls, fg_color="transparent")
@@ -988,21 +1024,57 @@ class AlchemyGui(ctk.CTk):
         except Exception as exc:
             self._log(f"Could not load targets: {exc}\n")
 
-    def _apply_target_filter(self):
+    def _apply_target_filter(self, keep_text=False):
         tier = self.tier_filter.get()
-        needle = self.target_search.get().strip().lower()
+        current = self.target.get()
+        needle = current.strip().lower() if keep_text else ""
         source = self.target_catalog.get(tier, self.target_catalog.get("all", []))
-        targets = [name for name in source if needle in name.lower()]
+        targets = [name for name in source if not needle or name.lower().startswith(needle)]
         if not targets:
             targets = ["<no match>"]
         self.filtered_targets = targets
-        self.target_menu.configure(values=targets)
-        if self.target.get() not in targets:
+        self.target_combo.configure(values=targets)
+        if keep_text:
+            self._open_target_dropdown()
+            return
+        if current not in targets:
             self.target.set(targets[0])
+
+    def _open_target_dropdown(self):
+        open_dropdown = getattr(self.target_combo, "_open_dropdown_menu", None)
+        if callable(open_dropdown):
+            try:
+                open_dropdown()
+            except Exception:
+                pass
+
+    def _resolve_target(self):
+        current = self.target.get().strip()
+        if not current or current == "<no match>":
+            raise ValueError("No target matches the current tier/search filter")
+
+        source = self.target_catalog.get(self.tier_filter.get(), self.target_catalog.get("all", []))
+        current_lower = current.lower()
+        for name in source:
+            if name.lower() == current_lower:
+                if self.target.get() != name:
+                    self.target.set(name)
+                return name
+
+        matches = [name for name in self.filtered_targets if name != "<no match>"]
+        if matches:
+            self.target.set(matches[0])
+            return matches[0]
+        raise ValueError("No target matches the current tier/search filter")
 
     def _refresh_mode_state(self):
         limit_state = "disabled" if self.search_mode.get() == "all" else "normal"
         self.limit_entry.configure(state=limit_state)
+        if self.search_mode.get() == "all":
+            self.algorithm.set("bfs")
+            self.algorithm_menu.configure(state="disabled")
+        else:
+            self.algorithm_menu.configure(state="normal")
         mpi_state = "normal" if self.engine.get() == "mpi" else "disabled"
         self.mpi_np_entry.configure(state=mpi_state)
         self.split_depth_entry.configure(state=mpi_state)
@@ -1021,9 +1093,7 @@ class AlchemyGui(ctk.CTk):
         if self.run_kind.get() == "benchmark":
             args.extend(["--benchmark", self.benchmark_path.get()])
         else:
-            if self.target.get() == "<no match>":
-                raise ValueError("No target matches the current tier/search filter")
-            args.extend(["--target", self.target.get()])
+            args.extend(["--target", self._resolve_target()])
 
         if self.search_mode.get() != "all":
             args.extend(["--limit", self.limit.get()])
@@ -1167,6 +1237,11 @@ class AlchemyGui(ctk.CTk):
     def _clear_outputs(self):
         for textbox in (self.log_box, self.result_box, self.csv_box, self.command_box):
             textbox.delete("1.0", "end")
+        self.preview_json_data = None
+        self.preview_recipes = []
+        self.preview_page_index = 0
+        self.image_page.set("1")
+        self.image_page_status.set("No recipe preview.")
         self._reset_image_preview("Run completed outputs will appear here.")
 
     def _log(self, text):
@@ -1189,11 +1264,21 @@ class AlchemyGui(ctk.CTk):
                 self.result_box.delete("1.0", "end")
                 self.result_box.insert("end", json.dumps(data, indent=2))
                 self.tabs.set("Results")
+                self.preview_json_data = data
+                self.preview_recipes = list(data.get("recipes", []))
+                self.preview_page_index = 0
+                self.image_page.set("1")
+                if self.preview_recipes:
+                    self._render_preview_page()
+                    self.tabs.set("Image")
+                else:
+                    self.image_page_status.set("No recipes found.")
+                    self._reset_image_preview("No recipes to preview.")
             except Exception as exc:
                 self._log(f"Could not parse JSON output: {exc}\n")
 
         image_path = prefix.with_suffix("." + self.image_format.get())
-        if image_path.exists():
+        if image_path.exists() and not self.preview_recipes:
             if self.image_format.get() in {"png", "jpg", "jpeg"}:
                 self._preview_image(image_path)
             else:
@@ -1220,6 +1305,171 @@ class AlchemyGui(ctk.CTk):
         except Exception as exc:
             self.csv_box.insert("end", f"Could not load CSV: {exc}\n")
 
+    def _positive_int(self, value, default):
+        try:
+            parsed = int(str(value).strip())
+            if parsed > 0:
+                return parsed
+        except ValueError:
+            pass
+        return default
+
+    def _preview_page_count(self):
+        if not self.preview_recipes:
+            return 0
+        per_page = self._positive_int(self.image_recipes_per_page.get(), 1)
+        return (len(self.preview_recipes) + per_page - 1) // per_page
+
+    def _change_preview_page(self, delta):
+        if not self.preview_recipes:
+            return
+        self._show_preview_page(self.preview_page_index + delta)
+
+    def _go_preview_page(self):
+        if not self.preview_recipes:
+            return
+        page = self._positive_int(self.image_page.get(), self.preview_page_index + 1)
+        self._show_preview_page(page - 1)
+
+    def _show_preview_page(self, page_index):
+        total_pages = self._preview_page_count()
+        if total_pages <= 0:
+            self.image_page_status.set("No recipes found.")
+            self._reset_image_preview("No recipes to preview.")
+            return
+        self.preview_page_index = min(max(0, page_index), total_pages - 1)
+        self.image_page.set(str(self.preview_page_index + 1))
+        self._render_preview_page()
+
+    def _render_preview_page(self):
+        if not self.preview_recipes or not self.preview_json_data:
+            self.image_page_status.set("No recipes found.")
+            self._reset_image_preview("No recipes to preview.")
+            return
+
+        per_page = self._positive_int(self.image_recipes_per_page.get(), 1)
+        self.image_recipes_per_page.set(str(per_page))
+        total = len(self.preview_recipes)
+        total_pages = self._preview_page_count()
+        self.preview_page_index = min(max(0, self.preview_page_index), max(0, total_pages - 1))
+        self.image_page.set(str(self.preview_page_index + 1))
+        start = self.preview_page_index * per_page
+        end = min(start + per_page, total)
+        page_recipes = self.preview_recipes[start:end]
+        if total_pages == 0 or not page_recipes:
+            self.image_page_status.set("No recipes found.")
+            self._reset_image_preview("No recipes to preview.")
+            return
+
+        if shutil.which("dot") is None:
+            self.image_page_status.set(f"Page {self.preview_page_index + 1}/{total_pages}")
+            self._reset_image_preview("Graphviz 'dot' is not available; cannot render page preview.")
+            return
+
+        try:
+            dot_text = self._build_preview_dot(page_recipes)
+            with tempfile.TemporaryDirectory(prefix="alchemy_preview_") as temp_dir:
+                temp_dir = Path(temp_dir)
+                dot_path = temp_dir / "page.dot"
+                png_path = temp_dir / "page.png"
+                dot_path.write_text(dot_text, encoding="utf-8")
+                subprocess.run(
+                    ["dot", "-Tpng", str(dot_path), "-o", str(png_path)],
+                    check=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                with Image.open(png_path) as image_file:
+                    image = image_file.copy()
+            self._set_image_preview(image)
+            shown = f"Recipe {start + 1}" if start + 1 == end else f"Recipe {start + 1}-{end}"
+            self.image_page_status.set(f"Page {self.preview_page_index + 1}/{total_pages}, showing {shown} of {total}")
+        except Exception as exc:
+            self.image_page_status.set("Preview render failed.")
+            self._reset_image_preview(f"Could not render preview page:\n{exc}")
+
+    def _dot_escape(self, value):
+        return str(value).replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+
+    def _tree_signature(self, tree):
+        children = tree.get("children", []) if isinstance(tree, dict) else []
+        child_signatures = sorted(self._tree_signature(child) for child in children)
+        return f"{tree.get('name', '')}({','.join(child_signatures)})"
+
+    def _build_preview_dot(self, page_recipes):
+        visual_mode = self.preview_json_data.get("visual_mode", self.visual_mode.get()) if self.preview_json_data else self.visual_mode.get()
+        shared_seen = {}
+        next_id = 0
+        lines = [
+            "digraph RecipeResults {",
+            "  graph [rankdir=TB, labelloc=t, fontsize=20, fontname=\"Arial\"];",
+            "  node [fontname=\"Arial\"];",
+            "  edge [fontname=\"Arial\"];",
+            "  label=\"Little Alchemy Recipe Search\";",
+            "",
+        ]
+
+        def node_style(tree, shared, truncated):
+            if shared:
+                return 'shape=box, style="dashed,filled", fillcolor="#fff3cd", color="#b8860b"'
+            if truncated:
+                return 'shape=box, style="rounded,filled", fillcolor="#f8d7da", color="#b02a37"'
+            if tree.get("basic", False):
+                return 'shape=ellipse, style=filled, fillcolor="#d1e7dd", color="#0f5132"'
+            return 'shape=box, style="rounded,filled", fillcolor="#e7f1ff", color="#084298"'
+
+        max_depth = -1
+        if self.max_visual_depth_enabled.get():
+            try:
+                parsed_depth = int(self.max_visual_depth.get().strip())
+                if parsed_depth >= 0:
+                    max_depth = parsed_depth
+            except ValueError:
+                max_depth = -1
+
+        def add_node(tree, recipe_id, depth):
+            nonlocal next_id
+            children = tree.get("children", []) if isinstance(tree, dict) else []
+            depth_limited = max_depth >= 0 and depth >= max_depth and bool(children)
+            signature = self._tree_signature(tree)
+            can_share = visual_mode == "shared" and not tree.get("basic", False) and not depth_limited and depth > 0
+            if can_share and signature in shared_seen:
+                node_id = f"n{next_id}"
+                next_id += 1
+                _, seen_recipe_id = shared_seen[signature]
+                label = f"{tree.get('name', '')}\n(shared, see Recipe {seen_recipe_id})"
+                lines.append(f"    {node_id} [label=\"{self._dot_escape(label)}\", {node_style(tree, True, False)}];")
+                return node_id, True
+
+            node_id = f"n{next_id}"
+            next_id += 1
+            label = str(tree.get("name", ""))
+            if depth_limited:
+                label += "\n(truncated)"
+            lines.append(f"    {node_id} [label=\"{self._dot_escape(label)}\", {node_style(tree, False, depth_limited)}];")
+
+            if can_share:
+                shared_seen[signature] = (node_id, recipe_id)
+            if not depth_limited:
+                for child in children:
+                    child_id, child_shared = add_node(child, recipe_id, depth + 1)
+                    style = " [style=dashed]" if child_shared else ""
+                    lines.append(f"    {node_id} -> {child_id}{style};")
+            return node_id, False
+
+        for fallback_index, recipe in enumerate(page_recipes, start=1):
+            recipe_id = recipe.get("id", fallback_index)
+            lines.append(f"  subgraph cluster_recipe_{recipe_id} {{")
+            lines.append(f"    label=\"Recipe {recipe_id}\";")
+            lines.append("    color=\"#adb5bd\";")
+            add_node(recipe.get("tree", {}), recipe_id, 0)
+            lines.append("  }")
+            lines.append("")
+
+        lines.append("}")
+        return "\n".join(lines) + "\n"
+
     def _reset_image_preview(self, text):
         self.preview_image = None
         self.preview_pil_image = None
@@ -1228,7 +1478,7 @@ class AlchemyGui(ctk.CTk):
         except Exception:
             pass
         self.image_label = ctk.CTkLabel(self.tabs.tab("Image"), text=text)
-        self.image_label.grid(row=0, column=0, sticky="nsew", padx=12, pady=12)
+        self.image_label.grid(row=1, column=0, sticky="nsew", padx=12, pady=12)
 
     def _set_image_preview(self, image):
         self.preview_pil_image = image
@@ -1241,7 +1491,7 @@ class AlchemyGui(ctk.CTk):
         except Exception:
             pass
         self.image_label = ctk.CTkLabel(self.tabs.tab("Image"), text="", image=self.preview_image)
-        self.image_label.grid(row=0, column=0, sticky="nsew", padx=12, pady=12)
+        self.image_label.grid(row=1, column=0, sticky="nsew", padx=12, pady=12)
 
     def _preview_image(self, path: Path):
         try:

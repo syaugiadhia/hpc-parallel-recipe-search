@@ -12,6 +12,7 @@
   "Brick": [["Mud", "Fire"], ["Clay", "Stone"]],
   "Branch": [["B", "C"], ["C", "D"], ["Mud", "Stone"]],
   "DirectAll": [["Branch", "Fire"], ["C", "D"]],
+  "FlipDirect": [["B", "C"], ["C", "B"], ["B", "D"]],
   "CycleDirect": [["X", "Fire"], ["Mud", "Fire"]],
   "X": [["Y", "Fire"]],
   "Y": [["X", "Water"]]

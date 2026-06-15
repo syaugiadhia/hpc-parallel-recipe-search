@@ -1,0 +1,18 @@
+# ninja log v7
+22	4577	8032291410689597	CMakeFiles/alchemy_common.dir/src/common/RecipeGraph.cpp.obj	6aad27ab88b54a3a
+44	7401	8032291410845811	CMakeFiles/alchemy_common.dir/src/common/Cli.cpp.obj	1078f4f130b5a70e
+60	7586	8032291411014263	CMakeFiles/alchemy_tests.dir/tests/test_search.cpp.obj	e1eeac633d6b0606
+36	9045	8032291410845811	CMakeFiles/alchemy_common.dir/src/common/Search.cpp.obj	29f2462e7de89f7d
+25	10075	8032291410689597	CMakeFiles/alchemy_common.dir/src/common/RecipeTree.cpp.obj	7181d76e801d90a2
+40	10597	8032291410845811	CMakeFiles/alchemy_common.dir/src/common/Visualizer.cpp.obj	852ea2fe4d98918c
+28	10630	8032291410689597	CMakeFiles/alchemy_common.dir/src/common/JsonLoader.cpp.obj	e5013355efa6c23
+33	10805	8032291410845811	CMakeFiles/alchemy_common.dir/src/common/TierCatalog.cpp.obj	843e28cc64a25895
+56	11056	8032291411014263	CMakeFiles/alchemy_common.dir/src/common/Statistics.cpp.obj	b34931d316ec7602
+11056	11757	8032291521078420	libalchemy_common.a	d1e4ef3fa160f6ba
+11758	12173	8032291528083419	alchemy_tests.exe	cc41d8a99ad55cd1
+28	1986	8032291703404574	CMakeFiles/alchemy_serial.dir/src/serial/main_serial.cpp.obj	9e143c64ffcbccbd
+1987	2314	8032291723130452	alchemy_serial.exe	dfac737307d311a5
+22	2981	8032291883568928	CMakeFiles/alchemy_mpi.dir/src/mpi/main_mpi.cpp.obj	7275bb5a09bf67f
+28	5071	8032291883568928	CMakeFiles/alchemy_mpi.dir/src/mpi/MpiWorker.cpp.obj	db8a2d16d262797d
+25	5754	8032291883568928	CMakeFiles/alchemy_mpi.dir/src/mpi/MpiMaster.cpp.obj	8ecb40bc8adfcbe0
+5754	6186	8032291940828620	alchemy_mpi.exe	2c19a239b8070ce4

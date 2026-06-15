@@ -257,11 +257,11 @@ CLI bisa dipakai untuk mencari nama target sebelum menjalankan search:
 
 - `--mode single`: berhenti pada satu recipe valid.
 - `--mode multiple --limit N`: mencari beberapa recipe valid sampai limit.
-- `--mode all`: mengambil semua recipe pair langsung untuk target dari `recipes.json`. Opsi `--limit` diabaikan.
+- `--mode all`: mengambil semua recipe pair langsung yang unik untuk target dari `recipes.json`. Opsi `--limit` diabaikan.
 
-Pada `--mode all`, setiap recipe langsung target tetap diexpand sampai leaf terminal (`Air`, `Earth`, `Fire`, `Water`, atau `Time`), tetapi ingredient yang punya banyak cara pembuatan hanya memakai satu subtree representatif. BFS memilih subtree terpendek; DFS memilih subtree pertama sesuai urutan JSON.
+Pada `--mode all`, setiap recipe langsung target tetap diexpand sampai leaf terminal (`Air`, `Earth`, `Fire`, `Water`, atau `Time`), tetapi ingredient yang punya banyak cara pembuatan hanya memakai satu subtree representatif paling pendek/tercepat. Mode ini memakai perilaku BFS untuk representative subtree, jadi bukan semua kombinasi possible.
 
-Recipe duplikat dihapus berdasarkan signature struktur tree. Ingredient pair diperlakukan sebagai kombinasi, jadi struktur dengan child tertukar dianggap duplikat.
+Recipe duplikat dihapus berdasarkan signature struktur tree. Ingredient pair diperlakukan sebagai kombinasi, jadi `A = B + C` dan `A = C + B` dianggap recipe yang sama.
 
 Shortcut pemakaian:
 
@@ -275,7 +275,7 @@ Shortcut pemakaian:
 # Top N recipe dengan BFS
 ./build/alchemy_serial --data data/recipes.json --target "Brick" --algorithm bfs --mode multiple --limit 10 --trace-mode memo --visual-mode shared --output results/brick_top10
 
-# Semua recipe langsung target dari JSON
+# Semua recipe langsung unik target dari JSON, dengan subtree representatif terpendek
 ./build/alchemy_serial --data data/recipes.json --target "Brick" --algorithm bfs --mode all --trace-mode memo --visual-mode shared --output results/brick_all
 ```
 
@@ -380,7 +380,7 @@ Pembagian kerja:
 6. Worker mengirim recipe valid dan statistik ke master.
 7. Master menghapus duplikat, membatasi sampai limit, dan membuat DOT/JSON/image akhir.
 
-Khusus `--mode all`, master membuat satu task untuk setiap recipe langsung target dari JSON dan `--split-depth` diabaikan agar mode ini tetap berarti "semua recipe langsung", bukan semua kombinasi subtree.
+Khusus `--mode all`, master membuat satu task untuk setiap recipe langsung unik target dari JSON dan `--split-depth` diabaikan agar mode ini tetap berarti "direct recipe + subtree representatif terpendek", bukan semua kombinasi subtree.
 
 Contoh `split-depth`: target `Brick` punya beberapa recipe langsung seperti `Brick = Mud + Fire` dan `Brick = Clay + Stone`. Dengan `--split-depth 1`, task biasanya berasal dari recipe langsung `Brick`. Dengan `--split-depth 2`, master juga membuka ingredient seperti `Clay` atau `Stone`, sehingga task lebih banyak dan banyak komputer/rank lebih mudah kebagian kerja. Nilai terlalu besar bisa menambah overhead task/komunikasi.
 
@@ -510,7 +510,7 @@ Nama input target case-insensitive, tetapi output memakai nama asli dari JSON.
 ## Batasan
 
 - `single` dan `multiple` dibatasi oleh `--limit`; graph Little Alchemy memiliki branching besar sehingga meminta terlalu banyak recipe bisa mahal.
-- `--mode all` tidak memakai batas `--limit`, tetapi hanya mengambil recipe langsung target dari JSON; gunakan `multiple --limit N` jika ingin eksplorasi lebih banyak kombinasi subtree.
+- `--mode all` tidak memakai batas `--limit`, tetapi hanya mengambil recipe langsung unik target dari JSON dan memakai subtree representatif terpendek; gunakan `multiple --limit N` jika ingin eksplorasi lebih banyak kombinasi subtree.
 - MPI task generation berbasis partial tree dari `--split-depth`; target dengan sedikit cabang tetap bisa memiliki paralelisme terbatas.
 - Cache MPI lokal per rank, belum distributed/shared cache antar rank.
 - Graphviz render tergantung command `dot` tersedia di `PATH`.

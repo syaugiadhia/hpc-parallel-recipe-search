@@ -52,6 +52,7 @@ void runMpiWorker(const AppOptions& options, const RecipeGraph& graph, int rank)
     auto workerOptions = options;
     if (workerOptions.mode == SearchMode::All) {
         workerOptions.progress = false;
+        workerOptions.algorithm = Algorithm::Bfs;
     }
     SearchEngine engine(graph, workerOptions);
     double communicationSinceLastResult = 0.0;

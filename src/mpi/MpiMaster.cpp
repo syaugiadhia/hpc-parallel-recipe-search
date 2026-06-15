@@ -240,6 +240,9 @@ MpiRunResult runMpiMaster(AppOptions options,
                           const RecipeGraph& graph,
                           int worldSize,
                           const std::vector<std::string>& rankHostnames) {
+    if (options.mode == SearchMode::All) {
+        options.algorithm = Algorithm::Bfs;
+    }
     if (worldSize <= 1) {
         SearchEngine engine(graph, options);
         auto result = engine.search(options.target);

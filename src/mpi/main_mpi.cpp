@@ -81,10 +81,10 @@ void printSummary(const alchemy::AppOptions& options, const alchemy::MpiRunResul
         std::cout << "Rank hostnames: " << alchemy::stringVectorToString(result.stats.rankHostnames) << "\n";
     }
     std::cout << "Recipes requested: "
-              << (options.mode == alchemy::SearchMode::All ? std::string("all direct recipes") : std::to_string(options.limit))
+              << (options.mode == alchemy::SearchMode::All ? std::string("all unique direct recipes with shortest subtrees") : std::to_string(options.limit))
               << "\n";
     if (options.mode == alchemy::SearchMode::All) {
-        std::cout << "Direct recipes available: " << result.stats.directRecipesAvailable << "\n";
+        std::cout << "Unique direct recipes available: " << result.stats.directRecipesAvailable << "\n";
     }
     std::cout << "Recipes found: " << result.recipes.size() << "\n";
     std::cout << "Total time: " << std::fixed << std::setprecision(3) << result.stats.timeMs << " ms\n";

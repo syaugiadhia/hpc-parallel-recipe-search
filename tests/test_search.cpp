@@ -117,8 +117,15 @@ int main() {
         assert(allDfs.stats.directRecipesAvailable == 2);
         assert(allDfs.recipes.size() == 2);
         assert(allBfs.recipes.size() == 2);
-        assert(allDfs.recipes[0].children[0].name == "Branch");
+        assert(allDfs.recipes[0].children[0].name == "C");
         assert(allBfs.recipes[0].children[0].name == "C");
+    }
+
+    {
+        assert(graphWithSpecial.recipesFor("FlipDirect").size() == 2);
+        auto all = searchTarget(graphWithSpecial, "FlipDirect", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1, alchemy::SearchMode::All);
+        assert(all.stats.directRecipesAvailable == 2);
+        assert(all.recipes.size() == 2);
     }
 
     {
@@ -151,6 +158,19 @@ int main() {
         visualOptions.visualMode = alchemy::VisualMode::Shared;
         const auto sharedDot = alchemy::Visualizer::buildDot(memo.recipes, visualOptions);
         assert(sharedDot.find("shared") != std::string::npos);
+    }
+
+    {
+        alchemy::RecipeTree left{"Root", false, false, false, {}, {
+            alchemy::RecipeTree{"B", false, false, false, {}, {}},
+            alchemy::RecipeTree{"C", false, false, false, {}, {}},
+        }};
+        alchemy::RecipeTree right{"Root", false, false, false, {}, {
+            alchemy::RecipeTree{"C", false, false, false, {}, {}},
+            alchemy::RecipeTree{"B", false, false, false, {}, {}},
+        }};
+        auto unique = alchemy::deduplicateTrees({left, right}, 0);
+        assert(unique.size() == 1);
     }
 
     {
