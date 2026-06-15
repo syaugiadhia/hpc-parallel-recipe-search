@@ -131,6 +131,25 @@ std::vector<RecipeTree> buildDirectRecipeTasks(const RecipeGraph& graph, const s
     return tasks;
 }
 
+std::vector<int> threadVectorForRun(const AppOptions& options, int worldSize) {
+    if (!options.threadsByRank.empty()) {
+        if (static_cast<int>(options.threadsByRank.size()) != worldSize) {
+            throw std::runtime_error("Thread profile rank count does not match MPI world size");
+        }
+        return options.threadsByRank;
+    }
+    return std::vector<int>(static_cast<std::size_t>(worldSize), std::max(1, options.threads));
+}
+
+int uniformThreadCount(const std::vector<int>& values) {
+    if (values.empty()) {
+        return 1;
+    }
+    return std::all_of(values.begin(), values.end(), [&](int value) {
+        return value == values.front();
+    }) ? values.front() : 0;
+}
+
 std::string taskToPayload(int id, const RecipeTree& partial) {
     nlohmann::json json;
     json["id"] = id;
@@ -247,6 +266,9 @@ MpiRunResult runMpiMaster(AppOptions options,
         SearchEngine engine(graph, options);
         auto result = engine.search(options.target);
         result.stats.processes = 1;
+        result.stats.threadsByRank = threadVectorForRun(options, 1);
+        result.stats.threadsPerProcess = uniformThreadCount(result.stats.threadsByRank);
+        result.stats.totalWorkers = std::accumulate(result.stats.threadsByRank.begin(), result.stats.threadsByRank.end(), 0);
         result.stats.rankHostnames = rankHostnames;
         auto outputs = Visualizer::writeOutputs(result.target, result.recipes, result.stats, options);
         return {result, outputs};
@@ -267,6 +289,9 @@ MpiRunResult runMpiMaster(AppOptions options,
     SearchStats stats;
     stats.processes = worldSize;
     stats.rankHostnames = rankHostnames;
+    stats.threadsByRank = threadVectorForRun(options, worldSize);
+    stats.threadsPerProcess = uniformThreadCount(stats.threadsByRank);
+    stats.totalWorkers = std::accumulate(stats.threadsByRank.begin(), stats.threadsByRank.end(), 0);
     stats.nodesVisitedByRank.assign(static_cast<std::size_t>(worldSize), 0);
     stats.cacheHitsByRank.assign(static_cast<std::size_t>(worldSize), 0);
     stats.cacheEntriesByRank.assign(static_cast<std::size_t>(worldSize), 0);
@@ -330,7 +355,7 @@ MpiRunResult runMpiMaster(AppOptions options,
     }
     if (options.baselineMs > 0.0 && stats.timeMs > 0.0) {
         stats.speedup = options.baselineMs / stats.timeMs;
-        stats.efficiency = stats.speedup / static_cast<double>(worldSize);
+        stats.efficiency = stats.speedup / static_cast<double>(std::max(1, stats.totalWorkers));
     }
 
     const auto canonicalTarget = graph.canonicalName(options.target);

@@ -27,6 +27,10 @@ std::string csvEscape(const std::string& value) {
     return out;
 }
 
+std::string renderSkipReason(const alchemy::OutputFiles& outputs) {
+    return outputs.renderWarning.empty() ? "not rendered" : outputs.renderWarning;
+}
+
 void printSummary(const alchemy::AppOptions& options,
                   const alchemy::SearchResult& result,
                   const alchemy::OutputFiles& outputs) {
@@ -35,6 +39,9 @@ void printSummary(const alchemy::AppOptions& options,
     std::cout << "Mode: " << alchemy::toString(options.mode) << "\n";
     std::cout << "Trace mode: " << alchemy::toString(options.traceMode) << "\n";
     std::cout << "Visual mode: " << alchemy::toString(options.visualMode) << "\n";
+    std::cout << "Render mode: " << alchemy::toString(options.renderMode) << "\n";
+    std::cout << "Threads per process: " << result.stats.threadsPerProcess << "\n";
+    std::cout << "Total workers: " << result.stats.totalWorkers << "\n";
     std::cout << "Recipes requested: "
               << (options.mode == alchemy::SearchMode::All ? std::string("all unique direct recipes with shortest subtrees") : std::to_string(options.limit))
               << "\n";
@@ -46,13 +53,17 @@ void printSummary(const alchemy::AppOptions& options,
     std::cout << "Nodes visited: " << result.stats.nodesVisited << "\n";
     std::cout << "Cache hits: " << result.stats.cacheHits << "\n";
     std::cout << "Cache entries: " << result.stats.cacheEntries << "\n";
-    std::cout << "Output DOT: " << outputs.dotPath << "\n";
+    std::cout << "Output JSON: " << outputs.jsonPath << "\n";
+    if (!outputs.dotPath.empty()) {
+        std::cout << "Output DOT: " << outputs.dotPath << "\n";
+    } else {
+        std::cout << "Output DOT: skipped (" << renderSkipReason(outputs) << ")\n";
+    }
     if (outputs.imageRendered) {
         std::cout << "Output " << options.imageFormat << ": " << outputs.imagePath << "\n";
     } else {
-        std::cout << "Output image: skipped (" << outputs.renderWarning << ")\n";
+        std::cout << "Output image: skipped (" << renderSkipReason(outputs) << ")\n";
     }
-    std::cout << "Output JSON: " << outputs.jsonPath << "\n";
 
     for (std::size_t i = 0; i < result.recipes.size(); ++i) {
         std::cout << "\nRecipe " << (i + 1) << ":\n";
@@ -141,6 +152,9 @@ int main(int argc, char** argv) {
         if (options.help) {
             std::cout << alchemy::usageText(false);
             return 0;
+        }
+        if (options.threads != 1) {
+            throw std::runtime_error("--threads is only supported by alchemy_openmp or alchemy_mpi");
         }
 
         auto graph = alchemy::JsonLoader::loadFromFile(options.dataPath);

@@ -30,6 +30,18 @@ int parsePositiveInt(const std::string& value, const std::string& option) {
     }
 }
 
+int parseStrictPositiveInt(const std::string& value, const std::string& option) {
+    try {
+        const int parsed = std::stoi(value);
+        if (parsed < 1) {
+            throw std::runtime_error("");
+        }
+        return parsed;
+    } catch (...) {
+        throw std::runtime_error("Invalid " + option + " value '" + value + "': expected a positive integer");
+    }
+}
+
 double parseDouble(const std::string& value, const std::string& option) {
     try {
         return std::stod(value);
@@ -51,6 +63,26 @@ std::string trim(const std::string& value) {
 }
 
 }  // namespace
+
+std::string toString(RenderMode mode) {
+    switch (mode) {
+        case RenderMode::Json:
+            return "json";
+        case RenderMode::Full:
+            return "full";
+    }
+    return "json";
+}
+
+RenderMode parseRenderMode(const std::string& value) {
+    if (value == "json") {
+        return RenderMode::Json;
+    }
+    if (value == "full") {
+        return RenderMode::Full;
+    }
+    throw std::runtime_error("Invalid --render value '" + value + "'. Expected json or full.");
+}
 
 AppOptions parseArgs(int argc, char** argv, bool mpiMode) {
     AppOptions options;
@@ -78,10 +110,14 @@ AppOptions parseArgs(int argc, char** argv, bool mpiMode) {
             options.mode = parseSearchMode(requireValue(i, argc, argv, arg));
         } else if (arg == "--limit") {
             options.limit = std::max(1, parsePositiveInt(requireValue(i, argc, argv, arg), arg));
+        } else if (arg == "--threads") {
+            options.threads = parseStrictPositiveInt(requireValue(i, argc, argv, arg), arg);
         } else if (arg == "--trace-mode") {
             options.traceMode = parseTraceMode(requireValue(i, argc, argv, arg));
         } else if (arg == "--visual-mode") {
             options.visualMode = parseVisualMode(requireValue(i, argc, argv, arg));
+        } else if (arg == "--render") {
+            options.renderMode = parseRenderMode(requireValue(i, argc, argv, arg));
         } else if (arg == "--output") {
             options.outputPrefix = requireValue(i, argc, argv, arg);
         } else if (arg == "--max-visual-depth") {
@@ -96,6 +132,11 @@ AppOptions parseArgs(int argc, char** argv, bool mpiMode) {
                 throw std::runtime_error("--split-depth is only supported by alchemy_mpi");
             }
             options.splitDepth = parsePositiveInt(requireValue(i, argc, argv, arg), arg);
+        } else if (arg == "--thread-profile") {
+            if (!mpiMode) {
+                throw std::runtime_error("--thread-profile is only supported by alchemy_mpi");
+            }
+            options.threadProfile = requireValue(i, argc, argv, arg);
         } else if (arg == "--baseline-ms") {
             if (!mpiMode) {
                 throw std::runtime_error("--baseline-ms is only supported by alchemy_mpi");
@@ -132,10 +173,13 @@ std::string usageText(bool mpiMode) {
         << "Common options:\n"
         << "  --tiers PATH             Tier catalog JSON, default data/tiers.json.\n"
         << "  --max-visual-depth N     Optional visualization depth cap.\n"
-        << "  --format png|svg         Rendered image format, default png.\n";
+        << "  --render json|full       Save JSON only by default, or render full DOT/image.\n"
+        << "  --format png|svg         Rendered image format, default png.\n"
+        << "  --threads N              OpenMP threads for alchemy_openmp or hybrid MPI, default 1.\n";
     if (mpiMode) {
         out << "MPI options:\n"
             << "  --split-depth N          Task expansion depth, default 1.\n"
+            << "  --thread-profile SPEC    Hybrid per-host profile, e.g. 1x2,2x4,2x4.\n"
             << "  --baseline-ms X          Serial baseline time for speedup/efficiency.\n";
     }
     return out.str();

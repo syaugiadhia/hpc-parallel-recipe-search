@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"C:/Users/HP/Documents/C++/HPC/Tubes/build/cmake_install.cmake"
+		"C:/tubes-2/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

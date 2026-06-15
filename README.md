@@ -1,6 +1,6 @@
 # Little Alchemy HPC Recipe Search
 
-Project ini adalah refactor tugas Little Alchemy menjadi aplikasi HPC berbasis C++ dan MPI. Fokusnya bukan web app Go/React, tetapi perbandingan pencarian serial vs paralel distributed-memory, statistik performa, benchmark, dan visualisasi graf recipe.
+Project ini adalah refactor tugas Little Alchemy menjadi aplikasi HPC berbasis C++ dengan mode serial, OpenMP, MPI, dan hybrid MPI+OpenMP. Fokusnya bukan web app Go/React, tetapi perbandingan pencarian serial vs paralel shared-memory/distributed-memory, statistik performa, benchmark, dan visualisasi graf recipe.
 
 ## Deskripsi Masalah
 
@@ -24,8 +24,9 @@ Walaupun data JSON memiliki recipe untuk elemen dasar, program memperlakukan emp
 - C++17 compiler
 - CMake 3.16+
 - nlohmann/json
+- OpenMP opsional untuk executable `alchemy_openmp` dan hybrid MPI+OpenMP
 - OpenMPI, MPICH, atau MS-MPI development package untuk executable MPI
-- Graphviz untuk render PNG/SVG dari DOT
+- Graphviz untuk render PNG/SVG dari DOT saat memakai `--render full` atau preview GUI
 - Python 3 dan CustomTkinter untuk GUI wrapper opsional
 
 Linux Ubuntu/Debian:
@@ -45,7 +46,7 @@ pacman -S mingw-w64-ucrt-x86_64-msmpi
 
 Paket OpenMPI tidak tersedia di semua repo MSYS2 UCRT64. Untuk Windows, gunakan MS-MPI; CMake `find_package(MPI)` dapat mendeteksi Microsoft MPI SDK jika runtime/SDK sudah terpasang.
 
-Jika Graphviz tidak tersedia, program tetap membuat file `.dot` dan memberi warning bahwa render image dilewati.
+Output normal default adalah JSON saja. Jika `--render full` dipakai dan Graphviz tidak tersedia, program tetap membuat file `.dot` dan memberi warning bahwa render image dilewati.
 
 Dependensi GUI:
 
@@ -61,12 +62,13 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-Jika MPI development package tidak ditemukan, CMake tetap dapat membangun `alchemy_serial` dan test, tetapi `alchemy_mpi` akan dilewati dengan warning.
+Jika OpenMP ditemukan, CMake membangun `alchemy_openmp` dan mengaktifkan `--threads` untuk hybrid MPI+OpenMP. Jika OpenMP tidak ditemukan, fitur OpenMP dilewati dengan warning.
+Jika MPI development package tidak ditemukan, CMake tetap dapat membangun `alchemy_serial`, `alchemy_openmp` jika OpenMP tersedia, dan test, tetapi `alchemy_mpi` akan dilewati dengan warning.
 Pada Windows/MS-MPI, pastikan `mpiexec.exe` tersedia di `PATH`.
 
 ## Menjalankan GUI
 
-GUI CustomTkinter tersedia sebagai wrapper untuk executable C++/MPI. GUI tidak mengganti engine pencarian; semua komputasi tetap berjalan lewat `alchemy_serial` atau `alchemy_mpi`.
+GUI CustomTkinter tersedia sebagai wrapper untuk executable C++/MPI. GUI tidak mengganti engine pencarian; semua komputasi tetap berjalan lewat `alchemy_serial`, `alchemy_openmp`, atau `alchemy_mpi`.
 
 ```bash
 python gui/alchemy_gui.py
@@ -74,14 +76,16 @@ python gui/alchemy_gui.py
 
 Fitur GUI:
 
-- Pilih serial atau MPI.
+- Pilih serial, OpenMP, atau MPI.
 - Pilih target atau benchmark.
 - Pilih target berdasarkan tier resmi Fandom: `all`, `starter`, `special`, `tier1` sampai `tier15`.
 - Search nama elemen supaya tidak perlu scroll daftar panjang.
 - Atur algorithm, mode search, trace mode, visual mode, output format, dan output prefix.
-- Atur MPI process count, split depth, dan baseline time.
+- Atur MPI process count, OpenMP threads, split depth, dan baseline time.
 - Pilih role `Master` atau `Slave`; master mengundang slave, slave harus accept dalam 30 detik, lalu MPI multi-komputer dijalankan dari master.
-- Build project, run command, stop process, dan buka file JSON/DOT/image/CSV.
+- Build project, run command, stop process, buka file JSON/DOT/image/CSV, dan render full graph hanya saat diminta.
+- Preview recipe di tab Image dibuat lazy dari JSON: pilih `Recipe #`, lalu klik `Render Preview`.
+- `Run Compare` menjalankan variasi custom seperti `serial`, `openmp 4`, `local 2`, `hybrid-local 2x2`, `multi 1,1`, atau `hybrid 1x2,1x2`, lalu menampilkan hasil di tab `Compare`.
 - Target dropdown otomatis dimuat dari `data/tiers.json`, lalu divalidasi terhadap `recipes.json`.
 
 ## Menjalankan Serial
@@ -102,6 +106,30 @@ Via script:
 
 ```bash
 ./scripts/run_serial.sh --target "Brick" --algorithm dfs --visual-mode full
+```
+
+## Menjalankan OpenMP Satu Komputer
+
+OpenMP memakai satu process dengan banyak thread lokal. Ini biasanya pilihan pertama untuk membandingkan paralel lokal karena overhead-nya lebih kecil daripada MPI lokal.
+
+```bash
+./build/alchemy_openmp \
+  --data data/recipes.json \
+  --target "Brick" \
+  --algorithm bfs \
+  --mode multiple \
+  --limit 2500 \
+  --trace-mode memo \
+  --visual-mode shared \
+  --render json \
+  --threads 4 \
+  --output results/brick_openmp_t4
+```
+
+Windows:
+
+```powershell
+.\build\alchemy_openmp.exe --data data/recipes.json --target Brick --algorithm bfs --mode multiple --limit 2500 --trace-mode memo --visual-mode shared --render json --threads 4 --output results/brick_openmp_t4
 ```
 
 ## Menjalankan MPI Satu Komputer
@@ -145,6 +173,25 @@ Via script:
 
 `--np auto` memakai `nproc`, atau fallback ke `4`.
 
+Hybrid lokal memakai MPI rank lokal dan OpenMP thread di setiap rank:
+
+```bash
+mpirun -np 4 ./build/alchemy_mpi \
+  --data data/recipes.json \
+  --target "Brick" \
+  --algorithm bfs \
+  --mode multiple \
+  --limit 2500 \
+  --trace-mode memo \
+  --visual-mode shared \
+  --split-depth 2 \
+  --render json \
+  --threads 2 \
+  --output results/brick_hybrid_local_4x2
+```
+
+Artinya 4 MPI rank, masing-masing memakai 2 OpenMP thread lokal, total 8 worker eksekusi.
+
 ## Menjalankan MPI Multi-Komputer
 
 Panduan lengkap GUI master/slave ada di [`tutor_multi_pc.md`](tutor_multi_pc.md).
@@ -186,6 +233,75 @@ Di GUI, buka aplikasi di semua komputer. Laptop utama pilih role `Master`; lapto
 5. Atur `slots` master dan slave sesuai kebutuhan.
 6. Klik `Run` dari komputer master.
 
+Untuk compare multi-node di GUI, master bukan slave, tetapi master tetap angka pertama pada baris `multi ...`. Tab `Compare` menampilkan hasil perbandingan, sedangkan CSV benchmark biasa tetap di tab `CSV`.
+
+Contoh 1 slave:
+
+```text
+Compare host order:
+Master: 192.168.1.10
+Slave 1: 192.168.1.21
+
+Compare variants:
+serial
+openmp 4
+local 2
+local 4
+hybrid-local 2x2
+multi 1,1
+multi 2,2
+hybrid 1x2,1x2
+```
+
+`multi 1,1` berarti 1 process di master dan 1 process di Slave 1. Command MS-MPI yang dibentuk kira-kira:
+
+```text
+mpiexec -hosts 2 192.168.1.10 1 192.168.1.21 1 ...
+```
+
+Contoh 2 slave:
+
+```text
+Compare host order:
+Master: 192.168.1.10
+Slave 1: 192.168.1.21
+Slave 2: 192.168.1.22
+
+Compare variants:
+multi 1,1,1
+multi 2,2,2
+hybrid 1x2,1x2,1x2
+hybrid 1x2,2x4,2x4
+```
+
+Contoh 3 slave:
+
+```text
+Compare host order:
+Master: 192.168.1.10
+Slave 1: 192.168.1.21
+Slave 2: 192.168.1.22
+Slave 3: 192.168.1.23
+
+Compare variants:
+multi 1,1,1,1
+multi 1,2,2,2
+multi 2,2,2,2
+hybrid 1x2,1x2,1x2,1x2
+hybrid 1x2,2x4,2x4,2x4
+```
+
+Jumlah angka pada `multi ...` harus sama dengan jumlah host pada `Compare host order`, termasuk master. Jadi `multi 1,2,2,2` berarti master 1 process, Slave 1 dua process, Slave 2 dua process, dan Slave 3 dua process.
+
+Untuk `hybrid ...`, formatnya `processxthread` per host dan jumlah item juga harus sama dengan jumlah host. Contoh `hybrid 1x2,2x4,2x4,2x4` berarti:
+
+- Master: 1 MPI process x 2 OpenMP threads.
+- Slave 1: 2 MPI processes x 4 OpenMP threads per process.
+- Slave 2: 2 MPI processes x 4 OpenMP threads per process.
+- Slave 3: 2 MPI processes x 4 OpenMP threads per process.
+
+Alias `hybrid 2` berarti pakai layout MPI yang sedang aktif di GUI, lalu setiap rank memakai 2 OpenMP threads.
+
 Untuk multi-node, pastikan:
 
 - MS-MPI atau MPI yang sesuai terinstall di semua komputer.
@@ -194,6 +310,7 @@ Untuk multi-node, pastikan:
 - Firewall mengizinkan MS-MPI, TCP `50555` untuk invite slave, UDP `50556` untuk discovery GUI, dan ping/ICMP jika ingin memakai auto scan. Jika ping diblokir, tambahkan host manual di GUI.
 - SSH passwordless antar node sudah siap untuk OpenMPI/MPICH. Untuk MS-MPI, pastikan konfigurasi host/user sesuai mekanisme Microsoft MPI.
 - Hostfile menentukan jumlah process per komputer lewat `slots`.
+- Untuk hybrid, pastikan jumlah process x thread tidak melebihi core/logical CPU yang wajar di tiap komputer; oversubscription bisa membuat run lebih lambat.
 - Dalam GUI role baru, host pertama selalu komputer master sehingga rank 0 berada di laptop master. Slave hanya dipakai jika statusnya `connected`.
 
 Jika MS-MPI menampilkan `CreateRpcBinding error 1749` saat memakai `mpiexec -hosts`, berarti mode launch ke host tersebut belum berhasil dibuat oleh MS-MPI. Cek hostname/IP, firewall, izin akun, dan konfigurasi MS-MPI di komputer target. `mpiexec -n N` lokal bisa tetap berhasil walaupun mode `-hosts` belum siap.
@@ -208,6 +325,21 @@ Untuk OpenMPI/MPICH, script tetap memakai hostfile langsung:
 
 ```bash
 mpirun -np 8 --hostfile hosts.txt ./build/alchemy_mpi ...
+```
+
+Untuk hybrid MPI+OpenMP di CLI:
+
+- `--threads 2` berarti setiap MPI rank memakai 2 OpenMP threads.
+- `--thread-profile 1x2,2x4,2x4` berarti rank yang dibuat dari host pertama memakai 2 thread, sedangkan dua host berikutnya masing-masing menjalankan 2 rank dengan 4 thread per rank.
+
+Contoh MS-MPI multi-PC hybrid dengan 1 master dan 2 slave:
+
+```text
+mpiexec -hosts 3 192.168.1.10 1 192.168.1.21 2 192.168.1.22 2 ^
+  build\alchemy_mpi.exe --data data/recipes.json --target Brick --algorithm bfs ^
+  --mode multiple --limit 2500 --trace-mode memo --visual-mode shared ^
+  --render json --split-depth 2 --thread-profile 1x2,2x4,2x4 ^
+  --output results\brick_hybrid_multi
 ```
 
 ## Algoritma
@@ -336,11 +468,18 @@ Gunakan `--max-visual-depth N` jika graph terlalu besar. Node yang dipotong akan
 
 ## Output
 
-Untuk prefix `results/brick`, program membuat:
+Untuk prefix `results/brick`, program default membuat:
+
+- `results/brick.json`
+
+JSON adalah output canonical. DOT/image adalah artifact turunan. Untuk membuat graph penuh, jalankan dengan `--render full`:
 
 - `results/brick.dot`
 - `results/brick.png` atau `results/brick.svg` jika Graphviz tersedia
-- `results/brick.json`
+
+GUI memakai JSON untuk preview lazy per recipe, jadi run besar tidak perlu menunggu render DOT/SVG/PNG penuh. Tombol `Render Full Graph` dipakai hanya kalau memang ingin menyimpan artifact visual penuh.
+
+Di tab Image, preview normal hanya merender satu recipe aktif ke file sementara. File yang disimpan tetap JSON, kecuali user menjalankan `Render Full Graph`.
 
 Contoh JSON:
 
@@ -358,7 +497,10 @@ Contoh JSON:
     "nodes_visited": 183,
     "cache_hits": 27,
     "cache_entries": 42,
-    "processes": 1
+    "processes": 1,
+    "threads_per_process": 4,
+    "total_workers": 4,
+    "threads_by_rank": [4]
   },
   "recipes": []
 }
@@ -378,7 +520,7 @@ Pembagian kerja:
 4. Master mengirim task atau stop.
 5. Worker menyelesaikan subtree secara lokal dengan DFS/BFS dan trace mode yang dipilih.
 6. Worker mengirim recipe valid dan statistik ke master.
-7. Master menghapus duplikat, membatasi sampai limit, dan membuat DOT/JSON/image akhir.
+7. Master menghapus duplikat, membatasi sampai limit, dan menulis JSON akhir. DOT/image penuh hanya dibuat jika `--render full`.
 
 Khusus `--mode all`, master membuat satu task untuk setiap recipe langsung unik target dari JSON dan `--split-depth` diabaikan agar mode ini tetap berarti "direct recipe + subtree representatif terpendek", bukan semua kombinasi subtree.
 
@@ -389,6 +531,7 @@ Memoization MPI bersifat lokal per worker dan dipertahankan selama worker mempro
 Statistik MPI mencakup:
 
 - total rank/process
+- OpenMP threads per rank dan total workers untuk mode OpenMP/hybrid
 - hostname per rank
 - total time
 - communication time
@@ -397,6 +540,15 @@ Statistik MPI mencakup:
 - cache hits total/per rank
 - cache entries total
 - speedup dan efficiency jika `--baseline-ms` diberikan
+
+Ringkasannya:
+
+```text
+serial       = 1 process
+openmp       = 1 process, banyak thread lokal
+mpi          = banyak process/rank, bisa lokal atau multi-PC
+mpi+openmp   = banyak process/rank, setiap rank memakai beberapa thread lokal
+```
 
 ## Benchmark
 
@@ -468,7 +620,7 @@ Cara membaca:
 - `tasks_processed`: jumlah task MPI yang selesai.
 - `communication_ms`: estimasi waktu komunikasi MPI.
 - `speedup`: `serial_time / parallel_time`, tersedia di output JSON jika `--baseline-ms` diisi.
-- `efficiency`: `speedup / processes`.
+- `efficiency`: `speedup / total_workers` untuk compare GUI; pada benchmark lama yang hanya punya kolom `processes`, baca sebagai `speedup / processes`.
 
 ## Format JSON Input
 

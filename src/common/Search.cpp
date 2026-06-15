@@ -9,13 +9,27 @@
 #include <stdexcept>
 #include <utility>
 
+#ifdef ALCHEMY_HAS_OPENMP
+#include <omp.h>
+#endif
+
 namespace alchemy {
 namespace {
 
 constexpr int kUnreachableDepth = std::numeric_limits<int>::max() / 4;
 
+struct CompactNode {
+    std::string name;
+    int left = -1;
+    int right = -1;
+    int parent = -1;
+    bool basic = false;
+    int estimate = kUnreachableDepth;
+};
+
 struct FrontierNode {
-    RecipeTree tree;
+    std::vector<CompactNode> nodes;
+    std::vector<int> openLeaves;
     int estimate = kUnreachableDepth;
     std::size_t sequence = 0;
 };
@@ -27,6 +41,12 @@ struct FrontierNodeCompare {
         }
         return left.sequence > right.sequence;
     }
+};
+
+struct FrontierExpansion {
+    std::vector<FrontierNode> states;
+    std::int64_t nodesVisited = 0;
+    bool cycleBlocked = false;
 };
 
 std::vector<RecipeTree> clipTrees(const std::vector<RecipeTree>& trees, int limit) {
@@ -70,114 +90,207 @@ void combineChoices(const std::string& name,
     }
 }
 
-RecipeTree canonicalizeTree(const RecipeGraph& graph, RecipeTree tree) {
-    if (graph.hasElement(tree.name)) {
-        tree.name = graph.canonicalName(tree.name);
-        if (tree.children.empty() && graph.isTerminal(tree.name)) {
-            tree.basic = true;
-        }
+int leafEstimate(const RecipeGraph& graph,
+                 const std::string& canonical,
+                 bool basic,
+                 const std::unordered_map<std::string, int>& shortestDepths) {
+    if (basic || graph.isTerminal(canonical)) {
+        return 0;
     }
-    for (auto& child : tree.children) {
-        child = canonicalizeTree(graph, std::move(child));
-    }
-    return tree;
+    const auto found = shortestDepths.find(canonical);
+    return found == shortestDepths.end() ? kUnreachableDepth : found->second;
 }
 
-int estimateTreeDepth(const RecipeGraph& graph,
+bool isExpandableCompactLeaf(const RecipeGraph& graph, const CompactNode& node) {
+    return node.left < 0 && node.right < 0 && !node.basic && graph.hasElement(node.name) &&
+           !graph.isTerminal(node.name) && graph.hasRecipes(node.name);
+}
+
+int appendCompactTree(const RecipeGraph& graph,
                       const RecipeTree& tree,
-                      const std::unordered_map<std::string, int>& shortestDepths) {
+                      int parent,
+                      const std::unordered_map<std::string, int>& shortestDepths,
+                      std::vector<CompactNode>& nodes,
+                      std::vector<int>& openLeaves) {
     if (!graph.hasElement(tree.name)) {
-        return kUnreachableDepth;
-    }
-    const auto canonical = graph.canonicalName(tree.name);
-    if (tree.children.empty()) {
-        if (tree.basic || graph.isTerminal(canonical)) {
-            return 0;
-        }
-        const auto found = shortestDepths.find(canonical);
-        return found == shortestDepths.end() ? kUnreachableDepth : found->second;
+        return -1;
     }
 
-    int bestChild = 0;
-    for (const auto& child : tree.children) {
-        const int childDepth = estimateTreeDepth(graph, child, shortestDepths);
-        if (childDepth >= kUnreachableDepth) {
-            return kUnreachableDepth;
+    const auto canonical = graph.canonicalName(tree.name);
+    CompactNode node;
+    node.name = canonical;
+    node.parent = parent;
+    node.basic = tree.basic || (tree.children.empty() && graph.isTerminal(canonical));
+    const int index = static_cast<int>(nodes.size());
+    nodes.push_back(std::move(node));
+
+    if (tree.children.empty()) {
+        nodes[index].estimate = leafEstimate(graph, canonical, nodes[index].basic, shortestDepths);
+        if (nodes[index].estimate >= kUnreachableDepth) {
+            return -1;
         }
-        bestChild = std::max(bestChild, childDepth);
+        if (isExpandableCompactLeaf(graph, nodes[index])) {
+            openLeaves.push_back(index);
+        }
+        return index;
     }
-    return bestChild + 1;
+
+    if (tree.children.size() != 2) {
+        return -1;
+    }
+
+    const int left = appendCompactTree(graph, tree.children[0], index, shortestDepths, nodes, openLeaves);
+    const int right = appendCompactTree(graph, tree.children[1], index, shortestDepths, nodes, openLeaves);
+    if (left < 0 || right < 0) {
+        return -1;
+    }
+    nodes[index].left = left;
+    nodes[index].right = right;
+    nodes[index].basic = false;
+    nodes[index].estimate = 1 + std::max(nodes[left].estimate, nodes[right].estimate);
+    return index;
 }
 
-bool treeComplete(const RecipeGraph& graph, const RecipeTree& tree) {
-    if (!graph.hasElement(tree.name)) {
-        return false;
+FrontierNode makeFrontierNode(const RecipeGraph& graph,
+                              const RecipeTree& tree,
+                              const std::unordered_map<std::string, int>& shortestDepths,
+                              std::size_t sequence) {
+    FrontierNode state;
+    state.sequence = sequence;
+    const int root = appendCompactTree(graph, tree, -1, shortestDepths, state.nodes, state.openLeaves);
+    if (root == 0) {
+        state.estimate = state.nodes[0].estimate;
     }
-    const auto canonical = graph.canonicalName(tree.name);
-    if (tree.children.empty()) {
-        return tree.basic || graph.isTerminal(canonical);
-    }
-    return std::all_of(tree.children.begin(), tree.children.end(), [&](const RecipeTree& child) {
-        return treeComplete(graph, child);
-    });
+    return state;
 }
 
-bool findExpandableLeafPath(const RecipeGraph& graph,
-                            const RecipeTree& tree,
-                            std::vector<std::size_t>& path) {
-    if (!graph.hasElement(tree.name)) {
-        return false;
+void refreshAncestorEstimates(std::vector<CompactNode>& nodes, int index) {
+    while (index >= 0) {
+        auto& node = nodes[index];
+        if (node.left >= 0 && node.right >= 0) {
+            node.estimate = 1 + std::max(nodes[node.left].estimate, nodes[node.right].estimate);
+        }
+        index = node.parent;
     }
-    const auto canonical = graph.canonicalName(tree.name);
-    if (tree.children.empty()) {
-        return !graph.isTerminal(canonical) && graph.hasRecipes(canonical);
-    }
-    for (std::size_t i = 0; i < tree.children.size(); ++i) {
-        path.push_back(i);
-        if (findExpandableLeafPath(graph, tree.children[i], path)) {
+}
+
+bool pathContainsName(const std::vector<CompactNode>& nodes, int leafIndex, const std::string& name) {
+    const auto key = RecipeGraph::normalize(name);
+    for (int index = leafIndex; index >= 0; index = nodes[index].parent) {
+        if (RecipeGraph::normalize(nodes[index].name) == key) {
             return true;
         }
-        path.pop_back();
     }
     return false;
 }
 
-RecipeTree& treeAtPath(RecipeTree& tree, const std::vector<std::size_t>& path) {
-    RecipeTree* current = &tree;
-    for (const auto index : path) {
-        current = &current->children[index];
-    }
-    return *current;
-}
-
-const RecipeTree& treeAtPath(const RecipeTree& tree, const std::vector<std::size_t>& path) {
-    const RecipeTree* current = &tree;
-    for (const auto index : path) {
-        current = &current->children[index];
-    }
-    return *current;
-}
-
-std::unordered_set<std::string> namesOnPath(const RecipeGraph& graph,
-                                            const RecipeTree& tree,
-                                            const std::vector<std::size_t>& path) {
-    std::unordered_set<std::string> names;
-    const RecipeTree* current = &tree;
-    if (graph.hasElement(current->name)) {
-        names.insert(RecipeGraph::normalize(graph.canonicalName(current->name)));
-    }
-    for (const auto index : path) {
-        current = &current->children[index];
-        if (graph.hasElement(current->name)) {
-            names.insert(RecipeGraph::normalize(graph.canonicalName(current->name)));
-        }
-    }
-    return names;
-}
-
-RecipeTree recipeLeaf(const RecipeGraph& graph, const std::string& name) {
+CompactNode makeCompactLeaf(const RecipeGraph& graph,
+                            const std::string& name,
+                            int parent,
+                            const std::unordered_map<std::string, int>& shortestDepths) {
     const auto canonical = graph.canonicalName(name);
-    return RecipeTree{canonical, graph.isTerminal(canonical), false, false, {}, {}};
+    CompactNode node;
+    node.name = canonical;
+    node.parent = parent;
+    node.basic = graph.isTerminal(canonical);
+    node.estimate = leafEstimate(graph, canonical, node.basic, shortestDepths);
+    return node;
+}
+
+RecipeTree compactToRecipeTree(const std::vector<CompactNode>& nodes, int index) {
+    const auto& node = nodes[index];
+    RecipeTree tree;
+    tree.name = node.name;
+    tree.basic = node.basic;
+    if (node.left >= 0 && node.right >= 0) {
+        tree.children.push_back(compactToRecipeTree(nodes, node.left));
+        tree.children.push_back(compactToRecipeTree(nodes, node.right));
+    }
+    return tree;
+}
+
+std::string compactSignature(const std::vector<CompactNode>& nodes, int index) {
+    const auto& node = nodes[index];
+    std::vector<std::string> childSignatures;
+    if (node.left >= 0 && node.right >= 0) {
+        childSignatures.push_back(compactSignature(nodes, node.left));
+        childSignatures.push_back(compactSignature(nodes, node.right));
+        std::sort(childSignatures.begin(), childSignatures.end());
+    }
+
+    std::string signature = node.name + "(";
+    for (std::size_t i = 0; i < childSignatures.size(); ++i) {
+        if (i != 0) {
+            signature += ",";
+        }
+        signature += childSignatures[i];
+    }
+    signature += ")";
+    return signature;
+}
+
+FrontierExpansion expandFrontierState(const RecipeGraph& graph,
+                                      const std::unordered_map<std::string, int>& shortestDepths,
+                                      FrontierNode current) {
+    FrontierExpansion output;
+    if (current.openLeaves.empty()) {
+        return output;
+    }
+
+    const int leafIndex = current.openLeaves.front();
+    current.openLeaves.erase(current.openLeaves.begin());
+    if (leafIndex < 0 || leafIndex >= static_cast<int>(current.nodes.size())) {
+        return output;
+    }
+
+    const auto canonicalLeaf = current.nodes[leafIndex].name;
+    output.nodesVisited = 1;
+    for (const auto& recipe : graph.recipesFor(canonicalLeaf)) {
+        if (pathContainsName(current.nodes, leafIndex, recipe.first) ||
+            pathContainsName(current.nodes, leafIndex, recipe.second)) {
+            output.cycleBlocked = true;
+            continue;
+        }
+
+        FrontierNode expanded = current;
+        auto left = makeCompactLeaf(graph, recipe.first, leafIndex, shortestDepths);
+        auto right = makeCompactLeaf(graph, recipe.second, leafIndex, shortestDepths);
+        if (left.estimate >= kUnreachableDepth || right.estimate >= kUnreachableDepth) {
+            continue;
+        }
+
+        const int leftIndex = static_cast<int>(expanded.nodes.size());
+        expanded.nodes.push_back(std::move(left));
+        const int rightIndex = static_cast<int>(expanded.nodes.size());
+        expanded.nodes.push_back(std::move(right));
+
+        auto& expandedLeaf = expanded.nodes[leafIndex];
+        expandedLeaf.left = leftIndex;
+        expandedLeaf.right = rightIndex;
+        expandedLeaf.basic = false;
+        expandedLeaf.estimate = 1 + std::max(expanded.nodes[leftIndex].estimate, expanded.nodes[rightIndex].estimate);
+        refreshAncestorEstimates(expanded.nodes, leafIndex);
+        expanded.estimate = expanded.nodes[0].estimate;
+
+        std::vector<int> newOpenLeaves;
+        if (isExpandableCompactLeaf(graph, expanded.nodes[leftIndex])) {
+            newOpenLeaves.push_back(leftIndex);
+        }
+        if (isExpandableCompactLeaf(graph, expanded.nodes[rightIndex])) {
+            newOpenLeaves.push_back(rightIndex);
+        }
+        expanded.openLeaves.insert(expanded.openLeaves.begin(), newOpenLeaves.begin(), newOpenLeaves.end());
+        output.states.push_back(std::move(expanded));
+    }
+
+    return output;
+}
+
+int normalizedThreadCount(const SearchOptions& options) {
+    if (!options.useOpenmp) {
+        return 1;
+    }
+    return std::max(1, options.threads);
 }
 
 }  // namespace
@@ -247,6 +360,22 @@ VisualMode parseVisualMode(const std::string& value) {
     throw std::runtime_error("Invalid --visual-mode value '" + value + "'. Expected full or shared.");
 }
 
+bool openmpAvailable() {
+#ifdef ALCHEMY_HAS_OPENMP
+    return true;
+#else
+    return false;
+#endif
+}
+
+int openmpMaxThreads() {
+#ifdef ALCHEMY_HAS_OPENMP
+    return omp_get_max_threads();
+#else
+    return 1;
+#endif
+}
+
 SearchEngine::SearchEngine(const RecipeGraph& graph, SearchOptions options)
     : graph_(graph), options_(options) {}
 
@@ -275,6 +404,9 @@ SearchResult SearchEngine::search(const std::string& target, bool resetMemo) {
     stats_.timeMs = std::chrono::duration<double, std::milli>(end - start).count();
     stats_.cacheEntries = memoEnabled() ? static_cast<std::int64_t>(memo_.size()) : 0;
     stats_.processes = 1;
+    stats_.threadsPerProcess = normalizedThreadCount(options_);
+    stats_.totalWorkers = stats_.threadsPerProcess;
+    stats_.threadsByRank = {stats_.threadsPerProcess};
 
     return {canonicalTarget, recipes, stats_};
 }
@@ -301,6 +433,9 @@ SearchResult SearchEngine::completePartial(const RecipeTree& partial, int limit,
     stats_.timeMs = std::chrono::duration<double, std::milli>(end - start).count();
     stats_.cacheEntries = memoEnabled() ? static_cast<std::int64_t>(memo_.size()) : 0;
     stats_.processes = 1;
+    stats_.threadsPerProcess = normalizedThreadCount(options_);
+    stats_.totalWorkers = stats_.threadsPerProcess;
+    stats_.threadsByRank = {stats_.threadsPerProcess};
     stats_.tasksProcessed = 1;
 
     return {partial.name, recipes, stats_};
@@ -443,63 +578,159 @@ SearchEngine::ExpandResult SearchEngine::expandElementBfsLazy(const std::string&
 }
 
 SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazy(const RecipeTree& partial, int limit) {
+    if (options_.useOpenmp && options_.threads > 1 && openmpAvailable() &&
+        options_.mode != SearchMode::All && limit > 1) {
+        return expandPartialBfsLazyOpenmp(partial, limit);
+    }
+
     ExpandResult result;
     const auto& depthMap = shortestDepths();
     std::priority_queue<FrontierNode, std::vector<FrontierNode>, FrontierNodeCompare> frontier;
     std::unordered_set<std::string> seenFinalSignatures;
     std::size_t nextSequence = 0;
 
-    auto pushCandidate = [&](RecipeTree candidate) {
-        candidate = canonicalizeTree(graph_, std::move(candidate));
-        const int estimate = estimateTreeDepth(graph_, candidate, depthMap);
-        if (estimate >= kUnreachableDepth) {
+    auto pushState = [&](FrontierNode state) {
+        if (state.estimate >= kUnreachableDepth) {
             return;
         }
-        frontier.push(FrontierNode{std::move(candidate), estimate, nextSequence++});
+        state.sequence = nextSequence++;
+        frontier.push(std::move(state));
     };
 
-    pushCandidate(partial);
+    pushState(makeFrontierNode(graph_, partial, depthMap, nextSequence));
 
     while (!frontier.empty() && !limitReached(result.trees.size(), limit)) {
         auto current = frontier.top();
         frontier.pop();
 
-        std::vector<std::size_t> path;
-        if (!findExpandableLeafPath(graph_, current.tree, path)) {
-            if (treeComplete(graph_, current.tree)) {
-                const auto signature = treeSignature(current.tree);
-                if (seenFinalSignatures.insert(signature).second) {
-                    result.trees.push_back(std::move(current.tree));
-                    printBfsProgress(current.estimate, result.trees.size());
-                }
+        if (current.openLeaves.empty()) {
+            const auto signature = compactSignature(current.nodes, 0);
+            if (seenFinalSignatures.insert(signature).second) {
+                result.trees.push_back(compactToRecipeTree(current.nodes, 0));
+                printBfsProgress(current.estimate, result.trees.size());
             }
             continue;
         }
 
-        const auto leaf = treeAtPath(current.tree, path);
-        const auto canonicalLeaf = graph_.canonicalName(leaf.name);
-        const auto activePath = namesOnPath(graph_, current.tree, path);
+        const int leafIndex = current.openLeaves.front();
+        current.openLeaves.erase(current.openLeaves.begin());
+        if (leafIndex < 0 || leafIndex >= static_cast<int>(current.nodes.size())) {
+            continue;
+        }
+
+        const auto canonicalLeaf = current.nodes[leafIndex].name;
         ++stats_.nodesVisited;
         maybePrintNodeProgress();
 
         for (const auto& recipe : graph_.recipesFor(canonicalLeaf)) {
-            const auto leftKey = RecipeGraph::normalize(recipe.first);
-            const auto rightKey = RecipeGraph::normalize(recipe.second);
-            if (activePath.find(leftKey) != activePath.end() || activePath.find(rightKey) != activePath.end()) {
+            if (pathContainsName(current.nodes, leafIndex, recipe.first) ||
+                pathContainsName(current.nodes, leafIndex, recipe.second)) {
                 result.cycleBlocked = true;
                 continue;
             }
 
-            RecipeTree expanded = current.tree;
-            auto& expandedLeaf = treeAtPath(expanded, path);
-            expandedLeaf.name = canonicalLeaf;
+            FrontierNode expanded = current;
+            auto left = makeCompactLeaf(graph_, recipe.first, leafIndex, depthMap);
+            auto right = makeCompactLeaf(graph_, recipe.second, leafIndex, depthMap);
+            if (left.estimate >= kUnreachableDepth || right.estimate >= kUnreachableDepth) {
+                continue;
+            }
+
+            const int leftIndex = static_cast<int>(expanded.nodes.size());
+            expanded.nodes.push_back(std::move(left));
+            const int rightIndex = static_cast<int>(expanded.nodes.size());
+            expanded.nodes.push_back(std::move(right));
+
+            auto& expandedLeaf = expanded.nodes[leafIndex];
+            expandedLeaf.left = leftIndex;
+            expandedLeaf.right = rightIndex;
             expandedLeaf.basic = false;
-            expandedLeaf.children = {recipeLeaf(graph_, recipe.first), recipeLeaf(graph_, recipe.second)};
-            pushCandidate(std::move(expanded));
+            expandedLeaf.estimate = 1 + std::max(expanded.nodes[leftIndex].estimate, expanded.nodes[rightIndex].estimate);
+            refreshAncestorEstimates(expanded.nodes, leafIndex);
+            expanded.estimate = expanded.nodes[0].estimate;
+
+            std::vector<int> newOpenLeaves;
+            if (isExpandableCompactLeaf(graph_, expanded.nodes[leftIndex])) {
+                newOpenLeaves.push_back(leftIndex);
+            }
+            if (isExpandableCompactLeaf(graph_, expanded.nodes[rightIndex])) {
+                newOpenLeaves.push_back(rightIndex);
+            }
+            expanded.openLeaves.insert(expanded.openLeaves.begin(), newOpenLeaves.begin(), newOpenLeaves.end());
+            pushState(std::move(expanded));
         }
     }
 
     return result;
+}
+
+SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazyOpenmp(const RecipeTree& partial, int limit) {
+#ifndef ALCHEMY_HAS_OPENMP
+    return expandPartialBfsLazy(partial, limit);
+#else
+    ExpandResult result;
+    const auto& depthMap = shortestDepths();
+    std::priority_queue<FrontierNode, std::vector<FrontierNode>, FrontierNodeCompare> frontier;
+    std::unordered_set<std::string> seenFinalSignatures;
+    std::size_t nextSequence = 0;
+
+    auto pushState = [&](FrontierNode state) {
+        if (state.estimate >= kUnreachableDepth) {
+            return;
+        }
+        state.sequence = nextSequence++;
+        frontier.push(std::move(state));
+    };
+
+    pushState(makeFrontierNode(graph_, partial, depthMap, nextSequence));
+
+    const int threadCount = std::max(1, options_.threads);
+    const std::size_t batchLimit = static_cast<std::size_t>(std::max(8, threadCount * 8));
+    while (!frontier.empty() && !limitReached(result.trees.size(), limit)) {
+        auto current = frontier.top();
+        frontier.pop();
+
+        if (current.openLeaves.empty()) {
+            const auto signature = compactSignature(current.nodes, 0);
+            if (seenFinalSignatures.insert(signature).second) {
+                result.trees.push_back(compactToRecipeTree(current.nodes, 0));
+                printBfsProgress(current.estimate, result.trees.size());
+            }
+            continue;
+        }
+
+        std::vector<FrontierNode> batch;
+        batch.reserve(batchLimit);
+        const int batchEstimate = current.estimate;
+        batch.push_back(std::move(current));
+        while (batch.size() < batchLimit && !frontier.empty()) {
+            const auto& next = frontier.top();
+            if (next.estimate != batchEstimate || next.openLeaves.empty()) {
+                break;
+            }
+            batch.push_back(next);
+            frontier.pop();
+        }
+
+        std::vector<FrontierExpansion> expansions(batch.size());
+#pragma omp parallel for schedule(dynamic) num_threads(threadCount)
+        for (int i = 0; i < static_cast<int>(batch.size()); ++i) {
+            expansions[static_cast<std::size_t>(i)] =
+                expandFrontierState(graph_, depthMap, std::move(batch[static_cast<std::size_t>(i)]));
+        }
+
+        for (auto& expansion : expansions) {
+            stats_.nodesVisited += expansion.nodesVisited;
+            result.cycleBlocked = result.cycleBlocked || expansion.cycleBlocked;
+            maybePrintNodeProgress();
+            for (auto& state : expansion.states) {
+                pushState(std::move(state));
+            }
+        }
+    }
+
+    return result;
+#endif
 }
 
 SearchEngine::ExpandResult SearchEngine::expandDirectRecipes(const std::string& name, std::unordered_set<std::string>& active) {

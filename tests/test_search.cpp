@@ -1,7 +1,9 @@
 #include <cassert>
+#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "common/Cli.hpp"
 #include "common/JsonLoader.hpp"
@@ -10,6 +12,8 @@
 #include "common/Visualizer.hpp"
 
 namespace {
+
+namespace fs = std::filesystem;
 
 int countOccurrences(const std::string& haystack, const std::string& needle) {
     int count = 0;
@@ -34,6 +38,27 @@ alchemy::SearchResult searchTarget(const alchemy::RecipeGraph& graph,
     options.limit = limit;
     alchemy::SearchEngine engine(graph, options);
     return engine.search(target);
+}
+
+std::string testOutputPrefix(const std::string& name) {
+    fs::path outputDir = fs::path("build-codex") / "test_outputs";
+    fs::create_directories(outputDir);
+    return (outputDir / name).string();
+}
+
+void removeOutputSet(const std::string& prefix, const std::string& imageFormat) {
+    fs::remove(prefix + ".json");
+    fs::remove(prefix + ".dot");
+    fs::remove(prefix + "." + imageFormat);
+}
+
+std::vector<std::string> signatures(const std::vector<alchemy::RecipeTree>& recipes) {
+    std::vector<std::string> out;
+    out.reserve(recipes.size());
+    for (const auto& recipe : recipes) {
+        out.push_back(alchemy::treeSignature(recipe));
+    }
+    return out;
 }
 
 }  // namespace
@@ -67,6 +92,38 @@ int main() {
     {
         assert(alchemy::parseSearchMode("all") == alchemy::SearchMode::All);
         assert(alchemy::toString(alchemy::SearchMode::All) == "all");
+        assert(alchemy::parseRenderMode("json") == alchemy::RenderMode::Json);
+        assert(alchemy::parseRenderMode("full") == alchemy::RenderMode::Full);
+        assert(alchemy::toString(alchemy::RenderMode::Json) == "json");
+        assert(alchemy::toString(alchemy::RenderMode::Full) == "full");
+
+        const char* rawArgs[] = {
+            "alchemy_openmp",
+            "--data", "tests/fixture_recipes.json",
+            "--target", "Brick",
+            "--algorithm", "bfs",
+            "--mode", "multiple",
+            "--limit", "3",
+            "--trace-mode", "memo",
+            "--visual-mode", "shared",
+            "--threads", "3",
+        };
+        std::vector<char*> args;
+        for (const char* arg : rawArgs) {
+            args.push_back(const_cast<char*>(arg));
+        }
+        auto parsed = alchemy::parseArgs(static_cast<int>(args.size()), args.data(), false);
+        assert(parsed.threads == 3);
+
+        alchemy::SearchStats stats;
+        stats.processes = 2;
+        stats.threadsPerProcess = 4;
+        stats.totalWorkers = 8;
+        stats.threadsByRank = {4, 4};
+        auto restored = alchemy::statsFromJson(alchemy::statsToJson(stats));
+        assert(restored.threadsPerProcess == 4);
+        assert(restored.totalWorkers == 8);
+        assert(restored.threadsByRank.size() == 2);
     }
 
     {
@@ -120,6 +177,50 @@ int main() {
         assert(one.recipes.size() == 1);
         assert(two.recipes.size() == 2);
         assert(high.recipes.size() == 2);
+    }
+
+    {
+        auto one = searchTarget(graphWithSpecial, "DeepOrder", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1);
+        auto two = searchTarget(graphWithSpecial, "DeepOrder", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 2);
+        auto high = searchTarget(graphWithSpecial, "DeepOrder", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 50);
+        assert(one.recipes.size() == 1);
+        assert(two.recipes.size() == 2);
+        assert(high.recipes.size() == 5);
+        assert(treeDepth(one.recipes[0]) <= treeDepth(two.recipes[1]));
+        for (std::size_t i = 1; i < high.recipes.size(); ++i) {
+            assert(treeDepth(high.recipes[i - 1]) <= treeDepth(high.recipes[i]));
+        }
+    }
+
+    if (alchemy::openmpAvailable()) {
+        alchemy::SearchOptions serialOptions;
+        serialOptions.algorithm = alchemy::Algorithm::Bfs;
+        serialOptions.mode = alchemy::SearchMode::Multiple;
+        serialOptions.traceMode = alchemy::TraceMode::Memo;
+        serialOptions.limit = 5;
+
+        alchemy::SearchOptions openmpOptions = serialOptions;
+        openmpOptions.useOpenmp = true;
+        openmpOptions.threads = 2;
+
+        alchemy::SearchEngine serialEngine(graphWithSpecial, serialOptions);
+        alchemy::SearchEngine openmpEngine(graphWithSpecial, openmpOptions);
+        auto serial = serialEngine.search("DeepOrder");
+        auto openmp = openmpEngine.search("DeepOrder");
+        assert(signatures(openmp.recipes) == signatures(serial.recipes));
+        assert(openmp.stats.processes == 1);
+        assert(openmp.stats.threadsPerProcess == 2);
+        assert(openmp.stats.totalWorkers == 2);
+
+        alchemy::RecipeTree partial{"DirectAll", false, false, false, {}, {
+            alchemy::RecipeTree{"Branch", false, false, false, {}, {}},
+            alchemy::RecipeTree{"Fire", true, false, false, {}, {}},
+        }};
+        alchemy::SearchEngine serialPartial(graphWithSpecial, serialOptions);
+        alchemy::SearchEngine openmpPartial(graphWithSpecial, openmpOptions);
+        auto serialCompleted = serialPartial.completePartial(partial, 5, true);
+        auto openmpCompleted = openmpPartial.completePartial(partial, 5, true);
+        assert(signatures(openmpCompleted.recipes) == signatures(serialCompleted.recipes));
     }
 
     {
@@ -179,6 +280,59 @@ int main() {
         visualOptions.visualMode = alchemy::VisualMode::Shared;
         const auto sharedDot = alchemy::Visualizer::buildDot(memo.recipes, visualOptions);
         assert(sharedDot.find("shared") != std::string::npos);
+    }
+
+    {
+        auto result = searchTarget(graphWithSpecial, "Fire", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1);
+        assert(result.recipes.size() == 1);
+
+        alchemy::AppOptions options;
+        options.algorithm = alchemy::Algorithm::Bfs;
+        options.mode = alchemy::SearchMode::Multiple;
+        options.traceMode = alchemy::TraceMode::Memo;
+        options.limit = 1;
+        options.imageFormat = "svg";
+        options.renderMode = alchemy::RenderMode::Json;
+        options.outputPrefix = testOutputPrefix("visualizer_json_only");
+        removeOutputSet(options.outputPrefix, options.imageFormat);
+
+        const auto outputs = alchemy::Visualizer::writeOutputs(result.target, result.recipes, result.stats, options);
+        assert(!outputs.jsonPath.empty());
+        assert(fs::exists(outputs.jsonPath));
+        assert(outputs.dotPath.empty());
+        assert(outputs.imagePath.empty());
+        assert(!outputs.imageRendered);
+        assert(!outputs.renderWarning.empty());
+        assert(!fs::exists(options.outputPrefix + ".dot"));
+        assert(!fs::exists(options.outputPrefix + ".svg"));
+    }
+
+    {
+        auto result = searchTarget(graphWithSpecial, "Fire", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1);
+        assert(result.recipes.size() == 1);
+
+        alchemy::AppOptions options;
+        options.algorithm = alchemy::Algorithm::Bfs;
+        options.mode = alchemy::SearchMode::Multiple;
+        options.traceMode = alchemy::TraceMode::Memo;
+        options.limit = 1;
+        options.imageFormat = "png";
+        options.renderMode = alchemy::RenderMode::Full;
+        options.outputPrefix = testOutputPrefix("visualizer_full_render");
+        removeOutputSet(options.outputPrefix, options.imageFormat);
+
+        const auto outputs = alchemy::Visualizer::writeOutputs(result.target, result.recipes, result.stats, options);
+        assert(!outputs.jsonPath.empty());
+        assert(fs::exists(outputs.jsonPath));
+        assert(!outputs.dotPath.empty());
+        assert(fs::exists(outputs.dotPath));
+        if (outputs.imageRendered) {
+            assert(!outputs.imagePath.empty());
+            assert(fs::exists(outputs.imagePath));
+        } else {
+            assert(outputs.imagePath.empty());
+            assert(!outputs.renderWarning.empty());
+        }
     }
 
     {

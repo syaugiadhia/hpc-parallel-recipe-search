@@ -2,9 +2,14 @@
 #include <iomanip>
 #include <iostream>
 #include <array>
+#include <cctype>
+#include <sstream>
 #include <stdexcept>
 
 #include <mpi.h>
+#ifdef ALCHEMY_HAS_OPENMP
+#include <omp.h>
+#endif
 
 #include "common/Cli.hpp"
 #include "common/JsonLoader.hpp"
@@ -30,6 +35,84 @@ std::string csvEscape(const std::string& value) {
     }
     out += "\"";
     return out;
+}
+
+std::string renderSkipReason(const alchemy::OutputFiles& outputs) {
+    return outputs.renderWarning.empty() ? "not rendered" : outputs.renderWarning;
+}
+
+int parsePositiveToken(const std::string& value, const std::string& context) {
+    try {
+        const int parsed = std::stoi(value);
+        if (parsed < 1) {
+            throw std::runtime_error("");
+        }
+        return parsed;
+    } catch (...) {
+        throw std::runtime_error("Invalid " + context + " value '" + value + "': expected a positive integer");
+    }
+}
+
+std::vector<int> expandThreadProfile(const std::string& profile, int worldSize) {
+    std::vector<int> threadsByRank;
+    std::stringstream stream(profile);
+    std::string token;
+    while (std::getline(stream, token, ',')) {
+        token.erase(std::remove_if(token.begin(), token.end(), [](unsigned char ch) {
+            return std::isspace(ch) != 0;
+        }), token.end());
+        if (token.empty()) {
+            continue;
+        }
+
+        const auto marker = token.find_first_of("xX");
+        if (marker == std::string::npos) {
+            throw std::runtime_error("Invalid --thread-profile token '" + token + "'. Expected processesxthreads, e.g. 2x4.");
+        }
+        const int processes = parsePositiveToken(token.substr(0, marker), "--thread-profile process count");
+        const int threads = parsePositiveToken(token.substr(marker + 1), "--thread-profile thread count");
+        threadsByRank.insert(threadsByRank.end(), static_cast<std::size_t>(processes), threads);
+    }
+
+    if (static_cast<int>(threadsByRank.size()) != worldSize) {
+        throw std::runtime_error(
+            "--thread-profile expands to " + std::to_string(threadsByRank.size()) +
+            " MPI ranks, but mpiexec launched " + std::to_string(worldSize) + " ranks");
+    }
+    return threadsByRank;
+}
+
+void configureRankThreads(alchemy::AppOptions& options, int rank, int worldSize) {
+    if (!options.threadProfile.empty()) {
+        options.threadsByRank = expandThreadProfile(options.threadProfile, worldSize);
+        options.threads = options.threadsByRank[static_cast<std::size_t>(rank)];
+    } else {
+        options.threads = std::max(1, options.threads);
+        options.threadsByRank.assign(static_cast<std::size_t>(worldSize), options.threads);
+    }
+
+    if (options.threads > 1 && !alchemy::openmpAvailable()) {
+        throw std::runtime_error("This alchemy_mpi build does not include OpenMP support, so --threads > 1 is unavailable");
+    }
+    options.useOpenmp = options.threads > 1;
+#ifdef ALCHEMY_HAS_OPENMP
+    if (options.useOpenmp) {
+        omp_set_num_threads(options.threads);
+    }
+#endif
+}
+
+std::string intVectorToString(const std::vector<int>& values) {
+    std::ostringstream out;
+    out << "[";
+    for (std::size_t i = 0; i < values.size(); ++i) {
+        if (i != 0) {
+            out << ", ";
+        }
+        out << values[i];
+    }
+    out << "]";
+    return out.str();
 }
 
 void broadcastString(std::string& value, int rank) {
@@ -76,7 +159,14 @@ void printSummary(const alchemy::AppOptions& options, const alchemy::MpiRunResul
     std::cout << "Mode: " << alchemy::toString(options.mode) << "\n";
     std::cout << "Trace mode: " << alchemy::toString(options.traceMode) << "\n";
     std::cout << "Visual mode: " << alchemy::toString(options.visualMode) << "\n";
+    std::cout << "Render mode: " << alchemy::toString(options.renderMode) << "\n";
     std::cout << "Processes: " << result.stats.processes << "\n";
+    if (!result.stats.threadsByRank.empty()) {
+        std::cout << "Threads by rank: " << intVectorToString(result.stats.threadsByRank) << "\n";
+    } else {
+        std::cout << "Threads per rank: " << result.stats.threadsPerProcess << "\n";
+    }
+    std::cout << "Total workers: " << result.stats.totalWorkers << "\n";
     if (!result.stats.rankHostnames.empty()) {
         std::cout << "Rank hostnames: " << alchemy::stringVectorToString(result.stats.rankHostnames) << "\n";
     }
@@ -100,13 +190,17 @@ void printSummary(const alchemy::AppOptions& options, const alchemy::MpiRunResul
         std::cout << "Speedup: " << std::fixed << std::setprecision(3) << result.stats.speedup << "\n";
         std::cout << "Efficiency: " << std::fixed << std::setprecision(3) << result.stats.efficiency << "\n";
     }
-    std::cout << "Output DOT: " << outputs.dotPath << "\n";
+    std::cout << "Output JSON: " << outputs.jsonPath << "\n";
+    if (!outputs.dotPath.empty()) {
+        std::cout << "Output DOT: " << outputs.dotPath << "\n";
+    } else {
+        std::cout << "Output DOT: skipped (" << renderSkipReason(outputs) << ")\n";
+    }
     if (outputs.imageRendered) {
         std::cout << "Output " << options.imageFormat << ": " << outputs.imagePath << "\n";
     } else {
-        std::cout << "Output image: skipped (" << outputs.renderWarning << ")\n";
+        std::cout << "Output image: skipped (" << renderSkipReason(outputs) << ")\n";
     }
-    std::cout << "Output JSON: " << outputs.jsonPath << "\n";
 
     for (std::size_t i = 0; i < result.recipes.size(); ++i) {
         std::cout << "\nRecipe " << (i + 1) << ":\n";
@@ -221,6 +315,7 @@ int main(int argc, char** argv) {
             MPI_Finalize();
             return 0;
         }
+        configureRankThreads(options, rank, worldSize);
 
         auto graph = alchemy::JsonLoader::loadFromFile(options.dataPath);
         const auto tiers = alchemy::TierCatalog::loadFromFile(options.tiersPath);

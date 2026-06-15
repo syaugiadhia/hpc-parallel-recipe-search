@@ -38,6 +38,8 @@ struct SearchOptions {
     SearchMode mode = SearchMode::Multiple;
     TraceMode traceMode = TraceMode::Memo;
     int limit = 5;
+    int threads = 1;
+    bool useOpenmp = false;
     bool progress = false;
 };
 
@@ -55,6 +57,8 @@ Algorithm parseAlgorithm(const std::string& value);
 SearchMode parseSearchMode(const std::string& value);
 TraceMode parseTraceMode(const std::string& value);
 VisualMode parseVisualMode(const std::string& value);
+bool openmpAvailable();
+int openmpMaxThreads();
 
 class SearchEngine {
 public:
@@ -75,6 +79,7 @@ private:
     ExpandResult expandDirectRecipes(const std::string& name, std::unordered_set<std::string>& active);
     ExpandResult expandElementBfsLazy(const std::string& name, int limit);
     ExpandResult expandPartialBfsLazy(const RecipeTree& partial, int limit);
+    ExpandResult expandPartialBfsLazyOpenmp(const RecipeTree& partial, int limit);
     ExpandResult expandElementDfs(const std::string& name, int limit, std::unordered_set<std::string>& active);
     ExpandResult expandElementBfsBounded(const std::string& name, int depthRemaining, int limit, std::unordered_set<std::string>& active);
     ExpandResult completePartialNode(const RecipeTree& partial, int limit, std::unordered_set<std::string>& active);

@@ -13,6 +13,7 @@
   "Branch": [["B", "C"], ["C", "D"], ["Mud", "Stone"]],
   "DirectAll": [["Branch", "Fire"], ["C", "D"]],
   "FlipDirect": [["B", "C"], ["C", "B"], ["B", "D"]],
+  "DeepOrder": [["B", "C"], ["Branch", "D"], ["Clay", "Stone"]],
   "CycleDirect": [["X", "Fire"], ["Mud", "Fire"]],
   "X": [["Y", "Fire"]],
   "Y": [["X", "Water"]]

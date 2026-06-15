@@ -16,6 +16,8 @@ if(NOT nlohmann_json_FOUND)
         "  MSYS2 UCRT64:   pacman -S mingw-w64-ucrt-x86_64-nlohmann-json\n")
 endif()
 
+find_package(OpenMP QUIET)
+
 set(ALCHEMY_COMMON_SOURCES
     src/common/RecipeGraph.cpp
     src/common/RecipeTree.cpp
@@ -30,9 +32,20 @@ set(ALCHEMY_COMMON_SOURCES
 add_library(alchemy_common ${ALCHEMY_COMMON_SOURCES})
 target_include_directories(alchemy_common PUBLIC src)
 target_link_libraries(alchemy_common PUBLIC nlohmann_json::nlohmann_json)
+if(OpenMP_CXX_FOUND)
+    target_compile_definitions(alchemy_common PUBLIC ALCHEMY_HAS_OPENMP=1)
+    target_link_libraries(alchemy_common PUBLIC OpenMP::OpenMP_CXX)
+else()
+    message(STATUS "OpenMP C++ was not found, so alchemy_openmp will not be built and MPI hybrid threads are disabled.")
+endif()
 
 add_executable(alchemy_serial src/serial/main_serial.cpp)
 target_link_libraries(alchemy_serial PRIVATE alchemy_common)
+
+if(OpenMP_CXX_FOUND)
+    add_executable(alchemy_openmp src/openmp/main_openmp.cpp)
+    target_link_libraries(alchemy_openmp PRIVATE alchemy_common)
+endif()
 
 if(BUILD_MPI)
     find_package(MPI QUIET)

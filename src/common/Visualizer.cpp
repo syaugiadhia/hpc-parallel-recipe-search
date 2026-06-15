@@ -174,8 +174,22 @@ OutputFiles Visualizer::writeOutputs(const std::string& target,
                                      const AppOptions& options) {
     ensureParentDirectory(options.outputPrefix);
     OutputFiles files;
-    files.dotPath = options.outputPrefix + ".dot";
     files.jsonPath = options.outputPrefix + ".json";
+
+    {
+        std::ofstream json(files.jsonPath);
+        if (!json) {
+            throw std::runtime_error("Cannot write JSON file: " + files.jsonPath);
+        }
+        json << recipesToJson(target, recipes, stats, options).dump(2) << "\n";
+    }
+
+    if (options.renderMode == RenderMode::Json) {
+        files.renderWarning = "full graph render disabled by --render json; GUI previews render pages lazily from JSON";
+        return files;
+    }
+
+    files.dotPath = options.outputPrefix + ".dot";
     files.imagePath = options.outputPrefix + "." + options.imageFormat;
 
     {
@@ -184,14 +198,6 @@ OutputFiles Visualizer::writeOutputs(const std::string& target,
             throw std::runtime_error("Cannot write DOT file: " + files.dotPath);
         }
         dot << buildDot(recipes, options);
-    }
-
-    {
-        std::ofstream json(files.jsonPath);
-        if (!json) {
-            throw std::runtime_error("Cannot write JSON file: " + files.jsonPath);
-        }
-        json << recipesToJson(target, recipes, stats, options).dump(2) << "\n";
     }
 
     const std::string command = "dot -T" + options.imageFormat + " " + shellQuote(files.dotPath) + " -o " + shellQuote(files.imagePath);

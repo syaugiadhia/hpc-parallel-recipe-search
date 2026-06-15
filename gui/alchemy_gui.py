@@ -307,6 +307,7 @@ class AlchemyGui(ctk.CTk):
         self.proc = None
         self.log_queue = queue.Queue()
         self.worker_thread = None
+        self.stop_requested = False
         self.last_output_prefix = ROOT_DIR / "results" / "gui_run"
         self.last_format = "png"
         self.preview_pil_image = None
@@ -348,6 +349,7 @@ class AlchemyGui(ctk.CTk):
         self.max_visual_depth_enabled = ctk.BooleanVar(value=False)
         self.max_visual_depth = ctk.StringVar(value="6")
         self.mpi_np = ctk.StringVar(value="2")
+        self.openmp_threads = ctk.StringVar(value=str(min(max(os.cpu_count() or 2, 2), 4)))
         self.split_depth = ctk.StringVar(value="1")
         self.multi_node_enabled = ctk.BooleanVar(value=False)
         self.manual_host = ctk.StringVar(value="")
@@ -356,8 +358,8 @@ class AlchemyGui(ctk.CTk):
         self.incoming_invite_text = ctk.StringVar(value="No incoming master request.")
         self.baseline_enabled = ctk.BooleanVar(value=False)
         self.baseline_ms = ctk.StringVar(value="")
+        self.compare_host_order_text = ctk.StringVar(value="Compare host order:\nMaster: not loaded yet")
         self.status = ctk.StringVar(value="Idle")
-        self.image_recipes_per_page = ctk.StringVar(value="1")
         self.image_page = ctk.StringVar(value="1")
         self.image_page_status = ctk.StringVar(value="No recipe preview.")
         self.target_catalog = {"all": ["Brick"]}
@@ -374,7 +376,7 @@ class AlchemyGui(ctk.CTk):
 
         self.tabs = ctk.CTkTabview(self)
         self.tabs.grid(row=0, column=1, sticky="nsew", padx=(6, 12), pady=12)
-        for tab in ("Log", "Results", "Image", "CSV", "Command"):
+        for tab in ("Log", "Results", "Image", "Compare", "CSV", "Command"):
             self.tabs.add(tab)
             self.tabs.tab(tab).grid_columnconfigure(0, weight=1)
             self.tabs.tab(tab).grid_rowconfigure(0, weight=1)
@@ -389,6 +391,9 @@ class AlchemyGui(ctk.CTk):
         self.tabs.tab("Image").grid_rowconfigure(1, weight=1)
         self._build_image_tab()
 
+        self.compare_box = ctk.CTkTextbox(self.tabs.tab("Compare"), wrap="none")
+        self.compare_box.grid(row=0, column=0, sticky="nsew")
+
         self.csv_box = ctk.CTkTextbox(self.tabs.tab("CSV"), wrap="none")
         self.csv_box.grid(row=0, column=0, sticky="nsew")
 
@@ -401,7 +406,7 @@ class AlchemyGui(ctk.CTk):
         row += 1
         self._segmented(row, "Run type", self.run_kind, ["target", "benchmark"], self._refresh_mode_state)
         row += 1
-        self._segmented(row, "Engine", self.engine, ["serial", "mpi"], self._refresh_mode_state)
+        self._segmented(row, "Engine", self.engine, ["serial", "openmp", "mpi"], self._refresh_mode_state)
         row += 1
 
         row = self._section(row, "Input")
@@ -450,6 +455,8 @@ class AlchemyGui(ctk.CTk):
 
         row = self._section(row, "MPI")
         self.mpi_np_entry = self._entry_row(row, "Processes", self.mpi_np)
+        row += 1
+        self.openmp_threads_entry = self._entry_row(row, "OpenMP threads", self.openmp_threads)
         row += 1
         self.split_depth_entry = self._entry_row(row, "Split depth", self.split_depth)
         row += 1
@@ -522,6 +529,29 @@ class AlchemyGui(ctk.CTk):
         ctk.CTkEntry(baseline_frame, textvariable=self.baseline_ms, width=100).grid(row=0, column=1, sticky="e")
         row += 1
 
+        row = self._section(row, "Compare Runs")
+        ctk.CTkLabel(
+            self.controls,
+            textvariable=self.compare_host_order_text,
+            anchor="w",
+            justify="left",
+            wraplength=300,
+        ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
+        row += 1
+        ctk.CTkLabel(
+            self.controls,
+            text="One variant per line: serial, openmp N, local N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT. multi/hybrid values include the master first. Master is not a slave. Example: hybrid 1x2,2x4,2x4 = Master 1 rank x 2 threads + each slave 2 ranks x 4 threads.",
+            anchor="w",
+            wraplength=300,
+        ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
+        row += 1
+        self.compare_variants_box = ctk.CTkTextbox(self.controls, height=82, wrap="none")
+        self.compare_variants_box.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
+        self.compare_variants_box.insert("1.0", "serial\nopenmp 4\nlocal 2\nhybrid-local 2x2\n")
+        row += 1
+        ctk.CTkButton(self.controls, text="Run Compare", command=self.run_compare).grid(row=row, column=0, sticky="ew", padx=8, pady=4)
+        row += 1
+
         row = self._section(row, "Actions")
         button_grid = ctk.CTkFrame(self.controls, fg_color="transparent")
         button_grid.grid(row=row, column=0, sticky="ew", padx=8, pady=6)
@@ -539,6 +569,8 @@ class AlchemyGui(ctk.CTk):
         ctk.CTkButton(open_grid, text="Open DOT", command=lambda: self._open_output(".dot")).grid(row=0, column=1, sticky="ew", padx=(4, 0), pady=3)
         ctk.CTkButton(open_grid, text="Open Image", command=self._open_image).grid(row=1, column=0, sticky="ew", padx=(0, 4), pady=3)
         ctk.CTkButton(open_grid, text="Open CSV", command=lambda: self._open_output(".csv")).grid(row=1, column=1, sticky="ew", padx=(4, 0), pady=3)
+        ctk.CTkButton(open_grid, text="Open Compare CSV", command=self._open_compare_csv).grid(row=2, column=0, sticky="ew", padx=(0, 4), pady=3)
+        ctk.CTkButton(open_grid, text="Render Full Graph", command=self.render_full_graph).grid(row=2, column=1, sticky="ew", padx=(4, 0), pady=3)
         row += 1
         ctk.CTkLabel(self.controls, textvariable=self.status, anchor="w").grid(row=row, column=0, sticky="ew", padx=8, pady=(8, 4))
 
@@ -548,18 +580,15 @@ class AlchemyGui(ctk.CTk):
         controls.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 0))
         controls.grid_columnconfigure(6, weight=1)
 
-        ctk.CTkLabel(controls, text="Recipes/page").grid(row=0, column=0, sticky="w", padx=(0, 6))
-        per_page_entry = ctk.CTkEntry(controls, textvariable=self.image_recipes_per_page, width=58)
-        per_page_entry.grid(row=0, column=1, sticky="w", padx=(0, 8))
-        per_page_entry.bind("<Return>", lambda _event: self._go_preview_page())
+        ctk.CTkLabel(controls, text="Recipe #").grid(row=0, column=0, sticky="w", padx=(0, 6))
+        page_entry = ctk.CTkEntry(controls, textvariable=self.image_page, width=58)
+        page_entry.grid(row=0, column=1, sticky="w", padx=(0, 8))
+        page_entry.bind("<Return>", lambda _event: self._go_preview_page())
         ctk.CTkButton(controls, text="Prev", width=58, command=lambda: self._change_preview_page(-1)).grid(row=0, column=2, padx=3)
         ctk.CTkButton(controls, text="Next", width=58, command=lambda: self._change_preview_page(1)).grid(row=0, column=3, padx=3)
-        ctk.CTkLabel(controls, text="Page").grid(row=0, column=4, sticky="w", padx=(8, 6))
-        page_entry = ctk.CTkEntry(controls, textvariable=self.image_page, width=58)
-        page_entry.grid(row=0, column=5, sticky="w", padx=(0, 4))
-        page_entry.bind("<Return>", lambda _event: self._go_preview_page())
-        ctk.CTkButton(controls, text="Go", width=46, command=self._go_preview_page).grid(row=0, column=6, sticky="w", padx=(0, 8))
-        ctk.CTkLabel(controls, textvariable=self.image_page_status, anchor="e").grid(row=0, column=7, sticky="e")
+        ctk.CTkButton(controls, text="Go", width=46, command=self._go_preview_page).grid(row=0, column=4, padx=(8, 3))
+        ctk.CTkButton(controls, text="Render Preview", width=116, command=self._render_preview_page).grid(row=0, column=5, padx=3)
+        ctk.CTkLabel(controls, textvariable=self.image_page_status, anchor="e").grid(row=0, column=6, sticky="e")
 
         self.image_label = ctk.CTkLabel(image_tab, text="Run a search, then preview recipe pages here.")
         self.image_label.grid(row=1, column=0, sticky="nsew", padx=12, pady=12)
@@ -625,6 +654,7 @@ class AlchemyGui(ctk.CTk):
         ctk.CTkLabel(header, text="Status", width=82).grid(row=0, column=2, padx=4)
         for host, slots, status in hosts:
             self._append_host_row(host, slots, status)
+        self._refresh_compare_host_order()
 
     def _append_host_row(self, host, slots="1", status="manual"):
         row_index = len(self.host_rows) + 1
@@ -634,16 +664,20 @@ class AlchemyGui(ctk.CTk):
         host_var = ctk.StringVar(value=host)
         slots_var = ctk.StringVar(value=str(slots))
         status_var = ctk.StringVar(value=status)
-        ctk.CTkEntry(frame, textvariable=host_var).grid(row=0, column=0, sticky="ew", padx=(0, 4))
+        host_entry = ctk.CTkEntry(frame, textvariable=host_var)
+        host_entry.grid(row=0, column=0, sticky="ew", padx=(0, 4))
+        host_entry.bind("<KeyRelease>", lambda _event: self._refresh_compare_host_order())
         ctk.CTkEntry(frame, textvariable=slots_var, width=54).grid(row=0, column=1, padx=4)
         ctk.CTkLabel(frame, textvariable=status_var, width=82).grid(row=0, column=2, padx=4)
         ctk.CTkButton(frame, text="Connect", width=70, command=lambda: self.connect_host_row(frame)).grid(row=0, column=3, padx=(0, 4))
         ctk.CTkButton(frame, text="x", width=28, command=lambda: self._remove_host_row(frame)).grid(row=0, column=4)
         self.host_rows.append({"frame": frame, "host": host_var, "slots": slots_var, "status": status_var})
+        self._refresh_compare_host_order()
 
     def _remove_host_row(self, frame):
         self.host_rows = [row for row in self.host_rows if row["frame"] is not frame]
         frame.destroy()
+        self._refresh_compare_host_order()
 
     def _host_entries(self, connected_only=False):
         entries = []
@@ -668,6 +702,7 @@ class AlchemyGui(ctk.CTk):
         for row in self.host_rows:
             if row["host"].get().strip().lower() == key:
                 row["status"].set(status)
+                self._refresh_compare_host_order()
                 return
 
     def _set_host_slots(self, host, slots):
@@ -675,6 +710,7 @@ class AlchemyGui(ctk.CTk):
         for row in self.host_rows:
             if row["host"].get().strip().lower() == key:
                 row["slots"].set(str(slots))
+                self._refresh_compare_host_order()
                 return
 
     def _merge_hosts(self, hosts):
@@ -685,6 +721,7 @@ class AlchemyGui(ctk.CTk):
                 continue
             self._append_host_row(host, slots, status)
             existing.add(key)
+        self._refresh_compare_host_order()
 
     def _add_manual_host(self):
         host = self.manual_host.get().strip()
@@ -1078,8 +1115,12 @@ class AlchemyGui(ctk.CTk):
         mpi_state = "normal" if self.engine.get() == "mpi" else "disabled"
         self.mpi_np_entry.configure(state=mpi_state)
         self.split_depth_entry.configure(state=mpi_state)
+        threads_state = "normal" if self.engine.get() in {"openmp", "mpi"} else "disabled"
+        self.openmp_threads_entry.configure(state=threads_state)
 
-    def _base_args(self):
+    def _base_args(self, render_mode="json", output_prefix=None, include_mpi_options=None, force_target=False):
+        output_prefix = self.output_prefix.get() if output_prefix is None else str(output_prefix)
+        include_mpi_options = self.engine.get() == "mpi" if include_mpi_options is None else include_mpi_options
         args = [
             "--data", self.data_path.get(),
             "--tiers", self.tiers_path.get(),
@@ -1087,10 +1128,11 @@ class AlchemyGui(ctk.CTk):
             "--mode", self.search_mode.get(),
             "--trace-mode", self.trace_mode.get(),
             "--visual-mode", self.visual_mode.get(),
-            "--output", self.output_prefix.get(),
+            "--render", render_mode,
+            "--output", output_prefix,
             "--format", self.image_format.get(),
         ]
-        if self.run_kind.get() == "benchmark":
+        if self.run_kind.get() == "benchmark" and not force_target:
             args.extend(["--benchmark", self.benchmark_path.get()])
         else:
             args.extend(["--target", self._resolve_target()])
@@ -1099,7 +1141,7 @@ class AlchemyGui(ctk.CTk):
             args.extend(["--limit", self.limit.get()])
         if self.max_visual_depth_enabled.get():
             args.extend(["--max-visual-depth", self.max_visual_depth.get()])
-        if self.engine.get() == "mpi":
+        if include_mpi_options:
             args.extend(["--split-depth", self.split_depth.get()])
             if self.baseline_enabled.get() and self.baseline_ms.get().strip():
                 args.extend(["--baseline-ms", self.baseline_ms.get().strip()])
@@ -1121,12 +1163,42 @@ class AlchemyGui(ctk.CTk):
             return ["mpirun", "-np", np_value]
         return ["mpiexec", "-n", np_value]
 
-    def _command_for_run(self):
-        if self.engine.get() == "mpi":
+    def _require_positive_int(self, value, label):
+        try:
+            parsed = int(str(value).strip())
+        except ValueError as exc:
+            raise ValueError(f"{label} must be a positive integer") from exc
+        if parsed < 1:
+            raise ValueError(f"{label} must be a positive integer")
+        return parsed
+
+    def _openmp_threads_value(self):
+        return self._require_positive_int(self.openmp_threads.get() or "1", "OpenMP threads")
+
+    def _mpi_process_count_for_current_layout(self):
+        if os.name == "nt" and self.multi_node_enabled.get():
+            entries = self._host_entries(connected_only=True)
+            if not entries:
+                raise ValueError("Multi-node is enabled but no host is connected. Run Test/Connect first.")
+            host_profile = ", ".join(f"{host}:{slots}" for host, slots, _status in entries)
+            return sum(slots for _host, slots, _status in entries), host_profile
+        processes = self._require_positive_int(self.mpi_np.get().strip() or "2", "Processes")
+        return processes, f"local:{processes}"
+
+    def _command_for_run(self, render_mode="json"):
+        engine = self.engine.get()
+        if engine == "mpi":
             exe = executable_path("alchemy_mpi")
-            return self._mpi_prefix() + [str(exe)] + self._base_args()
+            command = self._mpi_prefix() + [str(exe)] + self._base_args(render_mode)
+            threads = self._openmp_threads_value()
+            if threads > 1:
+                command.extend(["--threads", str(threads)])
+            return command
+        if engine == "openmp":
+            exe = executable_path("alchemy_openmp")
+            return [str(exe)] + self._base_args(render_mode) + ["--threads", str(self._openmp_threads_value())]
         exe = executable_path("alchemy_serial")
-        return [str(exe)] + self._base_args()
+        return [str(exe)] + self._base_args(render_mode)
 
     def _command_for_build(self):
         return [["cmake", "-S", str(ROOT_DIR), "-B", str(ROOT_DIR / "build")], ["cmake", "--build", str(ROOT_DIR / "build")]]
@@ -1139,11 +1211,458 @@ class AlchemyGui(ctk.CTk):
         self.last_output_prefix = Path(self.output_prefix.get())
         self.last_format = self.image_format.get()
         try:
-            command = self._command_for_run()
+            command = self._command_for_run("json")
         except Exception as exc:
             messagebox.showerror("Invalid command", str(exc))
             return
         self._start_commands([command], clear=True)
+
+    def render_full_graph(self):
+        if self.run_kind.get() == "benchmark":
+            messagebox.showinfo("Render Full Graph", "Full graph render is available for target runs. Benchmark runs stay JSON/CSV-first.")
+            return
+        self.last_output_prefix = Path(self.output_prefix.get())
+        self.last_format = self.image_format.get()
+        try:
+            command = self._command_for_run("full")
+        except Exception as exc:
+            messagebox.showerror("Invalid command", str(exc))
+            return
+        self._start_commands([command], clear=False)
+
+    def _local_mpi_prefix(self, process_count):
+        process_count = str(process_count)
+        if os.name == "nt":
+            return ["mpiexec", "-n", process_count]
+        if shutil.which("mpirun"):
+            return ["mpirun", "-np", process_count]
+        return ["mpiexec", "-n", process_count]
+
+    def _compare_host_order(self):
+        entries = self._host_entries(connected_only=True)
+        order = []
+        slave_index = 1
+        for index, (host, slots, status) in enumerate(entries):
+            if status == "master" or index == 0:
+                label = "Master"
+            else:
+                label = f"Slave {slave_index}"
+                slave_index += 1
+            order.append({"label": label, "host": host, "slots": slots, "status": status})
+        return order
+
+    def _refresh_compare_host_order(self):
+        try:
+            order = self._compare_host_order()
+            if not order:
+                self.compare_host_order_text.set("Compare host order:\nMaster: no connected/master host")
+                return
+            lines = ["Compare host order:"]
+            for item in order:
+                lines.append(f"{item['label']}: {item['host']}")
+            self.compare_host_order_text.set("\n".join(lines))
+        except Exception as exc:
+            self.compare_host_order_text.set(f"Compare host order unavailable: {exc}")
+
+    def _multi_mpi_prefix_for_slots(self, slot_values):
+        order = self._compare_host_order()
+        if len(order) != len(slot_values):
+            labels = ", ".join(item["label"] for item in order) or "none"
+            variant_text = "multi " + ",".join(str(value) for value in slot_values)
+            raise ValueError(
+                f"{variant_text} has {len(slot_values)} values, but current compare host order has {len(order)} hosts: {labels}."
+            )
+        args = ["mpiexec", "-hosts", str(len(order))]
+        host_profile = []
+        for item, slots in zip(order, slot_values):
+            host = item["host"]
+            args.extend([host, str(slots)])
+            host_profile.append(f"{item['label']} {host}:{slots}")
+        return args, ", ".join(host_profile)
+
+    def _parse_hybrid_profile(self, text, keyword):
+        order = self._compare_host_order()
+        parts = [part.strip() for part in text.split(",") if part.strip()]
+        if len(order) != len(parts):
+            labels = ", ".join(item["label"] for item in order) or "none"
+            raise ValueError(
+                f"{keyword} {text} has {len(parts)} values, but current compare host order has {len(order)} hosts: {labels}."
+            )
+        slot_values = []
+        thread_values = []
+        expanded_threads = []
+        for part in parts:
+            match = re.fullmatch(r"(\d+)\s*[xX]\s*(\d+)", part)
+            if not match:
+                raise ValueError(f"Invalid {keyword} token '{part}'. Expected processesxthreads, e.g. 2x4.")
+            slots = int(match.group(1))
+            threads = int(match.group(2))
+            if slots < 1 or threads < 1:
+                raise ValueError(f"Invalid {keyword} token '{part}'. Values must be positive.")
+            slot_values.append(slots)
+            thread_values.append(threads)
+            expanded_threads.extend([threads] * slots)
+        return slot_values, thread_values, ",".join(str(value) for value in expanded_threads)
+
+    def _append_threads_arg(self, command, threads):
+        return list(command) + ["--threads", str(threads)]
+
+    def _variant_slug(self, value):
+        slug = re.sub(r"[^A-Za-z0-9]+", "_", value.strip().lower()).strip("_")
+        return slug or "run"
+
+    def _compare_variants(self):
+        raw_lines = self.compare_variants_box.get("1.0", "end").splitlines()
+        lines = []
+        for raw in raw_lines:
+            line = raw.split("#", 1)[0].strip()
+            if line:
+                lines.append(line)
+        if not lines:
+            raise ValueError("Compare variants is empty")
+
+        specs = []
+        used_slugs = {}
+        base_prefix = str(Path(self.output_prefix.get()))
+        serial_exe = executable_path("alchemy_serial")
+        openmp_exe = executable_path("alchemy_openmp")
+        mpi_exe = executable_path("alchemy_mpi")
+
+        for line in lines:
+            keyword, _space, rest = line.partition(" ")
+            keyword = keyword.lower()
+            rest = rest.strip()
+            if keyword == "serial" and not rest:
+                slug = "serial"
+                output_prefix = f"{base_prefix}_compare_{slug}"
+                command = [str(serial_exe)] + self._base_args("json", output_prefix, include_mpi_options=False, force_target=True)
+                spec = {
+                    "variant": "serial",
+                    "engine": "serial",
+                    "processes": 1,
+                    "threads_per_rank": "1",
+                    "total_workers": 1,
+                    "host_profile": "single process",
+                    "output_prefix": output_prefix,
+                    "command": command,
+                }
+            elif keyword == "openmp":
+                try:
+                    thread_count = int(rest)
+                except ValueError as exc:
+                    raise ValueError(f"Invalid openmp variant '{line}'. Expected: openmp N") from exc
+                if thread_count < 1:
+                    raise ValueError(f"Invalid OpenMP thread count in '{line}'")
+                slug = f"openmp_{thread_count}"
+                output_prefix = f"{base_prefix}_compare_{slug}"
+                command = (
+                    [str(openmp_exe)]
+                    + self._base_args("json", output_prefix, include_mpi_options=False, force_target=True)
+                    + ["--threads", str(thread_count)]
+                )
+                spec = {
+                    "variant": f"openmp {thread_count}",
+                    "engine": "openmp",
+                    "processes": 1,
+                    "threads_per_rank": str(thread_count),
+                    "total_workers": thread_count,
+                    "host_profile": f"local-threads:{thread_count}",
+                    "output_prefix": output_prefix,
+                    "command": command,
+                }
+            elif keyword == "local":
+                try:
+                    process_count = int(rest)
+                except ValueError as exc:
+                    raise ValueError(f"Invalid local variant '{line}'. Expected: local N") from exc
+                if process_count < 1:
+                    raise ValueError(f"Invalid local process count in '{line}'")
+                slug = f"local_{process_count}"
+                output_prefix = f"{base_prefix}_compare_{slug}"
+                command = (
+                    self._local_mpi_prefix(process_count)
+                    + [str(mpi_exe)]
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                )
+                spec = {
+                    "variant": f"local {process_count}",
+                    "engine": "mpi-local",
+                    "processes": process_count,
+                    "threads_per_rank": "1",
+                    "total_workers": process_count,
+                    "host_profile": f"local:{process_count}",
+                    "output_prefix": output_prefix,
+                    "command": command,
+                }
+            elif keyword == "hybrid-local":
+                match = re.fullmatch(r"(\d+)\s*[xX]\s*(\d+)", rest)
+                if not match:
+                    raise ValueError(f"Invalid hybrid-local variant '{line}'. Expected: hybrid-local PxT")
+                process_count = int(match.group(1))
+                thread_count = int(match.group(2))
+                if process_count < 1 or thread_count < 1:
+                    raise ValueError(f"Invalid hybrid-local values in '{line}'")
+                slug = f"hybrid_local_{process_count}x{thread_count}"
+                output_prefix = f"{base_prefix}_compare_{slug}"
+                command = (
+                    self._local_mpi_prefix(process_count)
+                    + [str(mpi_exe)]
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                    + ["--threads", str(thread_count)]
+                )
+                spec = {
+                    "variant": f"hybrid-local {process_count}x{thread_count}",
+                    "engine": "mpi+openmp-local",
+                    "processes": process_count,
+                    "threads_per_rank": str(thread_count),
+                    "total_workers": process_count * thread_count,
+                    "host_profile": f"local:{process_count}",
+                    "output_prefix": output_prefix,
+                    "command": command,
+                }
+            elif keyword == "multi":
+                try:
+                    slot_values = [int(value.strip()) for value in rest.split(",") if value.strip()]
+                except ValueError as exc:
+                    raise ValueError(f"Invalid multi variant '{line}'. Expected: multi a,b,c") from exc
+                if not slot_values or any(slots < 1 for slots in slot_values):
+                    raise ValueError(f"Invalid multi slots in '{line}'")
+                mpi_prefix, host_profile = self._multi_mpi_prefix_for_slots(slot_values)
+                slug = "multi_" + "x".join(str(slots) for slots in slot_values)
+                output_prefix = f"{base_prefix}_compare_{slug}"
+                command = (
+                    mpi_prefix
+                    + [str(mpi_exe)]
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                )
+                spec = {
+                    "variant": "multi " + ",".join(str(slots) for slots in slot_values),
+                    "engine": "mpi-multi",
+                    "processes": sum(slot_values),
+                    "threads_per_rank": "1",
+                    "total_workers": sum(slot_values),
+                    "host_profile": host_profile,
+                    "output_prefix": output_prefix,
+                    "command": command,
+                }
+            elif keyword == "hybrid":
+                if re.fullmatch(r"\d+", rest or ""):
+                    thread_count = int(rest)
+                    if thread_count < 1:
+                        raise ValueError(f"Invalid hybrid thread count in '{line}'")
+                    process_count, host_profile = self._mpi_process_count_for_current_layout()
+                    slug = f"hybrid_{process_count}x{thread_count}"
+                    output_prefix = f"{base_prefix}_compare_{slug}"
+                    command = (
+                        self._mpi_prefix()
+                        + [str(mpi_exe)]
+                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                        + ["--threads", str(thread_count)]
+                    )
+                    spec = {
+                        "variant": f"hybrid {thread_count}",
+                        "engine": "mpi+openmp",
+                        "processes": process_count,
+                        "threads_per_rank": str(thread_count),
+                        "total_workers": process_count * thread_count,
+                        "host_profile": host_profile,
+                        "output_prefix": output_prefix,
+                        "command": command,
+                    }
+                else:
+                    slot_values, _thread_values, expanded_threads = self._parse_hybrid_profile(rest, "hybrid")
+                    mpi_prefix, host_profile = self._multi_mpi_prefix_for_slots(slot_values)
+                    profile = ",".join(part.strip().replace("X", "x") for part in rest.split(",") if part.strip())
+                    slug = "hybrid_" + "_".join(profile.split(","))
+                    output_prefix = f"{base_prefix}_compare_{slug}"
+                    command = (
+                        mpi_prefix
+                        + [str(mpi_exe)]
+                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                        + ["--thread-profile", profile]
+                    )
+                    total_workers = sum(
+                        int(slots) * int(threads)
+                        for slots, threads in (part.lower().split("x", 1) for part in profile.split(","))
+                    )
+                    spec = {
+                        "variant": "hybrid " + profile,
+                        "engine": "mpi+openmp",
+                        "processes": sum(slot_values),
+                        "threads_per_rank": expanded_threads,
+                        "total_workers": total_workers,
+                        "host_profile": host_profile,
+                        "output_prefix": output_prefix,
+                        "command": command,
+                    }
+            else:
+                raise ValueError(
+                    f"Unknown compare variant '{line}'. Use serial, openmp N, local N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT."
+                )
+
+            base_slug = self._variant_slug(slug)
+            seen_count = used_slugs.get(base_slug, 0)
+            used_slugs[base_slug] = seen_count + 1
+            if seen_count:
+                unique_slug = f"{base_slug}_{seen_count + 1}"
+                spec["output_prefix"] = f"{base_prefix}_compare_{unique_slug}"
+                spec["command"] = self._replace_output_prefix(spec["command"], spec["output_prefix"])
+            specs.append(spec)
+        return specs
+
+    def _replace_output_prefix(self, command, output_prefix):
+        replaced = list(command)
+        for index, value in enumerate(replaced[:-1]):
+            if value == "--output":
+                replaced[index + 1] = output_prefix
+                break
+        return replaced
+
+    def run_compare(self):
+        if self.run_kind.get() == "benchmark":
+            messagebox.showinfo("Run Compare", "Compare runs use the current target. Switch Run type to target first.")
+            return
+        self.last_format = self.image_format.get()
+        try:
+            specs = self._compare_variants()
+        except Exception as exc:
+            messagebox.showerror("Invalid compare variants", str(exc))
+            return
+        csv_path = Path(f"{self.output_prefix.get()}_compare.csv")
+        self._start_compare(specs, csv_path)
+
+    def _start_compare(self, specs, csv_path):
+        if self.proc is not None:
+            messagebox.showwarning("Process running", "Stop the current process before starting another one.")
+            return
+        self._clear_outputs()
+        self.stop_requested = False
+        self.run_started_at = time.monotonic()
+        self.status.set("Running compare...")
+        self.command_box.delete("1.0", "end")
+        for spec in specs:
+            self.command_box.insert("end", f"# {spec['variant']}\n{shell_join(spec['command'])}\n")
+        self.tabs.set("Log")
+        self.worker_thread = threading.Thread(target=self._run_compare_worker, args=(specs, csv_path), daemon=True)
+        self.worker_thread.start()
+
+    def _run_compare_worker(self, specs, csv_path):
+        rows = []
+        stopped = False
+        try:
+            for spec in specs:
+                command = spec["command"]
+                self.log_queue.put(("log", f"$ {shell_join(command)}\n"))
+                self.proc = subprocess.Popen(
+                    command,
+                    cwd=str(ROOT_DIR),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    bufsize=1,
+                )
+                assert self.proc.stdout is not None
+                for line in self.proc.stdout:
+                    self.log_queue.put(("log", line))
+                rc = self.proc.wait()
+                self.proc = None
+                row = self._compare_row_from_json(spec, rc)
+                rows.append(row)
+                self.log_queue.put(("log", f"\nCompare variant '{spec['variant']}' exited with code {rc}\n"))
+                if self.stop_requested:
+                    stopped = True
+                    break
+
+            self._write_compare_csv(csv_path, rows)
+            self.log_queue.put(("compare_done", (not stopped, str(csv_path))))
+        except Exception as exc:
+            self.proc = None
+            self.log_queue.put(("log", f"Compare error: {exc}\n"))
+            if rows:
+                try:
+                    self._write_compare_csv(csv_path, rows)
+                    self.log_queue.put(("compare_done", (False, str(csv_path))))
+                    return
+                except Exception as write_exc:
+                    self.log_queue.put(("log", f"Could not write partial compare CSV: {write_exc}\n"))
+            self.log_queue.put(("compare_done", (False, "")))
+
+    def _compare_row_from_json(self, spec, return_code):
+        json_path = Path(spec["output_prefix"]).with_suffix(".json")
+        row = {
+            "variant": spec["variant"],
+            "engine": spec["engine"],
+            "processes": spec["processes"],
+            "threads_per_rank": spec.get("threads_per_rank", "1"),
+            "total_workers": spec.get("total_workers", spec["processes"]),
+            "host_profile": spec["host_profile"],
+            "recipes_found": "",
+            "time_ms": "",
+            "communication_ms": "",
+            "speedup_vs_serial": "",
+            "efficiency": "",
+            "output_json": str(json_path),
+            "status": "ok" if return_code == 0 else f"failed:{return_code}",
+        }
+        if json_path.exists():
+            data = json.loads(json_path.read_text(encoding="utf-8"))
+            stats = data.get("statistics", {})
+            row["recipes_found"] = data.get("recipes_found", "")
+            row["time_ms"] = stats.get("time_ms", "")
+            row["communication_ms"] = stats.get("communication_ms", "")
+            row["processes"] = stats.get("processes", row["processes"])
+            threads_by_rank = stats.get("threads_by_rank", [])
+            if isinstance(threads_by_rank, list) and threads_by_rank:
+                row["threads_per_rank"] = ",".join(str(value) for value in threads_by_rank)
+            else:
+                row["threads_per_rank"] = str(stats.get("threads_per_process", row["threads_per_rank"]))
+            row["total_workers"] = stats.get("total_workers", row["total_workers"])
+        elif return_code == 0:
+            row["status"] = "missing-json"
+        return row
+
+    def _write_compare_csv(self, csv_path, rows):
+        csv_path.parent.mkdir(parents=True, exist_ok=True)
+        baseline = None
+        for row in rows:
+            if row["engine"] == "serial" and row["status"] == "ok" and row["time_ms"] not in {"", None}:
+                baseline = float(row["time_ms"])
+                break
+        if baseline and baseline > 0:
+            for row in rows:
+                if row["status"] != "ok" or row["time_ms"] in {"", None}:
+                    continue
+                time_ms = float(row["time_ms"])
+                if time_ms <= 0:
+                    continue
+                speedup = baseline / time_ms
+                row["speedup_vs_serial"] = f"{speedup:.3f}"
+                try:
+                    workers = int(row.get("total_workers", row["processes"]))
+                except (TypeError, ValueError):
+                    workers = 0
+                if workers > 0:
+                    row["efficiency"] = f"{(speedup / workers):.3f}"
+
+        fieldnames = [
+            "variant",
+            "engine",
+            "processes",
+            "threads_per_rank",
+            "total_workers",
+            "host_profile",
+            "recipes_found",
+            "time_ms",
+            "communication_ms",
+            "speedup_vs_serial",
+            "efficiency",
+            "output_json",
+            "status",
+        ]
+        with csv_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
 
     def _start_commands(self, commands, clear=False):
         if self.proc is not None:
@@ -1151,6 +1670,7 @@ class AlchemyGui(ctk.CTk):
             return
         if clear:
             self._clear_outputs()
+        self.stop_requested = False
         self.run_started_at = time.monotonic()
         self.status.set("Running...")
         self.command_box.delete("1.0", "end")
@@ -1190,6 +1710,7 @@ class AlchemyGui(ctk.CTk):
     def stop_process(self):
         if self.proc is None:
             return
+        self.stop_requested = True
         try:
             if os.name == "nt":
                 subprocess.run(["taskkill", "/PID", str(self.proc.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -1227,6 +1748,15 @@ class AlchemyGui(ctk.CTk):
                     self.status.set("Done" if payload else "Failed or stopped")
                     if payload:
                         self._load_outputs()
+                elif kind == "compare_done":
+                    success, csv_path = payload
+                    self.run_started_at = None
+                    self.status.set("Compare done" if success else "Compare failed or partial")
+                    if csv_path:
+                        path = Path(csv_path)
+                        if path.exists():
+                            self._load_compare_csv(path)
+                            self.tabs.set("Compare")
         except queue.Empty:
             pass
         if self.run_started_at is not None:
@@ -1235,7 +1765,7 @@ class AlchemyGui(ctk.CTk):
         self.after(100, self._drain_log_queue)
 
     def _clear_outputs(self):
-        for textbox in (self.log_box, self.result_box, self.csv_box, self.command_box):
+        for textbox in (self.log_box, self.result_box, self.compare_box, self.csv_box, self.command_box):
             textbox.delete("1.0", "end")
         self.preview_json_data = None
         self.preview_recipes = []
@@ -1269,8 +1799,8 @@ class AlchemyGui(ctk.CTk):
                 self.preview_page_index = 0
                 self.image_page.set("1")
                 if self.preview_recipes:
-                    self._render_preview_page()
-                    self.tabs.set("Image")
+                    self.image_page_status.set(f"JSON loaded; choose recipe to preview. {len(self.preview_recipes)} recipes available.")
+                    self._reset_image_preview("JSON loaded. Choose a recipe number, then click Render Preview.")
                 else:
                     self.image_page_status.set("No recipes found.")
                     self._reset_image_preview("No recipes to preview.")
@@ -1305,6 +1835,53 @@ class AlchemyGui(ctk.CTk):
         except Exception as exc:
             self.csv_box.insert("end", f"Could not load CSV: {exc}\n")
 
+    def _load_compare_csv(self, path: Path):
+        self.compare_box.delete("1.0", "end")
+        try:
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+            self.compare_box.insert("end", f"Compare CSV: {path}\n\n")
+            if not rows:
+                self.compare_box.insert("end", "No compare rows found.\n")
+                return
+
+            columns = [
+                ("variant", "Variant"),
+                ("engine", "Engine"),
+                ("processes", "Proc"),
+                ("threads_per_rank", "Threads/rank"),
+                ("total_workers", "Total workers"),
+                ("host_profile", "Hosts"),
+                ("recipes_found", "Recipes"),
+                ("time_ms", "Time ms"),
+                ("communication_ms", "Comm ms"),
+                ("speedup_vs_serial", "Speedup"),
+                ("efficiency", "Eff"),
+                ("status", "Status"),
+            ]
+            headers = [label for _key, label in columns]
+            table_rows = []
+            for row in rows:
+                table_rows.append([str(row.get(key, ""))[:42] for key, _label in columns])
+            widths = []
+            for index, header in enumerate(headers):
+                max_width = max(len(header), *(len(row[index]) for row in table_rows))
+                widths.append(min(max_width, 42))
+
+            header_line = " | ".join(headers[index].ljust(widths[index]) for index in range(len(headers)))
+            separator = "-+-".join("-" * widths[index] for index in range(len(headers)))
+            self.compare_box.insert("end", header_line + "\n")
+            self.compare_box.insert("end", separator + "\n")
+            for row in table_rows:
+                cells = [row[index][:widths[index]].ljust(widths[index]) for index in range(len(widths))]
+                self.compare_box.insert("end", " | ".join(cells) + "\n")
+
+            self.compare_box.insert("end", "\nOutput JSON files:\n")
+            for row in rows:
+                self.compare_box.insert("end", f"- {row.get('variant', '')}: {row.get('output_json', '')}\n")
+        except Exception as exc:
+            self.compare_box.insert("end", f"Could not load compare CSV: {exc}\n")
+
     def _positive_int(self, value, default):
         try:
             parsed = int(str(value).strip())
@@ -1317,8 +1894,7 @@ class AlchemyGui(ctk.CTk):
     def _preview_page_count(self):
         if not self.preview_recipes:
             return 0
-        per_page = self._positive_int(self.image_recipes_per_page.get(), 1)
-        return (len(self.preview_recipes) + per_page - 1) // per_page
+        return len(self.preview_recipes)
 
     def _change_preview_page(self, delta):
         if not self.preview_recipes:
@@ -1347,27 +1923,23 @@ class AlchemyGui(ctk.CTk):
             self._reset_image_preview("No recipes to preview.")
             return
 
-        per_page = self._positive_int(self.image_recipes_per_page.get(), 1)
-        self.image_recipes_per_page.set(str(per_page))
         total = len(self.preview_recipes)
         total_pages = self._preview_page_count()
         self.preview_page_index = min(max(0, self.preview_page_index), max(0, total_pages - 1))
         self.image_page.set(str(self.preview_page_index + 1))
-        start = self.preview_page_index * per_page
-        end = min(start + per_page, total)
-        page_recipes = self.preview_recipes[start:end]
-        if total_pages == 0 or not page_recipes:
+        recipe = self.preview_recipes[self.preview_page_index]
+        if total_pages == 0 or not recipe:
             self.image_page_status.set("No recipes found.")
             self._reset_image_preview("No recipes to preview.")
             return
 
         if shutil.which("dot") is None:
-            self.image_page_status.set(f"Page {self.preview_page_index + 1}/{total_pages}")
-            self._reset_image_preview("Graphviz 'dot' is not available; cannot render page preview.")
+            self.image_page_status.set(f"Recipe {self.preview_page_index + 1}/{total_pages}")
+            self._reset_image_preview("Graphviz 'dot' is not available; cannot render recipe preview.")
             return
 
         try:
-            dot_text = self._build_preview_dot(page_recipes)
+            dot_text = self._build_preview_dot([recipe])
             with tempfile.TemporaryDirectory(prefix="alchemy_preview_") as temp_dir:
                 temp_dir = Path(temp_dir)
                 dot_path = temp_dir / "page.dot"
@@ -1383,11 +1955,11 @@ class AlchemyGui(ctk.CTk):
                 with Image.open(png_path) as image_file:
                     image = image_file.copy()
             self._set_image_preview(image)
-            shown = f"Recipe {start + 1}" if start + 1 == end else f"Recipe {start + 1}-{end}"
-            self.image_page_status.set(f"Page {self.preview_page_index + 1}/{total_pages}, showing {shown} of {total}")
+            recipe_id = recipe.get("id", self.preview_page_index + 1) if isinstance(recipe, dict) else self.preview_page_index + 1
+            self.image_page_status.set(f"Recipe {recipe_id} ({self.preview_page_index + 1}/{total})")
         except Exception as exc:
             self.image_page_status.set("Preview render failed.")
-            self._reset_image_preview(f"Could not render preview page:\n{exc}")
+            self._reset_image_preview(f"Could not render recipe preview:\n{exc}")
 
     def _dot_escape(self, value):
         return str(value).replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
@@ -1506,6 +2078,9 @@ class AlchemyGui(ctk.CTk):
 
     def _open_image(self):
         open_path(Path(self.output_prefix.get()).with_suffix("." + self.image_format.get()))
+
+    def _open_compare_csv(self):
+        open_path(Path(f"{self.output_prefix.get()}_compare.csv"))
 
 
 if __name__ == "__main__":

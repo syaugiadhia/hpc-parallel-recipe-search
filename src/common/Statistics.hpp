@@ -17,12 +17,15 @@ struct SearchStats {
     std::int64_t tasksProcessed = 0;
     std::int64_t directRecipesAvailable = 0;
     int processes = 1;
+    int threadsPerProcess = 1;
+    int totalWorkers = 1;
     double speedup = 0.0;
     double efficiency = 0.0;
     std::vector<std::int64_t> nodesVisitedByRank;
     std::vector<std::int64_t> cacheHitsByRank;
     std::vector<std::int64_t> cacheEntriesByRank;
     std::vector<std::int64_t> tasksProcessedByRank;
+    std::vector<int> threadsByRank;
     std::vector<std::string> rankHostnames;
 };
 

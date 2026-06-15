@@ -1,0 +1,974 @@
+{
+  "algorithm": "bfs",
+  "limit": 10,
+  "mode": "multiple",
+  "recipes": [
+    {
+      "id": 1,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 2,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 3,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Earth"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Lava"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 4,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 5,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 6,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 7,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Earth"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Lava"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Volcano"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 8,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Earth"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Lava"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 9,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Earth"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Lava"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 10,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Land"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "children": [
+                              {
+                                "children": [
+                                  {
+                                    "children": [
+                                      {
+                                        "children": [
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          },
+                                          {
+                                            "basic": true,
+                                            "name": "Water"
+                                          }
+                                        ],
+                                        "name": "Puddle"
+                                      },
+                                      {
+                                        "basic": true,
+                                        "name": "Water"
+                                      }
+                                    ],
+                                    "name": "Pond"
+                                  },
+                                  {
+                                    "basic": true,
+                                    "name": "Water"
+                                  }
+                                ],
+                                "name": "Lake"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Water"
+                              }
+                            ],
+                            "name": "Sea"
+                          }
+                        ],
+                        "name": "Primordial soup"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Time"
+                      }
+                    ],
+                    "name": "Life"
+                  }
+                ],
+                "name": "Soil"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    }
+  ],
+  "recipes_found": 10,
+  "statistics": {
+    "cache_entries": 0,
+    "cache_entries_by_rank": [
+      0,
+      0
+    ],
+    "cache_hits": 0,
+    "cache_hits_by_rank": [
+      0,
+      0
+    ],
+    "communication_ms": 82.78629998676479,
+    "direct_recipes_available": 0,
+    "efficiency": 0.0,
+    "nodes_visited": 628,
+    "nodes_visited_by_rank": [
+      0,
+      628
+    ],
+    "processes": 2,
+    "rank_hostnames": [
+      "DESKTOP-S3PFJIN",
+      "DESKTOP-S3PFJIN"
+    ],
+    "speedup": 0.0,
+    "tasks_processed": 1,
+    "tasks_processed_by_rank": [
+      0,
+      1
+    ],
+    "threads_by_rank": [
+      2,
+      2
+    ],
+    "threads_per_process": 2,
+    "time_ms": 86.33630000986159,
+    "total_workers": 4
+  },
+  "target": "Brick",
+  "trace_mode": "memo",
+  "visual_mode": "shared"
+}
