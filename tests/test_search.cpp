@@ -102,6 +102,27 @@ int main() {
     }
 
     {
+        auto direct = searchTarget(graphWithSpecial, "DirectAll", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 2);
+        assert(direct.recipes.size() == 2);
+        assert(direct.recipes[0].children[0].name == "C");
+        assert(direct.recipes[1].children[0].name == "Branch");
+    }
+
+    {
+        auto brick = searchTarget(graphWithSpecial, "Brick", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 50);
+        assert(brick.recipes.size() == 2);
+    }
+
+    {
+        auto one = searchTarget(graphWithSpecial, "FlipDirect", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1);
+        auto two = searchTarget(graphWithSpecial, "FlipDirect", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 2);
+        auto high = searchTarget(graphWithSpecial, "FlipDirect", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 50);
+        assert(one.recipes.size() == 1);
+        assert(two.recipes.size() == 2);
+        assert(high.recipes.size() == 2);
+    }
+
+    {
         auto one = searchTarget(graphWithSpecial, "Brick", alchemy::Algorithm::Dfs, alchemy::TraceMode::Memo, 1);
         auto allDfs = searchTarget(graphWithSpecial, "Brick", alchemy::Algorithm::Dfs, alchemy::TraceMode::Memo, 1, alchemy::SearchMode::All);
         auto allBfs = searchTarget(graphWithSpecial, "Brick", alchemy::Algorithm::Bfs, alchemy::TraceMode::Memo, 1, alchemy::SearchMode::All);
@@ -171,6 +192,23 @@ int main() {
         }};
         auto unique = alchemy::deduplicateTrees({left, right}, 0);
         assert(unique.size() == 1);
+    }
+
+    {
+        alchemy::SearchOptions options;
+        options.algorithm = alchemy::Algorithm::Bfs;
+        options.mode = alchemy::SearchMode::Multiple;
+        options.traceMode = alchemy::TraceMode::Memo;
+        options.limit = 5;
+        alchemy::SearchEngine engine(graphWithSpecial, options);
+        alchemy::RecipeTree partial{"DirectAll", false, false, false, {}, {
+            alchemy::RecipeTree{"Branch", false, false, false, {}, {}},
+            alchemy::RecipeTree{"Fire", true, false, false, {}, {}},
+        }};
+        auto completed = engine.completePartial(partial, 5, true);
+        assert(!completed.recipes.empty());
+        assert(completed.recipes[0].name == "DirectAll");
+        assert(completed.recipes[0].children[0].name == "Branch");
     }
 
     {

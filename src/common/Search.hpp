@@ -73,6 +73,8 @@ private:
 
     ExpandResult expandElementAny(const std::string& name, int limit, std::unordered_set<std::string>& active);
     ExpandResult expandDirectRecipes(const std::string& name, std::unordered_set<std::string>& active);
+    ExpandResult expandElementBfsLazy(const std::string& name, int limit);
+    ExpandResult expandPartialBfsLazy(const RecipeTree& partial, int limit);
     ExpandResult expandElementDfs(const std::string& name, int limit, std::unordered_set<std::string>& active);
     ExpandResult expandElementBfsBounded(const std::string& name, int depthRemaining, int limit, std::unordered_set<std::string>& active);
     ExpandResult completePartialNode(const RecipeTree& partial, int limit, std::unordered_set<std::string>& active);
@@ -80,6 +82,7 @@ private:
     bool memoEnabled() const;
     int effectiveLimit(int requested) const;
     int maxSearchDepth() const;
+    const std::unordered_map<std::string, int>& shortestDepths();
     ExpandResult memoHit(const std::string& key, int limit) const;
     void memoStore(const std::string& key, const ExpandResult& result);
     void maybePrintNodeProgress();
@@ -88,6 +91,8 @@ private:
     const RecipeGraph& graph_;
     SearchOptions options_;
     std::unordered_map<std::string, std::vector<RecipeTree>> memo_;
+    std::unordered_map<std::string, int> shortestDepths_;
+    bool shortestDepthsReady_ = false;
     mutable SearchStats stats_;
     std::chrono::steady_clock::time_point startedAt_;
     std::int64_t nextProgressNode_ = 1000;

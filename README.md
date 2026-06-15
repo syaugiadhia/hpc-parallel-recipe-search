@@ -224,7 +224,7 @@ Contoh:
 
 ### BFS
 
-BFS memakai iterative depth-limited expansion. Hasil dengan depth lebih pendek ditemukan lebih dulu.
+BFS memakai lazy frontier expansion. Kandidat recipe dengan estimasi depth terpendek diproses dulu, recipe valid dihasilkan satu per satu, lalu search berhenti saat limit terpenuhi atau frontier habis.
 
 Contoh:
 
