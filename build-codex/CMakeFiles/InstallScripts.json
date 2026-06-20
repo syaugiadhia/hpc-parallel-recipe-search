@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/tubes-2/build-codex/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

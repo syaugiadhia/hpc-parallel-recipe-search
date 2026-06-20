@@ -295,7 +295,7 @@ def load_tier_catalog(tiers_path: Path, recipe_names):
 
 
 class AlchemyGui(ctk.CTk):
-    def __init__(self):
+    def __init__(self, preset=None):
         super().__init__()
         self.title("Little Alchemy HPC MPI")
         self.geometry("1180x760")
@@ -328,7 +328,27 @@ class AlchemyGui(ctk.CTk):
         self._build_layout()
         self._load_targets_silent()
         self._refresh_mode_state()
+        self._apply_cli_preset(preset)
         self.after(100, self._drain_log_queue)
+
+    def _apply_cli_preset(self, preset):
+        """Terapkan preset dari argumen CLI (dipakai oleh run_master/run_slaveN.bat)."""
+        if not preset:
+            return
+        role = (preset.get("role") or "").lower()
+        if role == "master":
+            self.cluster_role.set("Master")
+            self.engine.set("mpi")
+            self.multi_node_enabled.set(True)
+        elif role == "slave":
+            self.cluster_role.set("Slave")
+        if preset.get("engine"):
+            self.engine.set(preset["engine"])
+        if preset.get("slots"):
+            self.slave_slots.set(str(preset["slots"]))
+        self._refresh_mode_state()
+        if preset.get("autostart") and self.cluster_role.get() == "Slave":
+            self.after(600, self.start_slave_agent)
 
     def _build_vars(self):
         self.cluster_role = ctk.StringVar(value="Master")
@@ -1156,6 +1176,7 @@ class AlchemyGui(ctk.CTk):
             args = ["mpiexec", "-hosts", str(len(entries))]
             for host, slots, _ in entries:
                 args.extend([host, str(slots)])
+            args.extend(["-wdir", str(ROOT_DIR)])
             return args
         if os.name == "nt":
             return ["mpiexec", "-n", np_value]
@@ -1278,6 +1299,7 @@ class AlchemyGui(ctk.CTk):
             host = item["host"]
             args.extend([host, str(slots)])
             host_profile.append(f"{item['label']} {host}:{slots}")
+        args.extend(["-wdir", str(ROOT_DIR)])
         return args, ", ".join(host_profile)
 
     def _parse_hybrid_profile(self, text, keyword):
@@ -2083,6 +2105,24 @@ class AlchemyGui(ctk.CTk):
         open_path(Path(f"{self.output_prefix.get()}_compare.csv"))
 
 
+def _parse_cli_args(argv):
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Little Alchemy HPC MPI GUI")
+    parser.add_argument("--role", choices=["master", "slave"], help="Preset cluster role.")
+    parser.add_argument("--engine", choices=["serial", "openmp", "mpi"], help="Preset engine.")
+    parser.add_argument("--slots", type=int, help="Offered slots untuk role slave.")
+    parser.add_argument("--autostart", action="store_true", help="Langsung Start Slave (role slave).")
+    args = parser.parse_args(argv)
+    return {
+        "role": args.role,
+        "engine": args.engine,
+        "slots": args.slots,
+        "autostart": args.autostart,
+    }
+
+
 if __name__ == "__main__":
-    app = AlchemyGui()
+    preset = _parse_cli_args(sys.argv[1:])
+    app = AlchemyGui(preset=preset)
     app.mainloop()

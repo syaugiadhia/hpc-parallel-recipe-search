@@ -2,6 +2,26 @@
 
 Dokumen ini menjelaskan cara menjalankan project Little Alchemy HPC di 2 komputer atau lebih memakai GUI Python dan MS-MPI di Windows.
 
+## Cara Cepat (Pakai Script Otomatis)
+
+Folder `commands/` berisi script yang membereskan semua konfigurasi MS-MPI secara otomatis (registry, firewall, kredensial `cmdkey`, `smpd` daemon, stop launch service) lalu membuka GUI di role yang benar.
+
+**Sekali edit:** buka `commands/_config.bat`, sesuaikan `PROJECT_DIR`, `MSMPI_BIN`, serta hostname/username/password/slots tiap slave.
+
+Lalu cukup **dobel-klik** (script minta hak Administrator otomatis):
+
+- Di laptop master: `commands/run_master.bat`
+- Di laptop slave 1: `commands/run_slave1.bat`
+- Di laptop slave 2: `commands/run_slave2.bat`
+
+Tiap script akan: membuka window `SMPD` (jangan ditutup) dan membuka GUI. GUI master sudah di role Master + engine `mpi`; GUI slave sudah auto Start Slave dan menunggu undangan.
+
+Setelah itu tinggal: di GUI master `Add manual` **hostname** slave (mis. `desktop-s3pfjin`, bukan IP) → `Connect` → slave klik `Accept` → `Run`/`Compare`.
+
+Selesai pakai, jalankan `commands/deactivate.bat` di tiap PC untuk mengembalikan firewall/registry dan menghapus kredensial.
+
+> Penting: `cmdkey` mendaftarkan kredensial per **nama target**. Karena itu di GUI tambahkan slave memakai **hostname**, supaya cocok dengan target `cmdkey`. Kalau terpaksa pakai IP, isi `S1_IP`/`S2_IP` di `_config.bat` agar IP ikut didaftarkan.
+
 ## Konsep Singkat
 
 **Master** adalah komputer utama. Komputer ini membuka GUI, memilih target, menjalankan command, dan menjadi MPI rank 0.
@@ -174,13 +194,14 @@ Di GUI master:
 GUI master akan membuat command seperti:
 
 ```powershell
-mpiexec -hosts 2 MASTER_HOST 4 192.168.137.24 2 build\alchemy_mpi.exe ...
+mpiexec -hosts 2 MASTER_HOST 4 desktop-s3pfjin 2 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe ...
 ```
 
 Artinya ada 2 host:
 
 - `MASTER_HOST` dengan 4 slots.
-- `192.168.137.24` dengan 2 slots.
+- `desktop-s3pfjin` (hostname slave) dengan 2 slots.
+- `-wdir C:\tubes-2` menetapkan working directory di tiap host agar konsisten.
 
 ## Menambah Slave Lebih Dari Satu
 
@@ -254,24 +275,28 @@ Solusi:
 - Coba `Add manual` lagi.
 - Pastikan firewall mengizinkan Python.
 
-### Status Connected Tetapi MPI Gagal
+### Status Connected Tetapi MPI Gagal (nunggu lama lalu error)
 
-Handshake GUI hanya membuktikan GUI master bisa bicara dengan GUI slave. Setelah itu, MS-MPI masih harus bisa meluncurkan process ke host slave.
+Handshake GUI (status `connected`) hanya membuktikan GUI master bisa bicara dengan GUI slave lewat port 50555. Itu **tidak** menjamin MS-MPI bisa meluncurkan process ke slave. Kalau saat `Run`/`Compare` GUI menunggu lama (sekitar 60 detik) lalu gagal, hampir selalu MS-MPI gagal launch remote.
 
-Penyebab umum:
+Project ini memakai pendekatan **`smpd` daemon + `cmdkey`** (lihat folder `commands/`), bukan MS-MPI Launch Service. Keuntungannya: tiap PC boleh memakai **akun Windows yang berbeda** (username/password berbeda), karena `cmdkey` menyimpan kredensial per-host. (Sebaliknya, opsi `mpiexec -pwd` hanya mendukung satu akun untuk semua host.)
 
-- MS-MPI belum terinstall di slave.
-- `build\alchemy_mpi.exe` tidak ada di path yang sama.
-- Firewall memblokir MS-MPI.
-- Akun Windows atau konfigurasi MS-MPI belum mengizinkan launch remote.
+Agar berhasil, di tiap PC harus terpenuhi:
 
-Jika muncul:
+- `smpd -d` sedang berjalan (window `SMPD` dari `run_*.bat` jangan ditutup).
+- MS-MPI Launch Service di-stop (`net stop MsMpiLaunchSvc`) supaya tidak rebutan port 8677. Script sudah melakukannya.
+- `LocalAccountTokenFilterPolicy=1` dan firewall diizinkan (script mematikan firewall sementara).
+- Di master, kredensial tiap slave sudah didaftarkan: `cmdkey /add:HOST /user:HOST\user /pass:...`.
+- `build\alchemy_mpi.exe` dan `data\` ada di path yang sama (`C:\tubes-2`) di semua PC.
 
-```text
-CreateRpcBinding error 1749
+Tes paling cepat untuk memisahkan masalah MPI dari GUI, jalankan di master:
+
+```powershell
+mpiexec -hosts 2 localhost 1 desktop-s3pfjin 1 hostname
 ```
 
-Artinya MS-MPI belum berhasil membuat koneksi remote host. Cek firewall, credential, hostname/IP, dan instalasi MS-MPI di komputer target.
+- Kalau cepat mencetak dua hostname → MS-MPI remote sudah jalan; tinggal pakai GUI.
+- Kalau hang/timeout/`CreateRpcBinding error 1749` → masalah di `smpd`/`cmdkey`/firewall di slave, **bukan** di kode GUI. Pastikan `run_slaveN.bat` sudah dijalankan dan window `SMPD` hidup di slave.
 
 ### MPI Lokal Berhasil Tapi Multi-PC Gagal
 
