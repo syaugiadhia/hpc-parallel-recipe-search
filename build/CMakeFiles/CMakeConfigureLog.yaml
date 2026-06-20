@@ -29,8 +29,6 @@ events:
       - "ninja"
       - "samu"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -76,26 +74,7 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja-build.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja-build.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja-build"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/ninja"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/samu.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/samu.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/samu"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja-build.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja-build.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja-build"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/ninja"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/samu.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/samu.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/samu"
       - "D:/Program Files/Microsoft MPI/Bin/ninja-build.com"
       - "D:/Program Files/Microsoft MPI/Bin/ninja-build.exe"
       - "D:/Program Files/Microsoft MPI/Bin/ninja-build"
@@ -364,8 +343,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/bin/ninja.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -411,7 +388,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -437,8 +413,6 @@ events:
       - "icx"
       - "clang++"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -484,44 +458,7 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/c++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/c++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/c++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/g++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/g++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/g++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/cl.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/cl.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/cl"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bcc.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bcc.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bcc"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/icx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/icx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/icx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/clang++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/clang++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/clang++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/c++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/c++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/c++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/g++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/g++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/g++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/cl.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/cl.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/cl"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bcc.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bcc.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bcc"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/icx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/icx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/icx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/clang++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/clang++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/clang++"
       - "D:/Program Files/Microsoft MPI/Bin/c++.com"
       - "D:/Program Files/Microsoft MPI/Bin/c++.exe"
       - "D:/Program Files/Microsoft MPI/Bin/c++"
@@ -1048,8 +985,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/bin/c++.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1095,7 +1030,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1123,8 +1057,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerId.cpp.in"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1170,7 +1102,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "message-v1"
     backtrace:
@@ -1214,8 +1145,6 @@ events:
       - "ar"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1260,14 +1189,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/ar.com"
     found: "D:/compiler/msys64/ucrt64/bin/ar.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1313,7 +1239,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1335,8 +1260,6 @@ events:
       - "ranlib"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1381,14 +1304,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/ranlib.com"
     found: "D:/compiler/msys64/ucrt64/bin/ranlib.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1434,7 +1354,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1456,8 +1375,6 @@ events:
       - "strip"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1502,14 +1419,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/strip.com"
     found: "D:/compiler/msys64/ucrt64/bin/strip.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1555,7 +1469,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1577,8 +1490,6 @@ events:
       - "ld"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1623,14 +1534,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/ld.com"
     found: "D:/compiler/msys64/ucrt64/bin/ld.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1676,7 +1584,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1698,8 +1605,6 @@ events:
       - "nm"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1744,14 +1649,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/nm.com"
     found: "D:/compiler/msys64/ucrt64/bin/nm.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1797,7 +1699,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1819,8 +1720,6 @@ events:
       - "objdump"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1865,14 +1764,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/objdump.com"
     found: "D:/compiler/msys64/ucrt64/bin/objdump.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -1918,7 +1814,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -1940,8 +1835,6 @@ events:
       - "objcopy"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -1986,14 +1879,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/objcopy.com"
     found: "D:/compiler/msys64/ucrt64/bin/objcopy.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -2039,7 +1929,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -2061,8 +1950,6 @@ events:
       - "readelf"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -2107,14 +1994,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/readelf.com"
     found: "D:/compiler/msys64/ucrt64/bin/readelf.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -2160,7 +2044,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -2182,8 +2065,6 @@ events:
       - "dlltool"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -2228,14 +2109,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/dlltool.com"
     found: "D:/compiler/msys64/ucrt64/bin/dlltool.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -2281,7 +2159,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -2303,8 +2180,6 @@ events:
       - "addr2line"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -2349,14 +2224,11 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/addr2line.com"
     found: "D:/compiler/msys64/ucrt64/bin/addr2line.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -2402,7 +2274,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -2424,8 +2295,6 @@ events:
       - "tapi"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -2470,17 +2339,10 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/tapi.com"
       - "D:/compiler/msys64/ucrt64/bin/tapi.exe"
       - "D:/compiler/msys64/ucrt64/bin/tapi"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/tapi.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/tapi.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/tapi"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/tapi.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/tapi.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/tapi"
       - "D:/Program Files/Microsoft MPI/Bin/tapi.com"
       - "D:/Program Files/Microsoft MPI/Bin/tapi.exe"
       - "D:/Program Files/Microsoft MPI/Bin/tapi"
@@ -2613,14 +2475,9 @@ events:
       - "D:/Program Files/Antigravity/bin/tapi.com"
       - "D:/Program Files/Antigravity/bin/tapi.exe"
       - "D:/Program Files/Antigravity/bin/tapi"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/tapi.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/tapi.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/tapi"
     found: false
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -2666,7 +2523,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -2691,8 +2547,6 @@ events:
       - "gcc-ar"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -2737,17 +2591,10 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16.1.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16.1.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16.1"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16.1.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16.1.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16.1"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16.1.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16.1.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16.1"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16.1.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16.1.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16.1"
@@ -2880,18 +2727,9 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ar-16.1.com"
       - "D:/Program Files/Antigravity/bin/gcc-ar-16.1.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ar-16.1"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16.1.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16.1.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16.1"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar-16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar-16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar-16"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar-16"
@@ -3024,18 +2862,9 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ar-16.com"
       - "D:/Program Files/Antigravity/bin/gcc-ar-16.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ar-16"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar-16"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar16.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar16.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ar16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ar16"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar16.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar16.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ar16"
@@ -3168,15 +2997,10 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ar16.com"
       - "D:/Program Files/Antigravity/bin/gcc-ar16.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ar16"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar16.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar16.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ar16"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ar.com"
     found: "D:/compiler/msys64/ucrt64/bin/gcc-ar.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -3222,7 +3046,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -3247,8 +3070,6 @@ events:
       - "gcc-ranlib"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -3293,17 +3114,10 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16.1.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16.1.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16.1"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16.1.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16.1.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16.1"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16.1.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16.1.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16.1"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16.1.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16.1.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16.1"
@@ -3436,18 +3250,9 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16.1.com"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16.1.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16.1"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16.1.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16.1.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16.1"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib-16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib-16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib-16"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib-16"
@@ -3580,18 +3385,9 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16.com"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib-16"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib-16"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib16.com"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib16.exe"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/gcc-ranlib16"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib16.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib16.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/gcc-ranlib16"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib16.com"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib16.exe"
       - "D:/Program Files/Microsoft MPI/Bin/gcc-ranlib16"
@@ -3724,15 +3520,10 @@ events:
       - "D:/Program Files/Antigravity/bin/gcc-ranlib16.com"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib16.exe"
       - "D:/Program Files/Antigravity/bin/gcc-ranlib16"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib16.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib16.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/gcc-ranlib16"
       - "D:/compiler/msys64/ucrt64/bin/gcc-ranlib.com"
     found: "D:/compiler/msys64/ucrt64/bin/gcc-ranlib.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -3778,7 +3569,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
   -
     kind: "find-v1"
     backtrace:
@@ -3802,8 +3592,6 @@ events:
       - "windres"
       - "windres"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -3849,7 +3637,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/bin/"
       - "C:/Program Files/sbin/"
       - "C:/Program Files/"
@@ -3863,12 +3650,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/sbin/"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/windres.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/windres.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/windres"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/windres.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/windres.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/windres"
       - "D:/Program Files/Microsoft MPI/Bin/windres.com"
       - "D:/Program Files/Microsoft MPI/Bin/windres.exe"
       - "D:/Program Files/Microsoft MPI/Bin/windres"
@@ -3960,8 +3741,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/bin/windres.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -4007,7 +3786,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -4023,8 +3801,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-lv8xar"
-      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-lv8xar"
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-086ayj"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-086ayj"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -4035,10 +3813,10 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-lv8xar'
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-086ayj'
         
-        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_686f1
-        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -v -o CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj -c D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_84783
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -v -o CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj -c D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp
         Using built-in specs.
         COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe
         Target: x86_64-w64-mingw32
@@ -4046,8 +3824,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib zstd
         gcc version 16.1.0 (Rev5, Built by MSYS2 project) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/'
-         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/cc1plus.exe -quiet -v -iprefix D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/ -D_REENTRANT D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_686f1.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -o C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccHDzWCd.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/'
+         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/cc1plus.exe -quiet -v -iprefix D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/ -D_REENTRANT D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_84783.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -o C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc1Gargb.s
         GNU C++20 (Rev5, Built by MSYS2 project) version 16.1.0 (x86_64-w64-mingw32)
         	compiled by GNU C version 16.1.0, GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.4.1, isl version isl-0.27-GMP
         
@@ -4071,13 +3849,13 @@ events:
          D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/include-fixed
         End of search list.
         Compiler executable checksum: c17fb94a142b10fdb3ae88ea0e837cbf
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/'
-         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccHDzWCd.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/'
+         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc1Gargb.s
         GNU assembler version 2.46.1 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.46.1
         COMPILER_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/
         LIBRARY_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.'
-        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe  -v -Wl,-v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_686f1.exe -Wl,--out-implib,libcmTC_686f1.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cd ."
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.'
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe  -v -Wl,-v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_84783.exe -Wl,--out-implib,libcmTC_84783.dll.a -Wl,--major-image-version,0,--minor-image-version,0   && cd ."
         Using built-in specs.
         COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe
         COLLECT_LTO_WRAPPER=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe
@@ -4088,12 +3866,12 @@ events:
         gcc version 16.1.0 (Rev5, Built by MSYS2 project) 
         COMPILER_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/
         LIBRARY_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_686f1.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_686f1.'
-         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc4cEAKc.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_686f1.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_686f1.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_84783.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_84783.'
+         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccy3xl8a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_84783.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_84783.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
         collect2 version 16.1.0
-        D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc4cEAKc.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_686f1.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_686f1.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
+        D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccy3xl8a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_84783.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_84783.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
         GNU ld (GNU Binutils) 2.46.1
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_686f1.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_686f1.'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_84783.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_84783.'
         
       exitCode: 0
   -
@@ -4132,10 +3910,10 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-lv8xar']
+        ignore line: [Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-086ayj']
         ignore line: []
-        ignore line: [Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_686f1]
-        ignore line: [[1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -v -o CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj -c D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_84783]
+        ignore line: [[1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -v -o CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj -c D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe]
         ignore line: [Target: x86_64-w64-mingw32]
@@ -4143,8 +3921,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib zstd]
         ignore line: [gcc version 16.1.0 (Rev5  Built by MSYS2 project) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/']
-        ignore line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/cc1plus.exe -quiet -v -iprefix D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/ -D_REENTRANT D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_686f1.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -o C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccHDzWCd.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/']
+        ignore line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/cc1plus.exe -quiet -v -iprefix D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/ -D_REENTRANT D:/compiler/msys64/ucrt64/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_84783.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=nocona -version -o C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc1Gargb.s]
         ignore line: [GNU C++20 (Rev5  Built by MSYS2 project) version 16.1.0 (x86_64-w64-mingw32)]
         ignore line: [	compiled by GNU C version 16.1.0  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.4.1  isl version isl-0.27-GMP]
         ignore line: []
@@ -4168,8 +3946,8 @@ events:
         ignore line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/include-fixed]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: c17fb94a142b10fdb3ae88ea0e837cbf]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/']
-        ignore line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccHDzWCd.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/']
+        ignore line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc1Gargb.s]
         ignore line: [GNU assembler version 2.46.1 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.46.1]
         ignore line: [COMPILER_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/]
@@ -4180,8 +3958,8 @@ events:
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.']
-        ignore line: [[2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe  -v -Wl -v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_686f1.exe -Wl --out-implib libcmTC_686f1.dll.a -Wl --major-image-version 0 --minor-image-version 0   && cd ."]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [[2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe  -v -Wl -v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_84783.exe -Wl --out-implib libcmTC_84783.dll.a -Wl --major-image-version 0 --minor-image-version 0   && cd ."]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe]
         ignore line: [COLLECT_LTO_WRAPPER=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe]
@@ -4199,13 +3977,13 @@ events:
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_686f1.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_686f1.']
-        link line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc4cEAKc.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_686f1.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_686f1.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_84783.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-dumpdir' 'cmTC_84783.']
+        link line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccy3xl8a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_84783.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_84783.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe] ==> ignore
           arg [-plugin] ==> ignore
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll] ==> ignore
           arg [-plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe] ==> ignore
-          arg [-plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc4cEAKc.res] ==> ignore
+          arg [-plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccy3xl8a.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
@@ -4227,7 +4005,7 @@ events:
           arg [i386pep] ==> ignore
           arg [-Bdynamic] ==> search dynamic
           arg [-o] ==> ignore
-          arg [cmTC_686f1.exe] ==> ignore
+          arg [cmTC_84783.exe] ==> ignore
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o] ==> obj [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o]
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o] ==> obj [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0]
@@ -4237,9 +4015,9 @@ events:
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../..] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../..]
           arg [-v] ==> ignore
-          arg [CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
+          arg [CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
           arg [--out-implib] ==> ignore
-          arg [libcmTC_686f1.dll.a] ==> ignore
+          arg [libcmTC_84783.dll.a] ==> ignore
           arg [--major-image-version] ==> ignore
           arg [0] ==> ignore
           arg [--minor-image-version] ==> ignore
@@ -4265,7 +4043,7 @@ events:
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o] ==> obj [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o]
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o] ==> obj [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
         ignore line: [collect2 version 16.1.0]
-        ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cc4cEAKc.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_686f1.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_686f1.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_686f1.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
+        ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccy3xl8a.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_84783.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. -v CMakeFiles/cmTC_84783.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_84783.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
         linker tool for 'CXX': D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/bin/ld.exe
         remove lib [msvcrt]
         remove lib [msvcrt]
@@ -4347,38 +4125,6 @@ events:
         reason: "no_exist"
       -
         path: "C:/tubes-2/build/CMakeFiles/pkgRedirects/share/cps/nlohmann_json.cps"
-        mode: "cps"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/nlohmann_jsonConfig.cmake"
-        mode: "config"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/nlohmann_json-config.cmake"
-        mode: "config"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/lib/cps/nlohmann_json.cps"
-        mode: "cps"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/share/cps/nlohmann_json.cps"
-        mode: "cps"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/nlohmann_jsonConfig.cmake"
-        mode: "config"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/nlohmann_json-config.cmake"
-        mode: "config"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/lib/cps/nlohmann_json.cps"
-        mode: "cps"
-        reason: "no_exist"
-      -
-        path: "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/share/cps/nlohmann_json.cps"
         mode: "cps"
         reason: "no_exist"
       -
@@ -4803,8 +4549,6 @@ events:
       version: "3.12.0"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -4850,7 +4594,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -4865,8 +4608,8 @@ events:
       - "CMakeLists.txt:19 (find_package)"
     description: "Detecting CXX OpenMP compiler info"
     directories:
-      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex"
-      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex"
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -4876,11 +4619,11 @@ events:
       variable: "OpenMP_COMPILE_RESULT_CXX_fopenmp"
       cached: true
       stdout: |
-        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex'
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p'
         
-        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_fcd9c
-        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex/OpenMPTryFlag.cpp
-        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp -v CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj -o cmTC_fcd9c.exe -Wl,--out-implib,libcmTC_fcd9c.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_2ee55
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p/OpenMPTryFlag.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp -v CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj -o cmTC_2ee55.exe -Wl,--out-implib,libcmTC_2ee55.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
         Using built-in specs.
         COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe
         COLLECT_LTO_WRAPPER=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe
@@ -4892,9 +4635,9 @@ events:
         COMPILER_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/
         LIBRARY_PATH=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/;D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../
         Reading specs from D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/libgomp.spec
-        COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_fcd9c.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_fcd9c.'
-         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cctp83Dr.res -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_fcd9c.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj --out-implib libcmTC_fcd9c.dll.a --major-image-version 0 --minor-image-version 0 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -lstdc++ -lgomp -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
-        COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_fcd9c.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_fcd9c.'
+        COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_2ee55.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_2ee55.'
+         D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccJ2gT0p.res -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_2ee55.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj --out-implib libcmTC_2ee55.dll.a --major-image-version 0 --minor-image-version 0 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -lstdc++ -lgomp -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o
+        COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_2ee55.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_2ee55.'
         
       exitCode: 0
   -
@@ -4906,11 +4649,11 @@ events:
     message: |
       Parsed CXX OpenMP implicit link information from above output:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
-        ignore line: [Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex']
+        ignore line: [Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p']
         ignore line: []
-        ignore line: [Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_fcd9c]
-        ignore line: [[1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-pqhxex/OpenMPTryFlag.cpp]
-        ignore line: [[2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp -v CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj -o cmTC_fcd9c.exe -Wl --out-implib libcmTC_fcd9c.dll.a -Wl --major-image-version 0 --minor-image-version 0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."]
+        ignore line: [Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_2ee55]
+        ignore line: [[1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-0onj6p/OpenMPTryFlag.cpp]
+        ignore line: [[2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp -v CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj -o cmTC_2ee55.exe -Wl --out-implib libcmTC_2ee55.dll.a -Wl --major-image-version 0 --minor-image-version 0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe]
         ignore line: [COLLECT_LTO_WRAPPER=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe]
@@ -4929,13 +4672,13 @@ events:
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/]
         ignore line: [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../]
         ignore line: [Reading specs from D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/libgomp.spec]
-        ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_fcd9c.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_fcd9c.']
-        link line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cctp83Dr.res -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_fcd9c.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj --out-implib libcmTC_fcd9c.dll.a --major-image-version 0 --minor-image-version 0 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -lstdc++ -lgomp -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-fopenmp' '-v' '-o' 'cmTC_2ee55.exe' '-shared-libgcc' '-mtune=generic' '-march=nocona' '-mthreads' '-pthread' '-dumpdir' 'cmTC_2ee55.']
+        link line: [ D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe -plugin D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll -plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccJ2gT0p.res -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingwthrd -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_2ee55.exe D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/crt2.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtbegin.o -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0 -LD:/compiler/msys64/ucrt64/bin/../lib/gcc -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib -LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../.. CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj --out-implib libcmTC_2ee55.dll.a --major-image-version 0 --minor-image-version 0 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -lstdc++ -lgomp -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingwthrd -lmingw32 -lgcc_s -lgcc -lmingwex -lmsvcrt -lkernel32 D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib/default-manifest.o D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/crtend.o]
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/collect2.exe] ==> ignore
           arg [-plugin] ==> ignore
           arg [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/liblto_plugin.dll] ==> ignore
           arg [-plugin-opt=D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/lto-wrapper.exe] ==> ignore
-          arg [-plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\cctp83Dr.res] ==> ignore
+          arg [-plugin-opt=-fresolution=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\ccJ2gT0p.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lmingwthrd] ==> ignore
           arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
@@ -4959,16 +4702,16 @@ events:
           arg [i386pep] ==> ignore
           arg [-Bdynamic] ==> search dynamic
           arg [-o] ==> ignore
-          arg [cmTC_fcd9c.exe] ==> ignore
+          arg [cmTC_2ee55.exe] ==> ignore
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib/../lib]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../lib]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/lib]
           arg [-LD:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../..] ==> dir [D:/compiler/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../..]
-          arg [CMakeFiles/cmTC_fcd9c.dir/OpenMPTryFlag.cpp.obj] ==> ignore
+          arg [CMakeFiles/cmTC_2ee55.dir/OpenMPTryFlag.cpp.obj] ==> ignore
           arg [--out-implib] ==> ignore
-          arg [libcmTC_fcd9c.dll.a] ==> ignore
+          arg [libcmTC_2ee55.dll.a] ==> ignore
           arg [--major-image-version] ==> ignore
           arg [0] ==> ignore
           arg [--minor-image-version] ==> ignore
@@ -5042,8 +4785,6 @@ events:
       - "D:/compiler/msys64/ucrt64/lib/gcc/"
       - "D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/lib/"
       - "D:/compiler/msys64/ucrt64/lib/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -5089,7 +4830,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/lib/"
       - "C:/Program Files/"
       - "C:/Program Files (x86)/lib/"
@@ -5107,8 +4847,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/lib/libgomp.dll.a"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -5154,7 +4892,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -5189,8 +4926,6 @@ events:
       - "D:/compiler/msys64/ucrt64/lib/gcc/"
       - "D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/lib/"
       - "D:/compiler/msys64/ucrt64/lib/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -5236,7 +4971,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/lib/"
       - "C:/Program Files/"
       - "C:/Program Files (x86)/lib/"
@@ -5254,8 +4988,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/lib/libmingwthrd.a"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -5301,7 +5033,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -5320,8 +5051,8 @@ events:
       - "CMakeLists.txt:19 (find_package)"
     description: "Detecting CXX OpenMP version"
     directories:
-      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-qcmag6"
-      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-qcmag6"
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-wvdmjl"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-wvdmjl"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -5331,11 +5062,11 @@ events:
       variable: "OpenMP_SPECTEST_CXX_"
       cached: true
       stdout: |
-        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-qcmag6'
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-wvdmjl'
         
-        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_866a5
-        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_866a5.dir/OpenMPCheckVersion.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-qcmag6/OpenMPCheckVersion.cpp
-        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp  CMakeFiles/cmTC_866a5.dir/OpenMPCheckVersion.cpp.obj -o cmTC_866a5.exe -Wl,--out-implib,libcmTC_866a5.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_3bbfb
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -fopenmp -std=c++17 -o CMakeFiles/cmTC_3bbfb.dir/OpenMPCheckVersion.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-wvdmjl/OpenMPCheckVersion.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe -fopenmp  CMakeFiles/cmTC_3bbfb.dir/OpenMPCheckVersion.cpp.obj -o cmTC_3bbfb.exe -Wl,--out-implib,libcmTC_3bbfb.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
         
       exitCode: 0
   -
@@ -5360,8 +5091,6 @@ events:
       - "pkg-config"
       - "pkgconf"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -5407,7 +5136,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/bin/"
       - "C:/Program Files/sbin/"
       - "C:/Program Files/"
@@ -5421,24 +5149,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/sbin/"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config.bat.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config.bat.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config.bat"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkg-config"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkgconf.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkgconf.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/pkgconf"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config.bat.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config.bat.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config.bat"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkg-config"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkgconf.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkgconf.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/pkgconf"
       - "D:/Program Files/Microsoft MPI/Bin/pkg-config.bat.com"
       - "D:/Program Files/Microsoft MPI/Bin/pkg-config.bat.exe"
       - "D:/Program Files/Microsoft MPI/Bin/pkg-config.bat"
@@ -5707,8 +5417,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/bin/pkg-config.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -5754,7 +5462,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -5785,12 +5492,6 @@ events:
       - "lamexec"
       - "srun"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/bin/"
       - "D:/Program Files/Microsoft MPI/Bin/sbin/"
       - "D:/Program Files/Microsoft MPI/Bin/"
@@ -5926,9 +5627,6 @@ events:
       - "D:/Program Files/Antigravity/bin/bin/"
       - "D:/Program Files/Antigravity/bin/sbin/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/bin/bin/"
       - "C:/Program Files/bin/sbin/"
       - "C:/Program Files/bin/"
@@ -5966,24 +5664,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/sbin/"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpiexec"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpiexec"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpiexec"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpiexec"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpiexec"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpiexec.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpiexec.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpiexec"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpiexec.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpiexec.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpiexec"
@@ -5994,8 +5674,6 @@ events:
     found: "D:/Program Files/Microsoft MPI/Bin/mpiexec.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -6041,7 +5719,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -6253,8 +5930,6 @@ events:
     found: false
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -6300,7 +5975,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -6343,12 +6017,6 @@ events:
       - "mpc++_r"
       - "mpicxx.bat"
     candidate_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/bin/"
       - "D:/Program Files/Microsoft MPI/Bin/sbin/"
       - "D:/Program Files/Microsoft MPI/Bin/"
@@ -6484,9 +6152,6 @@ events:
       - "D:/Program Files/Antigravity/bin/bin/"
       - "D:/Program Files/Antigravity/bin/sbin/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/bin/bin/"
       - "C:/Program Files/bin/sbin/"
       - "C:/Program Files/bin/"
@@ -6524,24 +6189,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/sbin/"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/"
     searched_directories:
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++"
@@ -6947,15 +6594,6 @@ events:
       - "D:/Program Files/Antigravity/bin/mpig++.com"
       - "D:/Program Files/Antigravity/bin/mpig++.exe"
       - "D:/Program Files/Antigravity/bin/mpig++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++"
       - "C:/Program Files/bin/bin/mpig++.com"
       - "C:/Program Files/bin/bin/mpig++.exe"
       - "C:/Program Files/bin/bin/mpig++"
@@ -7064,24 +6702,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++.com"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++.exe"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++"
@@ -7487,15 +7107,6 @@ events:
       - "D:/Program Files/Antigravity/bin/mpg++.com"
       - "D:/Program Files/Antigravity/bin/mpg++.exe"
       - "D:/Program Files/Antigravity/bin/mpg++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++"
       - "C:/Program Files/bin/bin/mpg++.com"
       - "C:/Program Files/bin/bin/mpg++.exe"
       - "C:/Program Files/bin/bin/mpg++"
@@ -7604,24 +7215,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++.com"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++.exe"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpig++_r"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++_r.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++_r.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpig++_r"
@@ -8027,15 +7620,6 @@ events:
       - "D:/Program Files/Antigravity/bin/mpig++_r.com"
       - "D:/Program Files/Antigravity/bin/mpig++_r.exe"
       - "D:/Program Files/Antigravity/bin/mpig++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpig++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpig++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpig++_r"
       - "C:/Program Files/bin/bin/mpig++_r.com"
       - "C:/Program Files/bin/bin/mpig++_r.exe"
       - "C:/Program Files/bin/bin/mpig++_r"
@@ -8144,24 +7728,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++_r.com"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++_r.exe"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpig++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++_r.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++_r.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpg++_r"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++_r.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++_r.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpg++_r"
@@ -8567,15 +8133,6 @@ events:
       - "D:/Program Files/Antigravity/bin/mpg++_r.com"
       - "D:/Program Files/Antigravity/bin/mpg++_r.exe"
       - "D:/Program Files/Antigravity/bin/mpg++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpg++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpg++_r"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++_r.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++_r.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpg++_r"
       - "C:/Program Files/bin/bin/mpg++_r.com"
       - "C:/Program Files/bin/bin/mpg++_r.exe"
       - "C:/Program Files/bin/bin/mpg++_r"
@@ -8684,24 +8241,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++_r.com"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++_r.exe"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpg++_r"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpigxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpigxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpigxx"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpigxx.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpigxx.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpigxx"
@@ -9107,15 +8646,6 @@ events:
       - "D:/Program Files/Antigravity/bin/mpigxx.com"
       - "D:/Program Files/Antigravity/bin/mpigxx.exe"
       - "D:/Program Files/Antigravity/bin/mpigxx"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpigxx.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpigxx.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/bin/mpigxx"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpigxx.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpigxx.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/sbin/mpigxx"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpigxx.com"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpigxx.exe"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/mpigxx"
       - "C:/Program Files/bin/bin/mpigxx.com"
       - "C:/Program Files/bin/bin/mpigxx.exe"
       - "C:/Program Files/bin/bin/mpigxx"
@@ -9224,24 +8754,6 @@ events:
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpigxx.com"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpigxx.exe"
       - "C:/Program Files (x86)/alchemy_hpc_mpi/mpigxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/bin/mpicxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/sbin/mpicxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/mpicxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/bin/mpicxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/sbin/mpicxx"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpicxx.com"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpicxx.exe"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/mpicxx"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpicxx.com"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpicxx.exe"
       - "D:/Program Files/Microsoft MPI/Bin/bin/mpicxx"
@@ -9513,8 +9025,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/bin/mpicxx.exe"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -9560,7 +9070,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -9592,8 +9101,6 @@ events:
       - "D:/compiler/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.1.0/"
       - "D:/compiler/msys64/ucrt64/lib/gcc/"
       - "D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/lib/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -9639,7 +9146,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/lib/"
       - "C:/Program Files/"
       - "C:/Program Files (x86)/lib/"
@@ -9659,10 +9165,6 @@ events:
       - "D:/compiler/msys64/ucrt64/lib/gcc/"
       - "D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/lib/"
       - "D:/compiler/msys64/ucrt64/x86_64-w64-mingw32/lib/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
@@ -9753,8 +9255,6 @@ events:
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/lib/"
       - "C:/Program Files/lib/"
       - "C:/Program Files/"
@@ -9778,8 +9278,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -9825,7 +9323,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -9857,8 +9354,6 @@ events:
       - "mpi.h"
     candidate_directories:
       - "D:/compiler/msys64/ucrt64/include/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/debugCommand/"
-      - "C:/Users/Administrator/AppData/Roaming/Code/User/globalStorage/github.copilot-chat/copilotCli/"
       - "D:/Program Files/Microsoft MPI/Bin/"
       - "D:/Program Files/Python310/Scripts/"
       - "D:/Program Files/Python310/"
@@ -9904,7 +9399,6 @@ events:
       - "C:/Users/Administrator/go/bin/"
       - "C:/Users/Administrator/AppData/Roaming/npm/"
       - "D:/Program Files/Antigravity/bin/"
-      - "C:/Users/Administrator/.vscode/extensions/ms-python.debugpy-2026.6.0-win32-x64/bundled/scripts/noConfigScripts/"
       - "C:/Program Files/include/"
       - "C:/Program Files/"
       - "C:/Program Files (x86)/include/"
@@ -9916,8 +9410,6 @@ events:
     found: "D:/compiler/msys64/ucrt64/include/"
     search_context:
       ENV{PATH}:
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
-        - "c:\\Users\\Administrator\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\copilotCli"
         - "D:\\Program Files\\Microsoft MPI\\Bin\\"
         - "D:\\Program Files\\Python310\\Scripts\\"
         - "D:\\Program Files\\Python310"
@@ -9963,7 +9455,6 @@ events:
         - "C:\\Users\\Administrator\\go\\bin"
         - "C:\\Users\\Administrator\\AppData\\Roaming\\npm"
         - "D:\\Program Files\\Antigravity\\bin"
-        - "c:\\Users\\Administrator\\.vscode\\extensions\\ms-python.debugpy-2026.6.0-win32-x64\\bundled\\scripts\\noConfigScripts"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/alchemy_hpc_mpi"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
@@ -9979,8 +9470,8 @@ events:
       - "CMakeLists.txt:51 (find_package)"
     description: "The MPI test test_mpi for CXX in mode normal"
     directories:
-      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-xmg819"
-      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-xmg819"
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-r2cacp"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-r2cacp"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -9990,11 +9481,11 @@ events:
       variable: "MPI_RESULT_CXX_test_mpi_normal"
       cached: true
       stdout: |
-        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-xmg819'
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-r2cacp'
         
-        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_927af
-        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_927af.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-xmg819/test_mpi.cpp
-        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_927af.dir/test_mpi.cpp.obj -o cmTC_927af.exe -Wl,--out-implib,libcmTC_927af.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_907cd
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_907cd.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-r2cacp/test_mpi.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_907cd.dir/test_mpi.cpp.obj -o cmTC_907cd.exe -Wl,--out-implib,libcmTC_907cd.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
         
       exitCode: 0
   -
@@ -10005,8 +9496,8 @@ events:
       - "CMakeLists.txt:51 (find_package)"
     description: "The MPI test test_mpi for CXX in mode MPICXX"
     directories:
-      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-713y25"
-      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-713y25"
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-c7d8w4"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-c7d8w4"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -10016,11 +9507,11 @@ events:
       variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
       cached: true
       stdout: |
-        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-713y25'
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-c7d8w4'
         
-        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_ff08c
-        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_ff08c.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-713y25/test_mpi.cpp
-        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_ff08c.dir/test_mpi.cpp.obj -o cmTC_ff08c.exe -Wl,--out-implib,libcmTC_ff08c.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_27353
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_27353.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-c7d8w4/test_mpi.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_27353.dir/test_mpi.cpp.obj -o cmTC_27353.exe -Wl,--out-implib,libcmTC_27353.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
         
       exitCode: 0
 ...

@@ -298,6 +298,25 @@ mpiexec -hosts 2 localhost 1 desktop-s3pfjin 1 hostname
 - Kalau cepat mencetak dua hostname → MS-MPI remote sudah jalan; tinggal pakai GUI.
 - Kalau hang/timeout/`CreateRpcBinding error 1749` → masalah di `smpd`/`cmdkey`/firewall di slave, **bukan** di kode GUI. Pastikan `run_slaveN.bat` sudah dijalankan dan window `SMPD` hidup di slave.
 
+### Run/Compare Jalan Tapi Menggantung (tidak selesai-selesai)
+
+Kalau process sudah ke-launch (command muncul) tapi tidak ada output dan tidak selesai, biasanya **deadlock di komunikasi antar-rank MPI** karena **host multi-homed**.
+
+Tiap rank MPI harus saling membuka koneksi socket. Kalau sebuah PC punya banyak adapter — Wi-Fi, Ethernet, **VPN (Tailscale/ZeroTier)**, alamat **169.254.x.x** (APIPA), atau adapter virtual VMware/VirtualBox/Hyper-V — MPI bisa memberi slave alamat di adapter yang salah. Slave lalu mencoba connect ke alamat tak terjangkau dan menggantung di `MPI_Init` (sebelum ada output).
+
+Solusi:
+
+- GUI sudah otomatis menambahkan `-genv MPICH_NETMASK <subnet>/255.255.255.0` (diambil dari IP slave yang di-Connect), memaksa MPI hanya memakai subnet hotspot.
+- **Matikan VPN seperti Tailscale** selama run (paling sering jadi biang hang).
+- Pakai **IP** (bukan hostname) saat Add manual, supaya subnet bisa diturunkan dengan benar.
+- Tes manual dari master untuk memastikan:
+
+```powershell
+mpiexec -genv MPICH_NETMASK 10.190.116.0/255.255.255.0 -hosts 2 <IP_MASTER> 1 <IP_SLAVE> 1 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe --data C:\tubes-2\data\recipes.json --tiers C:\tubes-2\data\tiers.json --algorithm bfs --mode multiple --render json --output C:\tubes-2\results\cli_test --target Brick --limit 5 --split-depth 1
+```
+
+Ganti `<IP_MASTER>`/`<IP_SLAVE>` dengan IP di subnet yang sama, dan sesuaikan angka `255.255.255.0` bila subnet bukan /24.
+
 ### MPI Lokal Berhasil Tapi Multi-PC Gagal
 
 Ini normal saat konfigurasi remote belum siap. Command lokal:

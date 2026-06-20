@@ -1167,13 +1167,34 @@ class AlchemyGui(ctk.CTk):
                 args.extend(["--baseline-ms", self.baseline_ms.get().strip()])
         return args
 
+    def _mpi_netmask_args(self, entries):
+        """Paksa MPI memakai subnet cluster agar tidak hang di host multi-homed
+        (VPN/Tailscale, 169.254 link-local, adapter virtual). Subnet diturunkan
+        dari IP host yang dipakai; default mask /24."""
+        candidate = None
+        for host, _slots, _status in entries:
+            try:
+                ip = ipaddress.ip_address(host)
+            except ValueError:
+                continue
+            if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+                candidate = host
+                break
+        if candidate is None:
+            guess = primary_local_ip()
+            if guess and guess != "127.0.0.1":
+                candidate = guess
+        if not candidate:
+            return []
+        return ["-genv", "MPICH_NETMASK", f"{candidate}/255.255.255.0"]
+
     def _mpi_prefix(self):
         np_value = self.mpi_np.get().strip() or "2"
         if os.name == "nt" and self.multi_node_enabled.get():
             entries = self._host_entries(connected_only=True)
             if not entries:
                 raise ValueError("Multi-node is enabled but no host is connected. Run Test/Connect first.")
-            args = ["mpiexec", "-hosts", str(len(entries))]
+            args = ["mpiexec"] + self._mpi_netmask_args(entries) + ["-hosts", str(len(entries))]
             for host, slots, _ in entries:
                 args.extend([host, str(slots)])
             args.extend(["-wdir", str(ROOT_DIR)])
@@ -1293,7 +1314,8 @@ class AlchemyGui(ctk.CTk):
             raise ValueError(
                 f"{variant_text} has {len(slot_values)} values, but current compare host order has {len(order)} hosts: {labels}."
             )
-        args = ["mpiexec", "-hosts", str(len(order))]
+        netmask_entries = [(item["host"], item["slots"], item["status"]) for item in order]
+        args = ["mpiexec"] + self._mpi_netmask_args(netmask_entries) + ["-hosts", str(len(order))]
         host_profile = []
         for item, slots in zip(order, slot_values):
             host = item["host"]
