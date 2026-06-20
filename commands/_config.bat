@@ -29,3 +29,8 @@ set "S2_IP=10.190.116.181"
 
 :: Jumlah debug log smpd (0=diam, 3=verbose). 3 enak buat lihat aktivitas jaringan.
 set "SMPD_DEBUG=3"
+
+:: Paksa NTLM (bukan Kerberos). WAJIB di jaringan workgroup/hotspot tanpa domain,
+:: kalau tidak smpd error 1726 "RestrictedKrbHost ... unable to connect".
+:: Dibaca oleh smpd & mpiexec saat start (lewat environment), bukan via -genv.
+set "MPIEXEC_DISABLE_KERB=2"

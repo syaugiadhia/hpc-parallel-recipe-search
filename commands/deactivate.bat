@@ -29,10 +29,16 @@ if defined S1_IP cmdkey /delete:"%S1_IP%" >nul 2>&1
 cmdkey /delete:"%S2_HOST%" >nul 2>&1
 if defined S2_IP cmdkey /delete:"%S2_IP%" >nul 2>&1
 
-echo [4/4] Matikan SMPD daemon
+echo [4/6] Matikan SMPD daemon
 taskkill /IM smpd.exe /F >nul 2>&1
 
+echo [5/6] Aktifkan kembali IPv6 di semua adapter
+powershell -NoProfile -Command "Get-NetAdapter | Enable-NetAdapterBinding -ComponentID ms_tcpip6 -ErrorAction SilentlyContinue"
+
+echo [6/6] Aktifkan kembali adapter yang ter-disable (Tailscale, dll)
+powershell -NoProfile -Command "Get-NetAdapter | Where-Object { $_.Status -eq 'Disabled' } | Enable-NetAdapter -Confirm:$false -ErrorAction SilentlyContinue"
+
 echo.
-echo Pengaturan keamanan sudah dikembalikan.
+echo Pengaturan keamanan dan jaringan sudah dikembalikan.
 pause
 endlocal

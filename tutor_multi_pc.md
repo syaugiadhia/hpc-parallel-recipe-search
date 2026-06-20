@@ -298,6 +298,39 @@ mpiexec -hosts 2 localhost 1 desktop-s3pfjin 1 hostname
 - Kalau cepat mencetak dua hostname → MS-MPI remote sudah jalan; tinggal pakai GUI.
 - Kalau hang/timeout/`CreateRpcBinding error 1749` → masalah di `smpd`/`cmdkey`/firewall di slave, **bukan** di kode GUI. Pastikan `run_slaveN.bat` sudah dijalankan dan window `SMPD` hidup di slave.
 
+### Error 1726 "Failed to connect to SMPD Manager Instance"
+
+Gejala: smpd berhasil konek ke slave port `8677` (bahkan `Test-NetConnection <slave> -Port 8677` = `True`), tapi gagal saat **re-connect ke port manager dinamis**:
+
+```text
+posting a re-connect to 10.190.116.205:60082 ... ERROR: Failed to connect to SMPD Manager Instance error 1726
+```
+
+Penyebab: **IPv6 didahulukan + host multi-homed.** Cek dengan:
+
+```powershell
+Resolve-DnsName <hostname-lawan>
+```
+
+Kalau muncul record `AAAA` (IPv6, mis. `2400:...` atau `fe80::`) di atas `A` (IPv4), smpd memakai jalur IPv6. Di hotspot HP, IPv6 cellular tidak bisa peer-to-peer, jadi manager smpd tak terjangkau → 1726. Adapter `169.254.x` (APIPA) dan VPN (Tailscale) memperparah.
+
+Solusi (sudah otomatis lewat `commands/_netfix.bat` yang dipanggil tiap `run_*.bat`):
+
+- Matikan IPv6 di semua adapter.
+- Disable adapter Tailscale dan adapter ber-IP `169.254.x`.
+- Sisakan hanya satu IPv4 `10.190.116.x` per PC.
+
+Manual (kalau perlu, PowerShell as Admin, di tiap PC):
+
+```powershell
+Get-NetAdapter | Disable-NetAdapterBinding -ComponentID ms_tcpip6
+Disable-NetAdapter -InterfaceAlias 'Tailscale' -Confirm:$false
+Get-NetIPAddress -AddressFamily IPv4 | ? { $_.IPAddress -like '169.254.*' } |
+  % { Disable-NetAdapter -InterfaceIndex $_.InterfaceIndex -Confirm:$false }
+```
+
+Setelah itu **restart smpd** (tutup window SMPD → jalankan ulang `run_*.bat`). `deactivate.bat` mengembalikan IPv6 dan adapter.
+
 ### Run/Compare Jalan Tapi Menggantung (tidak selesai-selesai)
 
 Kalau process sudah ke-launch (command muncul) tapi tidak ada output dan tidak selesai, biasanya **deadlock di komunikasi antar-rank MPI** karena **host multi-homed**.

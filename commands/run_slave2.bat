@@ -26,7 +26,10 @@ netsh advfirewall set allprofiles state off >nul
 echo [3/4] Stop MS-MPI Launch Service (cegah bentrok port 8677 dgn smpd)
 net stop MsMpiLaunchSvc >nul 2>&1
 
-echo [4/4] Jalankan SMPD daemon (window terpisah)
+echo [4/5] Perbaiki jaringan (matikan IPv6 + adapter sampah)
+call "%~dp0_netfix.bat"
+
+echo [5/5] Jalankan SMPD daemon (window terpisah)
 start "SMPD" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.
