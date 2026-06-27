@@ -2,7 +2,6 @@
 title CLEANUP - Little Alchemy HPC MPI
 setlocal
 
-:: ---------- Self-elevate ke Administrator ----------
 net session >nul 2>&1
 if not "%errorLevel%"=="0" (
     echo Meminta hak akses Administrator...
@@ -13,9 +12,9 @@ if not "%errorLevel%"=="0" (
 :: ---------- Muat konfigurasi ----------
 call "%~dp0_config.bat"
 
-echo ============================================================
+echo 
 echo  MENGEMBALIKAN PENGATURAN KEAMANAN
-echo ============================================================
+echo 
 
 echo [1/4] Nyalakan kembali firewall
 netsh advfirewall set allprofiles state on >nul

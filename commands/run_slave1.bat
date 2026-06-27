@@ -2,7 +2,6 @@
 title SLAVE 1 - Little Alchemy HPC MPI
 setlocal
 
-:: ---------- Self-elevate ke Administrator ----------
 net session >nul 2>&1
 if not "%errorLevel%"=="0" (
     echo Meminta hak akses Administrator...
@@ -10,12 +9,19 @@ if not "%errorLevel%"=="0" (
     exit /b
 )
 
-:: ---------- Muat konfigurasi ----------
 call "%~dp0_config.bat"
 
-echo ============================================================
+if not exist "%MSMPI_BIN%\smpd.exe" (
+    echo [error] smpd.exe tidak ditemukan di "%MSMPI_BIN%".
+    echo         Install MS-MPI atau perbaiki MSMPI_BIN di commands\_config.bat.
+    pause
+    exit /b 1
+)
+if not defined S1_SLOTS set "S1_SLOTS=2"
+
+echo
 echo  SETUP SLAVE 1 MS-MPI
-echo ============================================================
+echo
 
 echo [1/4] Registry: izinkan remote launch akun lokal
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f >nul

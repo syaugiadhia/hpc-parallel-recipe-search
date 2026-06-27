@@ -60,6 +60,28 @@ SLAVE_AGENT_PORT = 50555
 SLAVE_DISCOVERY_PORT = 50556
 INVITE_TIMEOUT_SECONDS = 30
 DISCOVERY_MESSAGE = b"ALCHEMY_HPC_DISCOVER_V1"
+# Port tempat process manager MS-MPI (smpd / MsMpiLaunchSvc) mendengarkan.
+# Jalur `mpiexec -hosts ...` butuh daemon ini hidup di tiap node.
+SMPD_PORT = 8677
+
+
+def msmpi_bin_dir() -> Path:
+    """Lokasi folder Bin MS-MPI (berisi smpd.exe & mpiexec.exe)."""
+    env = os.environ.get("MSMPI_BIN")
+    if env:
+        candidate = Path(env)
+        if candidate.exists():
+            return candidate
+    return Path(r"C:\Program Files\Microsoft MPI\Bin")
+
+
+def smpd_reachable(host: str, timeout: float = 2.0) -> bool:
+    """True bila ada yang mendengarkan di host:8677 (smpd/launch service hidup)."""
+    try:
+        with socket.create_connection((host, SMPD_PORT), timeout=timeout):
+            return True
+    except OSError:
+        return False
 
 
 def local_ipv4_subnets():
@@ -323,6 +345,7 @@ class AlchemyGui(ctk.CTk):
         self.pending_invite_active = False
         self.pending_invite_lock = threading.Lock()
         self.slave_advertised_slots = str(os.cpu_count() or 1)
+        self.smpd_proc = None  # handle smpd.exe yang kita start sendiri (kalau ada)
 
         self._build_vars()
         self._build_layout()
@@ -330,6 +353,15 @@ class AlchemyGui(ctk.CTk):
         self._refresh_mode_state()
         self._apply_cli_preset(preset)
         self.after(100, self._drain_log_queue)
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
+
+    def _on_close(self):
+        """Matikan smpd yang kita start sebelum window ditutup."""
+        try:
+            self._stop_local_smpd()
+        except Exception:
+            pass
+        self.destroy()
 
     def _apply_cli_preset(self, preset):
         """Terapkan preset dari argumen CLI (dipakai oleh run_master/run_slaveN.bat)."""
@@ -872,6 +904,11 @@ class AlchemyGui(ctk.CTk):
         self.cluster_role.set("Slave")
         self.slave_advertised_slots = str(slots)
         self.slave_stop_event.clear()
+        # Nyalakan smpd lokal supaya master benar-benar bisa meluncurkan proses MPI ke node ini.
+        # Tanpa ini, handshake invite/accept sukses tapi `mpiexec -hosts` master akan hang.
+        if not self._ensure_local_smpd():
+            self._log("Peringatan: smpd lokal belum siap. Jalankan run_slaveN.bat (Administrator) "
+                      "agar master bisa launch ke node ini.\n")
         self.slave_status.set(f"Slave waiting on {primary_local_ip()}:{SLAVE_AGENT_PORT}")
         self._log(f"Slave agent started at {primary_local_ip()}:{SLAVE_AGENT_PORT}. Waiting for master invite.\n")
 
@@ -893,6 +930,7 @@ class AlchemyGui(ctk.CTk):
         if self.pending_invite:
             self._respond_to_invite({"status": "rejected", "message": "slave stopped"})
         self._clear_pending_invite("Slave stopped.")
+        self._stop_local_smpd()
         self.slave_status.set("Slave stopped")
         self._log("Slave agent stopped.\n")
 
@@ -1186,7 +1224,92 @@ class AlchemyGui(ctk.CTk):
                 candidate = guess
         if not candidate:
             return []
-        return ["-genv", "MPICH_NETMASK", f"{candidate}/255.255.255.0"]
+        # MS-MPI memakai MSMPI_NETMASK (BUKAN MPICH_NETMASK milik MPICH/Hydra; itu diabaikan).
+        # Kirim alamat network /24, bukan IP host, lalu MS-MPI memilih adapter di subnet itu
+        # supaya rank tidak hang mencoba adapter VPN/APIPA(169.254)/IPv6.
+        try:
+            network = ipaddress.ip_network(f"{candidate}/24", strict=False)
+            base = str(network.network_address)
+        except ValueError:
+            base = candidate
+        return ["-genv", "MSMPI_NETMASK", f"{base}/255.255.255.0"]
+
+    def _ensure_local_smpd(self, timeout=8.0):
+        """Pastikan ada process manager MS-MPI (smpd) hidup di 127.0.0.1:8677.
+
+        Jalur `mpiexec -hosts ...` butuh daemon ini di host ini (master = host pertama,
+        slave = tujuan launch). Kalau belum ada, stop MsMpiLaunchSvc (cegah rebutan port)
+        lalu start smpd sendiri. Mengembalikan True kalau akhirnya 8677 listen.
+        """
+        if smpd_reachable("127.0.0.1", timeout=0.5):
+            return True
+        smpd_exe = msmpi_bin_dir() / "smpd.exe"
+        if not smpd_exe.exists():
+            self.log_queue.put(("log", f"smpd.exe tidak ditemukan di {smpd_exe.parent}. Set MSMPI_BIN atau install MS-MPI.\n"))
+            return False
+        # Bebaskan port 8677 dari MsMpiLaunchSvc agar smpd manual bisa pakai.
+        try:
+            subprocess.run(["net", "stop", "MsMpiLaunchSvc"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
+        except Exception:
+            pass
+        self.log_queue.put(("log", f"Menjalankan smpd daemon: {smpd_exe} -d 0\n"))
+        try:
+            creationflags = subprocess.CREATE_NEW_CONSOLE if os.name == "nt" else 0
+            self.smpd_proc = subprocess.Popen([str(smpd_exe), "-d", "0"], creationflags=creationflags)
+        except Exception as exc:
+            self.log_queue.put(("log", f"Gagal start smpd: {exc}\n"))
+            return False
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if smpd_reachable("127.0.0.1", timeout=0.5):
+                self.log_queue.put(("log", "smpd siap di 127.0.0.1:8677.\n"))
+                return True
+            time.sleep(0.3)
+        self.log_queue.put(("log", "smpd tidak listen di 8677 setelah timeout.\n"))
+        return False
+
+    def _stop_local_smpd(self):
+        """Matikan smpd yang kita start (dipanggil saat Stop Slave / app close)."""
+        proc = self.smpd_proc
+        self.smpd_proc = None
+        if proc is None:
+            return
+        try:
+            if os.name == "nt":
+                subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            else:
+                proc.terminate()
+        except Exception:
+            pass
+
+    def _multi_node_preflight(self, entries):
+        """Validasi semua host punya smpd hidup di 8677 sebelum launch multi-node.
+
+        Mengembalikan (ok: bool, message: str). Master (host pertama / status master)
+        di-auto-start smpd lokalnya; host lain harus sudah hidup (lewat Start Slave /
+        run_slaveN.bat). Ini mengubah hang ~60 dtk jadi pesan jelas.
+        """
+        self._ensure_local_smpd()
+        local_names = {socket.gethostname().lower(), "localhost", "127.0.0.1", primary_local_ip()}
+        for address in local_ipv4_addresses():
+            local_names.add(address)
+        unreachable = []
+        for host, _slots, status in entries:
+            if status == "master" or host.strip().lower() in local_names:
+                if not smpd_reachable("127.0.0.1"):
+                    unreachable.append(host)
+                continue
+            if not smpd_reachable(host):
+                unreachable.append(host)
+        if unreachable:
+            hosts_text = ", ".join(unreachable)
+            return False, (
+                f"smpd (port 8677) belum jalan di: {hosts_text}.\n\n"
+                "Di host master jalankan commands/run_master.bat, dan di tiap slave jalankan "
+                "commands/run_slaveN.bat (atau klik Start Slave di GUI slave) supaya smpd hidup. "
+                "Tes cepat: mpiexec -hosts 2 <IP_MASTER> 1 <IP_SLAVE> 1 hostname"
+            )
+        return True, ""
 
     def _mpi_prefix(self):
         np_value = self.mpi_np.get().strip() or "2"
@@ -1249,6 +1372,26 @@ class AlchemyGui(ctk.CTk):
         commands = self._command_for_build()
         self._start_commands(commands, clear=True)
 
+    def _preflight_commands(self, commands):
+        """Kalau command memakai jalur `-hosts` (multi-node), pastikan smpd siap dulu.
+
+        Mengembalikan True kalau boleh lanjut. Kalau tidak siap, tampilkan pesan jelas
+        supaya tidak menggantung ~60 dtk di MPI_Init.
+        """
+        needs_hosts = any(
+            isinstance(command, (list, tuple)) and "-hosts" in command for command in commands
+        )
+        if not needs_hosts:
+            return True
+        try:
+            entries = self._host_entries(connected_only=True)
+        except Exception:
+            entries = []
+        ok, message = self._multi_node_preflight(entries)
+        if not ok:
+            messagebox.showerror("smpd belum siap (multi-node)", message)
+        return ok
+
     def run_search(self):
         self.last_output_prefix = Path(self.output_prefix.get())
         self.last_format = self.image_format.get()
@@ -1256,6 +1399,8 @@ class AlchemyGui(ctk.CTk):
             command = self._command_for_run("json")
         except Exception as exc:
             messagebox.showerror("Invalid command", str(exc))
+            return
+        if not self._preflight_commands([command]):
             return
         self._start_commands([command], clear=True)
 
@@ -1269,6 +1414,8 @@ class AlchemyGui(ctk.CTk):
             command = self._command_for_run("full")
         except Exception as exc:
             messagebox.showerror("Invalid command", str(exc))
+            return
+        if not self._preflight_commands([command]):
             return
         self._start_commands([command], clear=False)
 
@@ -1571,6 +1718,8 @@ class AlchemyGui(ctk.CTk):
             specs = self._compare_variants()
         except Exception as exc:
             messagebox.showerror("Invalid compare variants", str(exc))
+            return
+        if not self._preflight_commands([spec["command"] for spec in specs]):
             return
         csv_path = Path(f"{self.output_prefix.get()}_compare.csv")
         self._start_compare(specs, csv_path)

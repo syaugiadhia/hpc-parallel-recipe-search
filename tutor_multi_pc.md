@@ -2,6 +2,34 @@
 
 Dokumen ini menjelaskan cara menjalankan project Little Alchemy HPC di 2 komputer atau lebih memakai GUI Python dan MS-MPI di Windows.
 
+## Kunci: Jalur `-hosts` Butuh `smpd` di Port 8677
+
+Multi-node memakai `mpiexec -hosts ...`. Jalur ini **butuh process manager MS-MPI (`smpd`)
+mendengarkan di port `8677` di SETIAP node** (master juga, karena master = host pertama). Kalau
+`smpd` tidak hidup, gejalanya:
+
+```text
+ERROR: Failed RpcCliCreateContext error 1722
+Aborting: mpiexec ... is unable to connect to the smpd service on <host>:8677
+```
+
+atau hang ~60 detik lalu gagal. Inilah penyebab paling umum "multi-PC tidak jalan".
+
+Sekarang GUI sudah lebih pintar:
+
+- **Start Slave** otomatis menyalakan `smpd` lokal (stop `MsMpiLaunchSvc` dulu agar tidak rebutan
+  port), jadi node slave langsung siap di-launch master.
+- Sebelum `Run`/`Compare` multi-node, master melakukan **preflight**: cek `smpd` di tiap host. Kalau
+  ada yang mati, muncul pesan jelas (bukan hang 60 detik) menyuruh jalankan `run_*.bat`/`Start Slave`.
+
+### Tes Cepat 1 PC (Loopback) — Tanpa PC Kedua
+
+Untuk memastikan jalur `-hosts` benar-benar jalan di mesinmu, dobel-klik
+`commands/_smoke_local.bat`. Script ini start `smpd` lokal lalu menjalankan
+`mpiexec -hosts 1 localhost 2 ...` dan `mpiexec -hosts 1 %COMPUTERNAME% 2 ...`. **Lulus** bila
+output memuat `Processes: 2`, `Recipes found` > 0, dan `Rank hostnames: [...]` berisi hostname.
+Kalau loopback lulus, mekanisme multi-node sudah benar; tinggal urusan jaringan antar-PC.
+
 ## Cara Cepat (Pakai Script Otomatis)
 
 Folder `commands/` berisi script yang membereskan semua konfigurasi MS-MPI secara otomatis (registry, firewall, kredensial `cmdkey`, `smpd` daemon, stop launch service) lalu membuka GUI di role yang benar.
@@ -339,13 +367,13 @@ Tiap rank MPI harus saling membuka koneksi socket. Kalau sebuah PC punya banyak 
 
 Solusi:
 
-- GUI sudah otomatis menambahkan `-genv MPICH_NETMASK <subnet>/255.255.255.0` (diambil dari IP slave yang di-Connect), memaksa MPI hanya memakai subnet hotspot.
+- GUI sudah otomatis menambahkan `-genv MSMPI_NETMASK <subnet>/255.255.255.0` (diambil dari IP slave yang di-Connect), memaksa MPI hanya memakai subnet hotspot. (Catatan penting: MS-MPI memakai `MSMPI_NETMASK`, **bukan** `MPICH_NETMASK` milik MPICH/Hydra — env var yang salah akan diabaikan diam-diam.)
 - **Matikan VPN seperti Tailscale** selama run (paling sering jadi biang hang).
 - Pakai **IP** (bukan hostname) saat Add manual, supaya subnet bisa diturunkan dengan benar.
 - Tes manual dari master untuk memastikan:
 
 ```powershell
-mpiexec -genv MPICH_NETMASK 10.190.116.0/255.255.255.0 -hosts 2 <IP_MASTER> 1 <IP_SLAVE> 1 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe --data C:\tubes-2\data\recipes.json --tiers C:\tubes-2\data\tiers.json --algorithm bfs --mode multiple --render json --output C:\tubes-2\results\cli_test --target Brick --limit 5 --split-depth 1
+mpiexec -genv MSMPI_NETMASK 10.190.116.0/255.255.255.0 -hosts 2 <IP_MASTER> 1 <IP_SLAVE> 1 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe --data C:\tubes-2\data\recipes.json --tiers C:\tubes-2\data\tiers.json --algorithm bfs --mode multiple --render json --output C:\tubes-2\results\cli_test --target Brick --limit 5 --split-depth 1
 ```
 
 Ganti `<IP_MASTER>`/`<IP_SLAVE>` dengan IP di subnet yang sama, dan sesuaikan angka `255.255.255.0` bila subnet bukan /24.
