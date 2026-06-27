@@ -26,11 +26,14 @@ netsh advfirewall set allprofiles state off >nul
 echo [3/4] Stop MS-MPI Launch Service (cegah bentrok port 8677 dgn smpd)
 net stop MsMpiLaunchSvc >nul 2>&1
 
-echo [4/5] Perbaiki jaringan (matikan IPv6 + adapter sampah)
+echo [4/6] Perbaiki jaringan (matikan IPv6 + adapter sampah)
 call "%~dp0_netfix.bat"
 
-echo [5/5] Jalankan SMPD daemon (window terpisah)
-start "SMPD" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
+echo [5/6] Petakan hostname -^> IPv4 (hosts file)
+call "%~dp0_hostsfix.bat"
+
+echo [6/6] Jalankan SMPD daemon (window terpisah, cwd = PROJECT_DIR)
+start "SMPD" /D "%PROJECT_DIR%" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.
 echo Setup slave selesai. Membuka GUI (role Slave, %S1_SLOTS% slot, auto-start)...

@@ -35,8 +35,11 @@ taskkill /IM smpd.exe /F >nul 2>&1
 echo [5/6] Aktifkan kembali IPv6 di semua adapter
 powershell -NoProfile -Command "Get-NetAdapter | Enable-NetAdapterBinding -ComponentID ms_tcpip6 -ErrorAction SilentlyContinue"
 
-echo [6/6] Aktifkan kembali adapter yang ter-disable (Tailscale, dll)
+echo [6/7] Aktifkan kembali adapter yang ter-disable (Tailscale, dll)
 powershell -NoProfile -Command "Get-NetAdapter | Where-Object { $_.Status -eq 'Disabled' } | Enable-NetAdapter -Confirm:$false -ErrorAction SilentlyContinue"
+
+echo [7/7] Bersihkan entri hosts file tubes-mpi
+powershell -NoProfile -Command "$h=\"$env:WINDIR\System32\drivers\etc\hosts\"; Set-Content -Path $h (@(Get-Content $h -ErrorAction SilentlyContinue | Where-Object { $_ -notmatch '# tubes-mpi' })) -Encoding ASCII"
 
 echo.
 echo Pengaturan keamanan dan jaringan sudah dikembalikan.

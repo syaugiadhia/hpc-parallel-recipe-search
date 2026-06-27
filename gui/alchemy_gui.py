@@ -560,14 +560,14 @@ class AlchemyGui(ctk.CTk):
         row += 1
         ctk.CTkLabel(
             self.controls,
-            text="One variant per line: serial, openmp N, local N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT. multi/hybrid values include the master first. Master is not a slave. Example: hybrid 1x2,2x4,2x4 = Master 1 rank x 2 threads + each slave 2 ranks x 4 threads.",
+            text="One variant per line: serial, openmp N, mpi N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT. multi/hybrid values include the master first. Master is not a slave. Example: hybrid 1x2,2x4,2x4 = Master 1 rank x 2 threads + each slave 2 ranks x 4 threads.",
             anchor="w",
             wraplength=300,
         ).grid(row=row, column=0, sticky="ew", padx=8, pady=(0, 4))
         row += 1
         self.compare_variants_box = ctk.CTkTextbox(self.controls, height=82, wrap="none")
         self.compare_variants_box.grid(row=row, column=0, sticky="ew", padx=8, pady=4)
-        self.compare_variants_box.insert("1.0", "serial\nopenmp 4\nlocal 2\nhybrid-local 2x2\n")
+        self.compare_variants_box.insert("1.0", "serial\nopenmp 4\nmpi 2\nhybrid-local 2x2\n")
         row += 1
         ctk.CTkButton(self.controls, text="Run Compare", command=self.run_compare).grid(row=row, column=0, sticky="ew", padx=8, pady=4)
         row += 1
@@ -1167,26 +1167,24 @@ class AlchemyGui(ctk.CTk):
                 args.extend(["--baseline-ms", self.baseline_ms.get().strip()])
         return args
 
-    def _mpi_netmask_args(self, entries):
-        """Paksa MPI memakai subnet cluster agar tidak hang di host multi-homed
-        (VPN/Tailscale, 169.254 link-local, adapter virtual). Subnet diturunkan
-        dari IP host yang dipakai; default mask /24."""
-        candidate = None
-        for host, _slots, _status in entries:
-            try:
-                ip = ipaddress.ip_address(host)
-            except ValueError:
-                continue
-            if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
-                candidate = host
-                break
-        if candidate is None:
-            guess = primary_local_ip()
-            if guess and guess != "127.0.0.1":
-                candidate = guess
-        if not candidate:
-            return []
-        return ["-genv", "MPICH_NETMASK", f"{candidate}/255.255.255.0"]
+    def _mpi_host_token(self, host, status, index):
+        """Kembalikan token host untuk baris `-hosts` mpiexec.
+
+        Node master/lokal SELALU di-address `localhost` (persis pola reference
+        `tugas_lain_bisa/HPC` yang terbukti jalan). Meng-address rank-0 lewat
+        hostname asli di mesin multi-homed (Tailscale, 169.254 APIPA, dsb) bikin
+        smpd manager bind/connect ke adapter salah -> error 1726 / hang.
+        Slave tetap pakai hostname/IP apa adanya supaya cocok dgn cmdkey."""
+        if status == "master" or index == 0:
+            return "localhost"
+        key = (host or "").strip().lower()
+        if key in {"localhost", "127.0.0.1", "::1"}:
+            return "localhost"
+        if key == socket.gethostname().strip().lower():
+            return "localhost"
+        if key in {addr.lower() for addr in local_ipv4_addresses()}:
+            return "localhost"
+        return host
 
     def _mpi_prefix(self):
         np_value = self.mpi_np.get().strip() or "2"
@@ -1194,9 +1192,9 @@ class AlchemyGui(ctk.CTk):
             entries = self._host_entries(connected_only=True)
             if not entries:
                 raise ValueError("Multi-node is enabled but no host is connected. Run Test/Connect first.")
-            args = ["mpiexec"] + self._mpi_netmask_args(entries) + ["-hosts", str(len(entries))]
-            for host, slots, _ in entries:
-                args.extend([host, str(slots)])
+            args = ["mpiexec", "-hosts", str(len(entries))]
+            for index, (host, slots, status) in enumerate(entries):
+                args.extend([self._mpi_host_token(host, status, index), str(slots)])
             args.extend(["-wdir", str(ROOT_DIR)])
             return args
         if os.name == "nt":
@@ -1314,13 +1312,12 @@ class AlchemyGui(ctk.CTk):
             raise ValueError(
                 f"{variant_text} has {len(slot_values)} values, but current compare host order has {len(order)} hosts: {labels}."
             )
-        netmask_entries = [(item["host"], item["slots"], item["status"]) for item in order]
-        args = ["mpiexec"] + self._mpi_netmask_args(netmask_entries) + ["-hosts", str(len(order))]
+        args = ["mpiexec", "-hosts", str(len(order))]
         host_profile = []
-        for item, slots in zip(order, slot_values):
-            host = item["host"]
-            args.extend([host, str(slots)])
-            host_profile.append(f"{item['label']} {host}:{slots}")
+        for index, (item, slots) in enumerate(zip(order, slot_values)):
+            token = self._mpi_host_token(item["host"], item["status"], index)
+            args.extend([token, str(slots)])
+            host_profile.append(f"{item['label']} {token}:{slots}")
         args.extend(["-wdir", str(ROOT_DIR)])
         return args, ", ".join(host_profile)
 
@@ -1414,14 +1411,14 @@ class AlchemyGui(ctk.CTk):
                     "output_prefix": output_prefix,
                     "command": command,
                 }
-            elif keyword == "local":
+            elif keyword in ("mpi", "local"):
                 try:
                     process_count = int(rest)
                 except ValueError as exc:
-                    raise ValueError(f"Invalid local variant '{line}'. Expected: local N") from exc
+                    raise ValueError(f"Invalid mpi variant '{line}'. Expected: mpi N") from exc
                 if process_count < 1:
-                    raise ValueError(f"Invalid local process count in '{line}'")
-                slug = f"local_{process_count}"
+                    raise ValueError(f"Invalid mpi process count in '{line}'")
+                slug = f"mpi_{process_count}"
                 output_prefix = f"{base_prefix}_compare_{slug}"
                 command = (
                     self._local_mpi_prefix(process_count)
@@ -1429,8 +1426,8 @@ class AlchemyGui(ctk.CTk):
                     + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
                 )
                 spec = {
-                    "variant": f"local {process_count}",
-                    "engine": "mpi-local",
+                    "variant": f"mpi {process_count}",
+                    "engine": "mpi",
                     "processes": process_count,
                     "threads_per_rank": "1",
                     "total_workers": process_count,
@@ -1541,7 +1538,7 @@ class AlchemyGui(ctk.CTk):
                     }
             else:
                 raise ValueError(
-                    f"Unknown compare variant '{line}'. Use serial, openmp N, local N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT."
+                    f"Unknown compare variant '{line}'. Use serial, openmp N, mpi N, hybrid-local PxT, multi a,b,c, or hybrid axT,bxT."
                 )
 
             base_slug = self._variant_slug(slug)

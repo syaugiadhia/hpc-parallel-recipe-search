@@ -194,12 +194,14 @@ Di GUI master:
 GUI master akan membuat command seperti:
 
 ```powershell
-mpiexec -hosts 2 MASTER_HOST 4 desktop-s3pfjin 2 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe ...
+mpiexec -hosts 2 localhost 4 desktop-s3pfjin 2 -wdir C:\tubes-2 C:\tubes-2\build\alchemy_mpi.exe ...
 ```
 
 Artinya ada 2 host:
 
-- `MASTER_HOST` dengan 4 slots.
+- `localhost` (komputer master, rank 0) dengan 4 slots. Master SELALU di-address
+  `localhost` supaya rank 0 tidak lewat jalur smpd remote yang rawan salah-adapter
+  (penyebab umum `error 1726`/hang di mesin multi-homed).
 - `desktop-s3pfjin` (hostname slave) dengan 2 slots.
 - `-wdir C:\tubes-2` menetapkan working directory di tiap host agar konsisten.
 
@@ -339,9 +341,10 @@ Tiap rank MPI harus saling membuka koneksi socket. Kalau sebuah PC punya banyak 
 
 Solusi:
 
-- GUI sudah otomatis menambahkan `-genv MPICH_NETMASK <subnet>/255.255.255.0` (diambil dari IP slave yang di-Connect), memaksa MPI hanya memakai subnet hotspot.
+- GUI selalu meng-address master sebagai `localhost` (rank 0), jadi rank 0 tak pernah lewat jalur smpd remote yang rawan salah-adapter.
+- `commands/_netfix.bat` (dipanggil tiap `run_*.bat`) mematikan IPv6 + Tailscale + adapter `169.254.x` **kecuali** adapter default-route, supaya tiap PC hanya punya satu IPv4 aktif. Ini mengganti pendekatan `MPICH_NETMASK` lama.
 - **Matikan VPN seperti Tailscale** selama run (paling sering jadi biang hang).
-- Pakai **IP** (bukan hostname) saat Add manual, supaya subnet bisa diturunkan dengan benar.
+- Tambahkan slave memakai **hostname** (cocok dengan kredensial `cmdkey`).
 - Tes manual dari master untuk memastikan:
 
 ```powershell

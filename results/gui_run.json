@@ -1,6 +1,6 @@
 {
   "algorithm": "bfs",
-  "limit": 5,
+  "limit": 50,
   "mode": "multiple",
   "recipes": [
     {
@@ -10,49 +10,22 @@
           {
             "children": [
               {
-                "children": [
-                  {
-                    "children": [
-                      {
-                        "basic": true,
-                        "name": "Earth"
-                      },
-                      {
-                        "children": [
-                          {
-                            "basic": true,
-                            "name": "Air"
-                          },
-                          {
-                            "basic": true,
-                            "name": "Air"
-                          }
-                        ],
-                        "name": "Pressure"
-                      }
-                    ],
-                    "name": "Stone"
-                  },
-                  {
-                    "basic": true,
-                    "name": "Air"
-                  }
-                ],
-                "name": "Sand"
+                "basic": true,
+                "name": "Water"
               },
               {
                 "basic": true,
-                "name": "Fire"
+                "name": "Earth"
               }
             ],
-            "name": "Glass"
+            "name": "Mud"
           },
           {
             "basic": true,
-            "name": "Water"
+            "name": "Fire"
           }
         ],
-        "name": "Aquarium"
+        "name": "Brick"
       }
     },
     {
@@ -64,6 +37,438 @@
               {
                 "children": [
                   {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 3,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 4,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 5,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 6,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 7,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 8,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
                     "children": [
                       {
                         "basic": true,
@@ -73,46 +478,135 @@
                         "children": [
                           {
                             "basic": true,
-                            "name": "Earth"
+                            "name": "Fire"
                           },
                           {
                             "basic": true,
                             "name": "Fire"
                           }
                         ],
-                        "name": "Lava"
+                        "name": "Energy"
                       }
                     ],
-                    "name": "Stone"
-                  },
-                  {
-                    "basic": true,
-                    "name": "Air"
+                    "name": "Heat"
                   }
                 ],
-                "name": "Sand"
-              },
-              {
-                "basic": true,
-                "name": "Fire"
+                "name": "Lava"
               }
             ],
-            "name": "Glass"
-          },
-          {
-            "basic": true,
-            "name": "Water"
+            "name": "Stone"
           }
         ],
-        "name": "Aquarium"
+        "name": "Brick"
       }
     },
     {
-      "id": 3,
+      "id": 9,
       "tree": {
         "children": [
           {
             "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 10,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
               {
                 "children": [
                   {
@@ -143,37 +637,37 @@
                   }
                 ],
                 "name": "Sand"
-              },
-              {
-                "basic": true,
-                "name": "Fire"
               }
             ],
-            "name": "Glass"
+            "name": "Clay"
           },
           {
-            "children": [
-              {
-                "basic": true,
-                "name": "Water"
-              },
-              {
-                "basic": true,
-                "name": "Water"
-              }
-            ],
-            "name": "Puddle"
+            "basic": true,
+            "name": "Fire"
           }
         ],
-        "name": "Aquarium"
+        "name": "Brick"
       }
     },
     {
-      "id": 4,
+      "id": 11,
       "tree": {
         "children": [
           {
             "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
               {
                 "children": [
                   {
@@ -204,37 +698,37 @@
                   }
                 ],
                 "name": "Sand"
-              },
-              {
-                "basic": true,
-                "name": "Fire"
               }
             ],
-            "name": "Glass"
+            "name": "Clay"
           },
           {
-            "children": [
-              {
-                "basic": true,
-                "name": "Water"
-              },
-              {
-                "basic": true,
-                "name": "Water"
-              }
-            ],
-            "name": "Puddle"
+            "basic": true,
+            "name": "Fire"
           }
         ],
-        "name": "Aquarium"
+        "name": "Brick"
       }
     },
     {
-      "id": 5,
+      "id": 12,
       "tree": {
         "children": [
           {
             "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
               {
                 "children": [
                   {
@@ -283,24 +777,4129 @@
                   }
                 ],
                 "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 13,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "basic": true,
+            "name": "Fire"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 14,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 15,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 16,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 17,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 18,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
               },
               {
                 "basic": true,
                 "name": "Fire"
               }
             ],
-            "name": "Glass"
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 19,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 20,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 21,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 22,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 23,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 24,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 25,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 26,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Water"
+              },
+              {
+                "basic": true,
+                "name": "Earth"
+              }
+            ],
+            "name": "Mud"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 27,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 28,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 29,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 30,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 31,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 32,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 33,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 34,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 35,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 36,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 37,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      }
+                    ],
+                    "name": "Pressure"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 38,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Fire"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 39,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 40,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 41,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 42,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 43,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 44,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 45,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 46,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Lava"
+                      }
+                    ],
+                    "name": "Stone"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          }
+                        ],
+                        "name": "Pressure"
+                      }
+                    ],
+                    "name": "Wind"
+                  }
+                ],
+                "name": "Sand"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Earth"
+                          }
+                        ],
+                        "name": "Land"
+                      }
+                    ],
+                    "name": "Continent"
+                  }
+                ],
+                "name": "Planet"
+              },
+              {
+                "basic": true,
+                "name": "Fire"
+              }
+            ],
+            "name": "Sun"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 47,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Energy"
+                          }
+                        ],
+                        "name": "Heat"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
           },
           {
             "basic": true,
-            "name": "Water"
+            "name": "Fire"
           }
         ],
-        "name": "Aquarium"
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 48,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Energy"
+                          }
+                        ],
+                        "name": "Heat"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Earth"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  }
+                ],
+                "name": "Pressure"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 49,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Energy"
+                          }
+                        ],
+                        "name": "Heat"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Fire"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
+      }
+    },
+    {
+      "id": 50,
+      "tree": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Water"
+                  },
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  }
+                ],
+                "name": "Mud"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Air"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Earth"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Air"
+                          },
+                          {
+                            "children": [
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              },
+                              {
+                                "basic": true,
+                                "name": "Fire"
+                              }
+                            ],
+                            "name": "Energy"
+                          }
+                        ],
+                        "name": "Heat"
+                      }
+                    ],
+                    "name": "Lava"
+                  }
+                ],
+                "name": "Stone"
+              }
+            ],
+            "name": "Clay"
+          },
+          {
+            "children": [
+              {
+                "basic": true,
+                "name": "Air"
+              },
+              {
+                "children": [
+                  {
+                    "basic": true,
+                    "name": "Earth"
+                  },
+                  {
+                    "children": [
+                      {
+                        "basic": true,
+                        "name": "Air"
+                      },
+                      {
+                        "children": [
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          },
+                          {
+                            "basic": true,
+                            "name": "Fire"
+                          }
+                        ],
+                        "name": "Energy"
+                      }
+                    ],
+                    "name": "Heat"
+                  }
+                ],
+                "name": "Lava"
+              }
+            ],
+            "name": "Stone"
+          }
+        ],
+        "name": "Brick"
       }
     }
   ],
-  "recipes_found": 5,
+  "recipes_found": 50,
   "statistics": {
     "cache_entries": 0,
     "cache_entries_by_rank": [],
@@ -309,7 +4908,7 @@
     "communication_ms": 0.0,
     "direct_recipes_available": 0,
     "efficiency": 0.0,
-    "nodes_visited": 90,
+    "nodes_visited": 198,
     "nodes_visited_by_rank": [],
     "processes": 1,
     "rank_hostnames": [],
@@ -320,10 +4919,10 @@
       1
     ],
     "threads_per_process": 1,
-    "time_ms": 148.6709,
+    "time_ms": 182.8337,
     "total_workers": 1
   },
-  "target": "Aquarium",
+  "target": "Brick",
   "trace_mode": "memo",
   "visual_mode": "shared"
 }
