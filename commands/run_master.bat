@@ -23,7 +23,8 @@ reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalA
 echo [2/5] Matikan firewall (akan dikembalikan oleh deactivate.bat)
 netsh advfirewall set allprofiles state off >nul
 
-echo [3/5] Stop MS-MPI Launch Service (cegah bentrok port 8677 dgn smpd)
+echo [3/5] Disable + Stop MS-MPI Launch Service (cegah rebut port 8677 dgn smpd -d)
+sc config MsMpiLaunchSvc start= disabled >nul 2>&1
 net stop MsMpiLaunchSvc >nul 2>&1
 
 echo [4/5] Daftarkan kredensial slave (cmdkey)

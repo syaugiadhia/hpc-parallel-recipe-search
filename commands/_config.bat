@@ -11,6 +11,13 @@ set "PROJECT_DIR=C:\tubes-2"
 :: Lokasi binary MS-MPI (folder yang berisi mpiexec.exe & smpd.exe)
 set "MSMPI_BIN=D:\Program Files\Microsoft MPI\Bin"
 
+:: --------- MASTER (untuk pemetaan hosts di SEMUA PC, termasuk slave) ---------
+:: Isi hostname + IP PC master. Dipakai _hostsfix supaya slave bisa resolve
+:: nama master (bantu handshake smpd dua arah / 1726). IP boleh dikosongkan
+:: di master sendiri (auto-detect), tapi WAJIB diisi supaya slave tahu master.
+set "MASTER_HOST=HP240G7-2021"
+set "MASTER_IP=192.168.2.168"
+
 :: --------- SLAVE 1 ---------
 :: Tambahkan slave di GUI master memakai HOSTNAME ini (cocok dgn cmdkey).
 set "S1_HOST=desktop-s3pfjin"

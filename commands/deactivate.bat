@@ -29,8 +29,9 @@ if defined S1_IP cmdkey /delete:"%S1_IP%" >nul 2>&1
 cmdkey /delete:"%S2_HOST%" >nul 2>&1
 if defined S2_IP cmdkey /delete:"%S2_IP%" >nul 2>&1
 
-echo [4/6] Matikan SMPD daemon
+echo [4/6] Matikan SMPD daemon + kembalikan MsMpiLaunchSvc (start= demand)
 taskkill /IM smpd.exe /F >nul 2>&1
+sc config MsMpiLaunchSvc start= demand >nul 2>&1
 
 echo [5/6] Aktifkan kembali IPv6 di semua adapter
 powershell -NoProfile -Command "Get-NetAdapter | Enable-NetAdapterBinding -ComponentID ms_tcpip6 -ErrorAction SilentlyContinue"
