@@ -37,6 +37,7 @@ call "%~dp0_netfix.bat"
 
 echo [5/5] Set MSMPI_NETMASK lalu jalankan SMPD daemon (window terpisah)
 call "%~dp0_netmask.bat"
+echo     ^>^> IP slave ini (berikan ke master / isi S1_IP): %ALCHEMY_NODE_IP%
 start "SMPD" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.

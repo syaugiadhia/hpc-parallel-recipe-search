@@ -19,11 +19,11 @@ set "MSMPI_BIN=C:\Program Files\Microsoft MPI\Bin"
 :: S1_SLOTS: jumlah process MPI di slave (mis. 2)
 :: S1_IP   : (opsional) IP slave kalau master meng-Connect lewat IP
 :: ------------------------------------------------------------------
-set "S1_HOST=laptop-a5v4phah"
-set "S1_USER=laptop-a5v4phah\hallo"
-set "S1_PASS=12345678"
-set "S1_SLOTS=20"
-set "S1_IP=172.20.10.2"
+set "S1_HOST=laptop-a5v4phah"          :: hostname slave
+set "S1_USER=laptop-a5v4phah\hallo"    :: akun Windows slave (HOST\user)
+set "S1_PASS=12345678"                 :: password slave
+set "S1_SLOTS=20"                      :: jumlah proses di slave
+set "S1_IP=172.20.10.2"                :: << HARUS = IP slave sesi ini (cek lagi tiap sesi!)
 
 :: SLAVE 2 (opsional, format sama seperti SLAVE 1)
 set "S2_HOST="

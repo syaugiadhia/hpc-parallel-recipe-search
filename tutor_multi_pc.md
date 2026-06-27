@@ -317,14 +317,24 @@ Agar berhasil, di tiap PC harus terpenuhi:
 - Di master, kredensial tiap slave sudah didaftarkan: `cmdkey /add:HOST /user:HOST\user /pass:...`.
 - `build\alchemy_mpi.exe` dan `data\` ada di path yang sama (`C:\tubes-2`) di semua PC.
 
-Tes paling cepat untuk memisahkan masalah MPI dari GUI, jalankan di master:
+Tes paling cepat untuk memisahkan masalah MPI dari GUI: **gunakan `commands/_test_2pc.bat`** (di
+master). Script ini otomatis: matikan smpd lama, set `MSMPI_NETMASK` ke subnet slave (`S1_IP`),
+start smpd, deteksi IP hotspot master, lalu jalankan `mpiexec ... hostname` ke master+slave dan
+mencetak panduan baca hasil.
+
+> PENTING: jangan jalankan `mpiexec` dari **cmd biasa**. smpd master harus hidup (lewat
+> `run_master.bat` atau `_test_2pc.bat`). Kalau dari cmd kosong, smpd master mati → `error 1722`
+> ke IP master sendiri.
+
+Manual (kalau mau eksplisit), **dari window `run_master.bat`** atau setelah smpd master hidup:
 
 ```powershell
-mpiexec -hosts 2 localhost 1 desktop-s3pfjin 1 hostname
+mpiexec -genv MSMPI_NETMASK 172.20.10.0/255.255.255.0 -hosts 2 <IP_MASTER_HOTSPOT> 1 172.20.10.2 1 hostname
 ```
 
-- Kalau cepat mencetak dua hostname → MS-MPI remote sudah jalan; tinggal pakai GUI.
-- Kalau hang/timeout/`CreateRpcBinding error 1749` → masalah di `smpd`/`cmdkey`/firewall di slave, **bukan** di kode GUI. Pastikan `run_slaveN.bat` sudah dijalankan dan window `SMPD` hidup di slave.
+- Cepat mencetak dua hostname → MS-MPI remote jalan; tinggal pakai GUI.
+- `error 1722` → smpd di IP itu mati (master start lewat cmd kosong, atau slave belum `run_slaveN.bat`).
+- `error 1726` → smpd advertise adapter salah; lihat bagian Error 1726 di bawah.
 
 ### Error 1726 "unable to connect to the smpd manager ... error 1726"
 
@@ -346,15 +356,24 @@ Kalau muncul `AAAA  ::1` di atas `A  <ipv4>`, maka begitu master dirujuk lewat n
 mengikat/mereferensikan `::1` yang tak terjangkau dari slave → **1726**. Penyebab lain: host
 multi-homed (adapter `169.254.x` APIPA / VPN) sehingga manager smpd bind ke adapter salah.
 
+**Catatan penting soal adapter APIPA:** adapter `169.254.x` bernama `Local Area Connection* N`
+(Microsoft Wi-Fi Direct Virtual Adapter) **sering TIDAK bisa dimatikan** oleh `_netfix.bat` (dikelola
+WLAN service, langsung muncul lagi). Jadi jangan mengandalkan disable adapter. **Lever yang andal =
+`MSMPI_NETMASK` dipatok ke subnet slave**, supaya smpd HANYA memakai `172.20.10.x` dan mengabaikan
+semua `169.254.x`/`192.168.x`/IPv6 — tanpa perlu men-disable apa pun.
+
 **Sudah diperbaiki di GUI + script (tidak perlu langkah manual):**
 
-- GUI sekarang **selalu memakai IP hotspot master** di `mpiexec -hosts`, **tidak pernah hostname**.
-  IP master dipilih yang **se-subnet dengan slave** (mis. slave `172.20.10.2` → master `172.20.10.x`),
-  dan APIPA `169.254.x` dibuang. Jadi jebakan `::1` tidak kena lagi.
-- `MSMPI_NETMASK` kini di-set di **environment daemon `smpd`** (lewat `commands/_netmask.bat` yang
-  dipanggil tiap `run_*.bat` sebelum start smpd), bukan cuma `-genv` ke rank. Ini memaksa smpd
-  bind manager-nya ke adapter subnet cluster.
-- `_netfix.bat` tetap mematikan IPv6 + adapter `169.254.x`/VPN.
+- GUI sekarang **selalu memakai IP hotspot master** di `mpiexec -hosts`, **tidak pernah hostname**
+  (jebakan `::1` tidak kena). IP master dipilih yang **se-subnet dengan slave**.
+- `MSMPI_NETMASK` di-set di **environment daemon `smpd`** (lewat `commands/_netmask.bat`), dan
+  subnetnya **diturunkan dari `S1_IP` (IP slave)** — bukan dari default-route master (yang bisa salah
+  kalau master juga tersambung internet di adapter lain). Pastikan `S1_IP` di `_config.bat` benar.
+- `_netfix.bat` tetap dipakai best-effort (matikan IPv6 + APIPA yang bisa dimatikan), tapi bukan
+  andalan utama.
+
+> Kalau `_test_2pc.bat` mencetak `MSMPI_NETMASK=<bukan subnet hotspot>` (mis. `192.168.x`), berarti
+> `S1_IP` di `_config.bat` belum diisi/ salah. Isi `S1_IP` dengan IP hotspot slave, ulangi.
 
 Tes manual cepat (all-IP, paling pasti mengisolasi 1726) — jalankan di master, ganti IP sesuai
 hotspot kalian:
