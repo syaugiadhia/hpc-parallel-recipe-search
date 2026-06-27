@@ -20,7 +20,8 @@ if not exist "%EXE%" (
 echo [1/4] Stop MsMpiLaunchSvc (bebaskan port 8677)...
 net stop MsMpiLaunchSvc >nul 2>&1
 
-echo [2/4] Start smpd daemon (window terpisah)...
+echo [2/4] Set MSMPI_NETMASK + start smpd daemon (window terpisah)...
+call "%~dp0_netmask.bat"
 start "SMPD-smoke" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 :: beri waktu smpd listen
 ping -n 3 127.0.0.1 >nul

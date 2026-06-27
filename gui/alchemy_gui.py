@@ -150,11 +150,71 @@ def local_ipv4_addresses():
     return sorted(addresses)
 
 
+def default_route_ipv4():
+    """IP adapter yang dipakai untuk keluar (default route), tanpa sorting.
+
+    Cara paling andal di host multi-homed: socket UDP "connect" ke alamat publik
+    (tidak mengirim paket) lalu baca alamat lokal yang dipilih OS. Mengembalikan
+    None kalau gagal (mis. tidak ada gateway).
+    """
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.connect(("8.8.8.8", 80))
+            value = sock.getsockname()[0]
+        ip = ipaddress.ip_address(value)
+        if ip.version == 4 and not ip.is_loopback and not ip.is_link_local:
+            return value
+    except OSError:
+        pass
+    return None
+
+
 def primary_local_ip():
-    addresses = local_ipv4_addresses()
-    if addresses:
-        return addresses[0]
+    """IP lokal terbaik untuk identitas node.
+
+    Utamakan IP default-route (adapter aktif ke gateway/hotspot). Buang APIPA
+    169.254.x. `sorted()[0]` hanya fallback terakhir — di host multi-homed itu bisa
+    salah memilih APIPA, makanya jangan diandalkan.
+    """
+    route_ip = default_route_ipv4()
+    if route_ip:
+        return route_ip
+    for address in local_ipv4_addresses():
+        if not address.startswith("169.254."):
+            return address
     return "127.0.0.1"
+
+
+def subnet_base_24(address):
+    """Alamat network /24 dari sebuah IPv4 (mis. 172.20.10.2 -> 172.20.10.0)."""
+    try:
+        return str(ipaddress.ip_network(f"{address}/24", strict=False).network_address)
+    except ValueError:
+        return None
+
+
+def cluster_ip_for_peers(peer_ips):
+    """IP lokal yang se-/24 dengan salah satu peer (slave); else IP default-route.
+
+    Dipakai agar master di-list di `mpiexec -hosts` pakai IP hotspot yang benar
+    (bukan hostname yang bisa resolve ke ::1, dan bukan APIPA 169.254.x).
+    """
+    peer_bases = set()
+    for peer in peer_ips:
+        try:
+            ipaddress.ip_address(peer)
+        except ValueError:
+            continue
+        base = subnet_base_24(peer)
+        if base:
+            peer_bases.add(base)
+    if peer_bases:
+        for address in local_ipv4_addresses():
+            if address.startswith("169.254."):
+                continue
+            if subnet_base_24(address) in peer_bases:
+                return address
+    return primary_local_ip()
 
 
 def send_json_line(sock, payload):
@@ -1252,10 +1312,18 @@ class AlchemyGui(ctk.CTk):
             subprocess.run(["net", "stop", "MsMpiLaunchSvc"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=15)
         except Exception:
             pass
+        # Set MSMPI_NETMASK di ENV smpd (bukan cuma -genv ke rank). smpd memakai ini untuk
+        # memilih adapter saat bind manager-nya -> cegah error 1726 di host multi-homed.
+        smpd_env = os.environ.copy()
+        route_ip = default_route_ipv4()
+        base = subnet_base_24(route_ip) if route_ip else None
+        if base:
+            smpd_env["MSMPI_NETMASK"] = f"{base}/255.255.255.0"
+            self.log_queue.put(("log", f"smpd MSMPI_NETMASK={smpd_env['MSMPI_NETMASK']}\n"))
         self.log_queue.put(("log", f"Menjalankan smpd daemon: {smpd_exe} -d 0\n"))
         try:
             creationflags = subprocess.CREATE_NEW_CONSOLE if os.name == "nt" else 0
-            self.smpd_proc = subprocess.Popen([str(smpd_exe), "-d", "0"], creationflags=creationflags)
+            self.smpd_proc = subprocess.Popen([str(smpd_exe), "-d", "0"], creationflags=creationflags, env=smpd_env)
         except Exception as exc:
             self.log_queue.put(("log", f"Gagal start smpd: {exc}\n"))
             return False
@@ -1311,15 +1379,44 @@ class AlchemyGui(ctk.CTk):
             )
         return True, ""
 
+    def _local_host_names(self):
+        names = {socket.gethostname().lower(), "localhost", "127.0.0.1", primary_local_ip()}
+        for address in local_ipv4_addresses():
+            names.add(address)
+        return names
+
+    def _launch_hosts(self, host_status_pairs):
+        """Map [(host, status)] -> IP yang dipakai mpiexec untuk tiap host.
+
+        Master / host lokal disubstitusi dengan IP cluster (se-subnet slave). Ini
+        mencegah master di-list pakai hostname (yang bisa resolve ke ::1 / IPv6
+        loopback) atau APIPA 169.254.x — biang error 1726.
+        """
+        local_names = self._local_host_names()
+        peer_ips = [
+            host.strip()
+            for host, status in host_status_pairs
+            if status != "master" and host.strip().lower() not in local_names
+        ]
+        master_ip = cluster_ip_for_peers(peer_ips)
+        resolved = []
+        for host, status in host_status_pairs:
+            if status == "master" or host.strip().lower() in local_names:
+                resolved.append(master_ip)
+            else:
+                resolved.append(host.strip())
+        return resolved
+
     def _mpi_prefix(self):
         np_value = self.mpi_np.get().strip() or "2"
         if os.name == "nt" and self.multi_node_enabled.get():
             entries = self._host_entries(connected_only=True)
             if not entries:
                 raise ValueError("Multi-node is enabled but no host is connected. Run Test/Connect first.")
+            launch_hosts = self._launch_hosts([(host, status) for host, _slots, status in entries])
             args = ["mpiexec"] + self._mpi_netmask_args(entries) + ["-hosts", str(len(entries))]
-            for host, slots, _ in entries:
-                args.extend([host, str(slots)])
+            for (host, slots, _status), launch_host in zip(entries, launch_hosts):
+                args.extend([launch_host, str(slots)])
             args.extend(["-wdir", str(ROOT_DIR)])
             return args
         if os.name == "nt":
@@ -1462,12 +1559,12 @@ class AlchemyGui(ctk.CTk):
                 f"{variant_text} has {len(slot_values)} values, but current compare host order has {len(order)} hosts: {labels}."
             )
         netmask_entries = [(item["host"], item["slots"], item["status"]) for item in order]
+        launch_hosts = self._launch_hosts([(item["host"], item["status"]) for item in order])
         args = ["mpiexec"] + self._mpi_netmask_args(netmask_entries) + ["-hosts", str(len(order))]
         host_profile = []
-        for item, slots in zip(order, slot_values):
-            host = item["host"]
-            args.extend([host, str(slots)])
-            host_profile.append(f"{item['label']} {host}:{slots}")
+        for item, slots, launch_host in zip(order, slot_values, launch_hosts):
+            args.extend([launch_host, str(slots)])
+            host_profile.append(f"{item['label']} {launch_host}:{slots}")
         args.extend(["-wdir", str(ROOT_DIR)])
         return args, ", ".join(host_profile)
 

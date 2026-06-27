@@ -326,15 +326,47 @@ mpiexec -hosts 2 localhost 1 desktop-s3pfjin 1 hostname
 - Kalau cepat mencetak dua hostname → MS-MPI remote sudah jalan; tinggal pakai GUI.
 - Kalau hang/timeout/`CreateRpcBinding error 1749` → masalah di `smpd`/`cmdkey`/firewall di slave, **bukan** di kode GUI. Pastikan `run_slaveN.bat` sudah dijalankan dan window `SMPD` hidup di slave.
 
-### Error 1726 "Failed to connect to SMPD Manager Instance"
+### Error 1726 "unable to connect to the smpd manager ... error 1726"
 
-Gejala: smpd berhasil konek ke slave port `8677` (bahkan `Test-NetConnection <slave> -Port 8677` = `True`), tapi gagal saat **re-connect ke port manager dinamis**:
+Gejala: koneksi awal master→slave port `8677` **berhasil**, tapi gagal saat **re-connect ke port
+manager dinamis** (port tinggi acak):
 
 ```text
-posting a re-connect to 10.190.116.205:60082 ... ERROR: Failed to connect to SMPD Manager Instance error 1726
+Aborting: smpd on DESKTOP-S3PFJIN is unable to connect to the smpd manager on 172.20.10.2:65052 error 1726
 ```
 
-Penyebab: **IPv6 didahulukan + host multi-homed.** Cek dengan:
+**Penyebab utama yang sering terlewat: master di-list pakai HOSTNAME, dan hostname itu resolve ke
+`::1` (IPv6 loopback) duluan.** Cek di master:
+
+```powershell
+Resolve-DnsName DESKTOP-S3PFJIN
+```
+
+Kalau muncul `AAAA  ::1` di atas `A  <ipv4>`, maka begitu master dirujuk lewat nama, smpd/MPI bisa
+mengikat/mereferensikan `::1` yang tak terjangkau dari slave → **1726**. Penyebab lain: host
+multi-homed (adapter `169.254.x` APIPA / VPN) sehingga manager smpd bind ke adapter salah.
+
+**Sudah diperbaiki di GUI + script (tidak perlu langkah manual):**
+
+- GUI sekarang **selalu memakai IP hotspot master** di `mpiexec -hosts`, **tidak pernah hostname**.
+  IP master dipilih yang **se-subnet dengan slave** (mis. slave `172.20.10.2` → master `172.20.10.x`),
+  dan APIPA `169.254.x` dibuang. Jadi jebakan `::1` tidak kena lagi.
+- `MSMPI_NETMASK` kini di-set di **environment daemon `smpd`** (lewat `commands/_netmask.bat` yang
+  dipanggil tiap `run_*.bat` sebelum start smpd), bukan cuma `-genv` ke rank. Ini memaksa smpd
+  bind manager-nya ke adapter subnet cluster.
+- `_netfix.bat` tetap mematikan IPv6 + adapter `169.254.x`/VPN.
+
+Tes manual cepat (all-IP, paling pasti mengisolasi 1726) — jalankan di master, ganti IP sesuai
+hotspot kalian:
+
+```powershell
+mpiexec -genv MSMPI_NETMASK 172.20.10.0/255.255.255.0 -hosts 2 <IP_MASTER_HOTSPOT> 1 172.20.10.2 1 hostname
+```
+
+Harus cetak **dua hostname** cepat. Kalau ini sukses tapi GUI tidak, berarti masalah di host list GUI
+(pastikan slave berstatus `connected`). Kalau ini pun gagal 1726, lanjut cek IPv6/adapter di bawah.
+
+Penyebab tambahan: **IPv6 didahulukan + host multi-homed.** Cek dengan:
 
 ```powershell
 Resolve-DnsName <hostname-lawan>

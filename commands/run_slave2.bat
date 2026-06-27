@@ -35,7 +35,8 @@ net stop MsMpiLaunchSvc >nul 2>&1
 echo [4/5] Perbaiki jaringan (matikan IPv6 + adapter sampah)
 call "%~dp0_netfix.bat"
 
-echo [5/5] Jalankan SMPD daemon (window terpisah)
+echo [5/5] Set MSMPI_NETMASK lalu jalankan SMPD daemon (window terpisah)
+call "%~dp0_netmask.bat"
 start "SMPD" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.

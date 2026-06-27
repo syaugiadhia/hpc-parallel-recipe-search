@@ -42,7 +42,8 @@ if defined S2_IP cmdkey /add:"%S2_IP%" /user:"%S2_USER%" /pass:"%S2_PASS%" >nul
 echo [5/6] Perbaiki jaringan (matikan IPv6 + adapter sampah)
 call "%~dp0_netfix.bat"
 
-echo [6/6] Jalankan SMPD daemon (window terpisah)
+echo [6/6] Set MSMPI_NETMASK lalu jalankan SMPD daemon (window terpisah)
+call "%~dp0_netmask.bat"
 start "SMPD" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.
