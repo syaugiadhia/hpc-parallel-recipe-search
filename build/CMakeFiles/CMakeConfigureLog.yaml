@@ -9515,3 +9515,60 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/compiler/msys64/ucrt64/share/cmake/Modules/FindMPI.cmake:1447 (try_compile)"
+      - "D:/compiler/msys64/ucrt64/share/cmake/Modules/FindMPI.cmake:1491 (_MPI_try_staged_settings)"
+      - "D:/compiler/msys64/ucrt64/share/cmake/Modules/FindMPI.cmake:1814 (_MPI_check_lang_works)"
+      - "CMakeLists.txt:51 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-jejuiw"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-jejuiw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-jejuiw'
+        
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_30818
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_30818.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-jejuiw/test_mpi.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_30818.dir/test_mpi.cpp.obj -o cmTC_30818.exe -Wl,--out-implib,libcmTC_30818.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/compiler/msys64/ucrt64/share/cmake/Modules/FindMPI.cmake:1447 (try_compile)"
+      - "D:/compiler/msys64/ucrt64/share/cmake/Modules/FindMPI.cmake:1841 (_MPI_try_staged_settings)"
+      - "CMakeLists.txt:51 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-3zi537"
+      binary: "C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-3zi537"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-3zi537'
+        
+        Run Build Command(s): D:/compiler/msys64/ucrt64/bin/ninja.exe -v cmTC_02991
+        [1/2] D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   -std=c++17 -o CMakeFiles/cmTC_02991.dir/test_mpi.cpp.obj -c C:/tubes-2/build/CMakeFiles/CMakeScratch/TryCompile-3zi537/test_mpi.cpp
+        [2/2] C:\\windows\\system32\\cmd.exe /C "cd . && D:\\compiler\\msys64\\ucrt64\\bin\\c++.exe   CMakeFiles/cmTC_02991.dir/test_mpi.cpp.obj -o cmTC_02991.exe -Wl,--out-implib,libcmTC_02991.dll.a -Wl,--major-image-version,0,--minor-image-version,0  D:/compiler/msys64/ucrt64/lib/libmsmpi.dll.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        
+      exitCode: 0
+...

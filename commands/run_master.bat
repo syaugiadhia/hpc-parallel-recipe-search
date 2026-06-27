@@ -40,7 +40,8 @@ call "%~dp0_netfix.bat"
 echo [6/7] Petakan hostname -^> IPv4 (hosts file)
 call "%~dp0_hostsfix.bat"
 
-echo [7/7] Jalankan SMPD daemon (window terpisah, cwd = PROJECT_DIR)
+echo [7/7] Restart SMPD daemon bersih (window terpisah, cwd = PROJECT_DIR)
+taskkill /IM smpd.exe /F >nul 2>&1
 start "SMPD" /D "%PROJECT_DIR%" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
 
 echo.

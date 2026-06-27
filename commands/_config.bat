@@ -19,7 +19,7 @@ set "S1_PASS=mrdx"
 set "S1_SLOTS=8"
 :: (opsional) IP slave 1. Boleh dikosongkan. Isi hanya kalau mau daftarkan cmdkey
 :: by-IP juga / mau pin entri hosts file, mis. 192.168.137.24
-set "S1_IP="
+set "S1_IP=192.168.2.101"
 
 :: --------- SLAVE 2 ---------
 set "S2_HOST=laptop-a5v4phah"
