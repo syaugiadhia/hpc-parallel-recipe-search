@@ -41,6 +41,9 @@ echo Menjalankan smpd + GUI sebagai akun cluster '%CLUSTER_USER%' (Slave, %S1_SL
 echo Jangan tutup window "smpd". Klik Accept saat master mengundang.
 echo.
 
+:: Slave: jalankan smpd + GUI sebagai user yang LOGIN (bukan hp) supaya window GUI
+:: terlihat. Akun hp cukup ada; rank tetap diluncurkan sebagai hp oleh master.
+set "SESSION_AS_LOGIN=1"
 set "GUI_ARGS=--role slave --slots %S1_SLOTS% --autostart"
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_run_session.ps1"
 

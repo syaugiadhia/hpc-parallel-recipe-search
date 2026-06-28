@@ -68,16 +68,26 @@ $pyw = Join-Path (Split-Path $py) 'pythonw.exe'
 $guiExe = if (Test-Path $pyw) { $pyw } else { $py }
 Write-Host "[session] python GUI = $guiExe"
 
-# --- perlu kredensial? (kalau user sekarang sudah CLUSTER_USER, tidak perlu) ---
+# --- perlu kredensial? ---
+# Default: jalankan sebagai CLUSTER_USER (hp) kalau user login berbeda.
+# TAPI di SLAVE (SESSION_AS_LOGIN=1) kita PAKSA jalan sebagai user login, karena:
+#   - GUI yang dijalankan sebagai user lain TIDAK tampil di desktop user login.
+#   - Slave tidak perlu jalan sebagai hp; akun hp cukup ADA (untuk validasi auth &
+#     identitas rank). Rank tetap diluncurkan sebagai hp oleh smpd via kredensial master.
+# Hanya MASTER yang wajib jalan sebagai hp (target connect-back dari rank slave).
 $me = ([Security.Principal.WindowsIdentity]::GetCurrent().Name).Split('\')[-1]
 $useCred = ($me -ne $u)
+if ($env:SESSION_AS_LOGIN -eq '1') {
+    $useCred = $false
+    Write-Host "[session] mode SLAVE: smpd + GUI jalan sebagai user login '$me' (akun '$u' cukup ada, tidak dijalankan)."
+}
 $cred = $null
 if ($useCred) {
     if (-not $u -or -not $pass) { throw "CLUSTER_USER/CLUSTER_PASS kosong di _config.bat." }
     $cred = New-Object System.Management.Automation.PSCredential($u, (ConvertTo-SecureString $pass -AsPlainText -Force))
     Write-Host "[session] menjalankan smpd + GUI sebagai '$u' (user sekarang '$me')."
 } else {
-    Write-Host "[session] user sekarang sudah '$u', jalan langsung tanpa kredensial."
+    Write-Host "[session] jalan langsung sebagai user login '$me' (window terlihat di layar)."
 }
 
 # --- restart smpd sebagai CLUSTER_USER ---
@@ -89,12 +99,13 @@ if ($useCred) {
     Start-Process -FilePath $smpd -ArgumentList '-d', $dbg -WorkingDirectory $proj
 }
 Start-Sleep -Seconds 2
-Write-Host "[session] smpd (re)started sebagai '$u' (JANGAN tutup window smpd)."
+$runAs = if ($useCred) { $u } else { $me }
+Write-Host "[session] smpd (re)started sebagai '$runAs' (JANGAN tutup window smpd)."
 
-# --- buka GUI sebagai CLUSTER_USER ---
+# --- buka GUI ---
 if ($useCred) {
     Start-Process -FilePath $guiExe -ArgumentList $guiArgs -Credential $cred -WorkingDirectory $proj
 } else {
     Start-Process -FilePath $guiExe -ArgumentList $guiArgs -WorkingDirectory $proj
 }
-Write-Host "[session] GUI dibuka sebagai '$u': $guiExe $($guiArgs -join ' ')"
+Write-Host "[session] GUI dibuka sebagai '$runAs': $guiExe $($guiArgs -join ' ')"
