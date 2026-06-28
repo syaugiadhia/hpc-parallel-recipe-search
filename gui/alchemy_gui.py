@@ -61,6 +61,11 @@ SLAVE_DISCOVERY_PORT = 50556
 INVITE_TIMEOUT_SECONDS = 30
 DISCOVERY_MESSAGE = b"ALCHEMY_HPC_DISCOVER_V1"
 
+# Batas tampilan UI supaya GUI tidak freeze/crash saat output sangat besar
+# (program mencetak full tree tiap resep ke stdout, dan JSON hasil bisa multi-MB).
+LOG_MAX_LINES = 2000          # baris terakhir yang dipertahankan di kotak Log
+RESULT_MAX_CHARS = 200_000    # karakter JSON yang ditampilkan di tab Results (sisanya dipotong)
+
 
 def local_ipv4_subnets():
     networks = []
@@ -1761,12 +1766,23 @@ class AlchemyGui(ctk.CTk):
             self._log(f"Stop failed: {exc}\n")
 
     def _drain_log_queue(self):
+        pending_log = []
+
+        def flush_log():
+            if pending_log:
+                self._append_log("".join(pending_log))
+                pending_log.clear()
+
         try:
             while True:
                 kind, payload = self.log_queue.get_nowait()
                 if kind == "log":
-                    self._log(payload)
-                elif kind == "hosts_replace":
+                    # Kumpulkan dulu; di-insert sekali (hindari ribuan insert+see per baris).
+                    pending_log.append(payload)
+                    continue
+                # Event non-log: pastikan urutan log tetap benar.
+                flush_log()
+                if kind == "hosts_replace":
                     self._replace_hosts(payload)
                 elif kind == "hosts_merge":
                     self._merge_hosts(payload)
@@ -1786,9 +1802,12 @@ class AlchemyGui(ctk.CTk):
                     self.status.set(payload)
                 elif kind == "done":
                     self.run_started_at = None
-                    self.status.set("Done" if payload else "Failed or stopped")
                     if payload:
-                        self._load_outputs()
+                        self._load_outputs()  # baca/parse JSON di worker thread (anti-freeze)
+                    else:
+                        self.status.set("Failed or stopped")
+                elif kind == "result_ready":
+                    self._apply_loaded_outputs(payload)
                 elif kind == "compare_done":
                     success, csv_path = payload
                     self.run_started_at = None
@@ -1800,6 +1819,7 @@ class AlchemyGui(ctk.CTk):
                             self.tabs.set("Compare")
         except queue.Empty:
             pass
+        flush_log()
         if self.run_started_at is not None:
             elapsed = time.monotonic() - self.run_started_at
             self.status.set(f"Running... {elapsed:.1f}s")
@@ -1815,9 +1835,28 @@ class AlchemyGui(ctk.CTk):
         self.image_page_status.set("No recipe preview.")
         self._reset_image_preview("Run completed outputs will appear here.")
 
+    def _append_log(self, text):
+        """Insert teks log sekali jalan, dengan batas ukuran supaya GUI tak freeze.
+        Output program bisa sangat besar (full tree tiap resep), jadi kita simpan
+        hanya LOG_MAX_LINES baris terakhir."""
+        if not text:
+            return
+        box = self.log_box
+        # Kalau satu batch saja sudah lebih besar dari kapasitas, ambil ekornya.
+        if text.count("\n") > LOG_MAX_LINES:
+            lines = text.splitlines(keepends=True)
+            text = "".join(lines[-LOG_MAX_LINES:])
+        box.insert("end", text)
+        try:
+            line_count = int(box.index("end-1c").split(".")[0])
+            if line_count > LOG_MAX_LINES:
+                box.delete("1.0", f"{line_count - LOG_MAX_LINES + 1}.0")
+        except Exception:
+            pass
+        box.see("end")
+
     def _log(self, text):
-        self.log_box.insert("end", text)
-        self.log_box.see("end")
+        self._append_log(text)
 
     def _load_outputs(self):
         prefix = Path(self.output_prefix.get())
@@ -1829,28 +1868,64 @@ class AlchemyGui(ctk.CTk):
             return
 
         json_path = prefix.with_suffix(".json")
-        if json_path.exists():
-            try:
-                data = json.loads(json_path.read_text(encoding="utf-8"))
-                self.result_box.delete("1.0", "end")
-                self.result_box.insert("end", json.dumps(data, indent=2))
-                self.tabs.set("Results")
-                self.preview_json_data = data
-                self.preview_recipes = list(data.get("recipes", []))
-                self.preview_page_index = 0
-                self.image_page.set("1")
-                if self.preview_recipes:
-                    self.image_page_status.set(f"JSON loaded; choose recipe to preview. {len(self.preview_recipes)} recipes available.")
-                    self._reset_image_preview("JSON loaded. Choose a recipe number, then click Render Preview.")
-                else:
-                    self.image_page_status.set("No recipes found.")
-                    self._reset_image_preview("No recipes to preview.")
-            except Exception as exc:
-                self._log(f"Could not parse JSON output: {exc}\n")
-
         image_path = prefix.with_suffix("." + self.image_format.get())
+        # Baca + parse + serialisasi JSON di worker thread supaya UI tidak freeze;
+        # hasilnya dikirim balik lewat antrian (event "result_ready").
+        self.status.set("Loading results...")
+        threading.Thread(
+            target=self._load_outputs_worker,
+            args=(json_path, image_path),
+            daemon=True,
+        ).start()
+
+    def _load_outputs_worker(self, json_path, image_path):
+        payload = {"image_path": str(image_path), "image_format": self.image_format.get()}
+        try:
+            if json_path.exists():
+                data = json.loads(json_path.read_text(encoding="utf-8"))
+                recipes = list(data.get("recipes", []))
+                full = json.dumps(data, indent=2)
+                if len(full) > RESULT_MAX_CHARS:
+                    display = (
+                        full[:RESULT_MAX_CHARS]
+                        + f"\n\n... (output dipotong di {RESULT_MAX_CHARS:,} dari {len(full):,} karakter. "
+                        f"Buka file JSON untuk lengkap, atau pakai Render Preview per resep.)\n"
+                    )
+                else:
+                    display = full
+                payload.update({"ok": True, "data": data, "recipes": recipes, "display": display})
+            else:
+                payload.update({"ok": False})
+        except Exception as exc:
+            payload.update({"ok": False, "error": str(exc)})
+        self.log_queue.put(("result_ready", payload))
+
+    def _apply_loaded_outputs(self, payload):
+        if not payload.get("ok"):
+            if payload.get("error"):
+                self._append_log(f"Could not parse JSON output: {payload['error']}\n")
+            self._maybe_preview_image(Path(payload["image_path"]), payload.get("image_format", ""))
+            self.status.set("Done")
+            return
+        self.result_box.delete("1.0", "end")
+        self.result_box.insert("end", payload["display"])
+        self.tabs.set("Results")
+        self.preview_json_data = payload["data"]
+        self.preview_recipes = payload["recipes"]
+        self.preview_page_index = 0
+        self.image_page.set("1")
+        if self.preview_recipes:
+            self.image_page_status.set(f"JSON loaded; choose recipe to preview. {len(self.preview_recipes)} recipes available.")
+            self._reset_image_preview("JSON loaded. Choose a recipe number, then click Render Preview.")
+        else:
+            self.image_page_status.set("No recipes found.")
+            self._reset_image_preview("No recipes to preview.")
+            self._maybe_preview_image(Path(payload["image_path"]), payload.get("image_format", ""))
+        self.status.set("Done")
+
+    def _maybe_preview_image(self, image_path, image_format):
         if image_path.exists() and not self.preview_recipes:
-            if self.image_format.get() in {"png", "jpg", "jpeg"}:
+            if image_format in {"png", "jpg", "jpeg"}:
                 self._preview_image(image_path)
             else:
                 self._reset_image_preview(f"Image output is ready:\n{image_path}\n\nUse Open Image to view this format.")

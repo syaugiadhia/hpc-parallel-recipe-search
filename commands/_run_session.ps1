@@ -18,22 +18,51 @@ $smpd = Join-Path $env:MSMPI_BIN 'smpd.exe'
 $dbg  = if ($env:SMPD_DEBUG) { $env:SMPD_DEBUG } else { '0' }
 $guiArgs = @("$proj\gui\alchemy_gui.py") + (($env:GUI_ARGS -split '\s+') | Where-Object { $_ })
 
+function Test-PyExists($exe) {
+    return ($exe -and (Test-Path $exe))
+}
 function Test-Py($exe) {
-    if (-not $exe) { return $false }
-    if (-not (Test-Path $exe)) { return $false }
-    try { (& $exe -c "import customtkinter,PIL" 2>$null); return ($LASTEXITCODE -eq 0) } catch { return $false }
+    if (-not (Test-PyExists $exe)) { return $false }
+    try { & $exe -c "import customtkinter,PIL" 2>$null; return ($LASTEXITCODE -eq 0) } catch { return $false }
 }
 
-# --- pilih python yang punya dependency GUI ---
-$py = $env:PYTHON_EXE
-if (-not (Test-Py $py)) {
-    Write-Host "[session] PYTHON_EXE tidak valid / tanpa customtkinter -> auto-detect..."
-    $cands = @()
-    try { $cands += (cmd /c "py -0p" 2>$null | ForEach-Object { ($_ -split '\s{2,}')[-1] }) } catch {}
-    try { $cands += (where.exe python 2>$null) } catch {}
-    $py = $cands | Where-Object { Test-Py $_ } | Select-Object -First 1
+# Kumpulkan SEMUA kandidat python di PC ini. Utamakan python sistem (Program Files /
+# C:\PythonXX) supaya bisa diakses akun cluster 'hp' saat GUI dijalankan sebagai hp,
+# bukan python di profil user lain.
+function Find-AnyPython {
+    $list = @()
+    if ($env:PYTHON_EXE) { $list += $env:PYTHON_EXE }
+    foreach ($pat in @(
+            "C:\Program Files\Python3*\python.exe",
+            "D:\Program Files\Python3*\python.exe",
+            "C:\Program Files\Python\Python3*\python.exe",
+            "D:\Program Files\Python\Python3*\python.exe",
+            "C:\Python3*\python.exe", "D:\Python3*\python.exe",
+            "$env:LOCALAPPDATA\Programs\Python\Python3*\python.exe")) {
+        try { $list += (Get-ChildItem $pat -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }) } catch {}
+    }
+    try { $list += ((cmd /c "py -0p" 2>$null) | ForEach-Object { if ($_ -match '([A-Za-z]:\\.+\.exe)') { $matches[1].Trim() } }) } catch {}
+    try { $list += (where.exe python 2>$null) } catch {}
+    return ($list | Where-Object { (Test-PyExists $_) -and ($_ -notmatch 'WindowsApps') } | Select-Object -Unique)
 }
-if (-not $py) { throw "Tidak menemukan python dengan customtkinter+pillow. Set PYTHON_EXE di _config.bat." }
+
+# --- pilih python yang punya dependency GUI; kalau belum ada, AUTO-INSTALL ---
+$cands = Find-AnyPython
+Write-Host ("[session] kandidat python: " + ($cands -join '  |  '))
+$py = $cands | Where-Object { Test-Py $_ } | Select-Object -First 1
+if (-not $py) {
+    $target = $cands | Select-Object -First 1   # utamakan python sistem (urutan di atas)
+    if ($target) {
+        Write-Host "[session] customtkinter/pillow belum ada -> auto-install ke: $target (butuh internet)..."
+        & $target -m pip install --quiet --upgrade pip 2>$null
+        & $target -m pip install --quiet customtkinter pillow
+        if (Test-Py $target) { $py = $target; Write-Host "[session] auto-install sukses." }
+        else { Write-Host "[session] auto-install gagal." }
+    }
+}
+if (-not $py) {
+    throw "Tidak ada python dengan customtkinter+pillow & auto-install gagal. Install Python (mis. dari python.org) lalu jalankan lagi, atau set PYTHON_EXE di _config.bat."
+}
 # pakai pythonw bila ada (tanpa console window)
 $pyw = Join-Path (Split-Path $py) 'pythonw.exe'
 $guiExe = if (Test-Path $pyw) { $pyw } else { $py }
