@@ -68,44 +68,45 @@ $pyw = Join-Path (Split-Path $py) 'pythonw.exe'
 $guiExe = if (Test-Path $pyw) { $pyw } else { $py }
 Write-Host "[session] python GUI = $guiExe"
 
-# --- perlu kredensial? ---
-# Default: jalankan sebagai CLUSTER_USER (hp) kalau user login berbeda.
-# TAPI di SLAVE (SESSION_AS_LOGIN=1) kita PAKSA jalan sebagai user login, karena:
-#   - GUI yang dijalankan sebagai user lain TIDAK tampil di desktop user login.
-#   - Slave tidak perlu jalan sebagai hp; akun hp cukup ADA (untuk validasi auth &
-#     identitas rank). Rank tetap diluncurkan sebagai hp oleh smpd via kredensial master.
-# Hanya MASTER yang wajib jalan sebagai hp (target connect-back dari rank slave).
+# --- siapa jalan sebagai siapa? ---
+# smpd WAJIB jalan sebagai CLUSTER_USER (hp): saat master (hp) connect ke smpd slave,
+#   user koneksi HARUS cocok dgn pemilik smpd, kalau tidak ditolak (access denied / 1726).
+# GUI tidak perlu hp. Di SLAVE (SESSION_AS_LOGIN=1) GUI jalan sebagai USER LOGIN supaya
+#   window-nya TAMPIL (GUI yang dijalankan sbg user lain tak terlihat di desktop user login).
 $me = ([Security.Principal.WindowsIdentity]::GetCurrent().Name).Split('\')[-1]
-$useCred = ($me -ne $u)
-if ($env:SESSION_AS_LOGIN -eq '1') {
-    $useCred = $false
-    Write-Host "[session] mode SLAVE: smpd + GUI jalan sebagai user login '$me' (akun '$u' cukup ada, tidak dijalankan)."
-}
+$needHp   = ($me -ne $u)                                       # perlu kredensial utk jadi hp?
+$smpdCred = $needHp                                            # smpd: SELALU hp
+$guiCred  = $needHp -and ($env:SESSION_AS_LOGIN -ne '1')       # GUI: hp, kecuali slave
 $cred = $null
-if ($useCred) {
+if ($needHp) {
     if (-not $u -or -not $pass) { throw "CLUSTER_USER/CLUSTER_PASS kosong di _config.bat." }
     $cred = New-Object System.Management.Automation.PSCredential($u, (ConvertTo-SecureString $pass -AsPlainText -Force))
-    Write-Host "[session] menjalankan smpd + GUI sebagai '$u' (user sekarang '$me')."
+}
+if ($env:SESSION_AS_LOGIN -eq '1') {
+    Write-Host "[session] mode SLAVE: smpd sebagai '$u' (wajib utk auth), GUI sebagai user login '$me' (supaya terlihat)."
+} elseif ($needHp) {
+    Write-Host "[session] smpd + GUI sebagai '$u' (user login '$me')."
 } else {
-    Write-Host "[session] jalan langsung sebagai user login '$me' (window terlihat di layar)."
+    Write-Host "[session] user login sudah '$u', jalan langsung."
 }
 
-# --- restart smpd sebagai CLUSTER_USER ---
+# --- restart smpd (selalu sebagai hp bila user login berbeda) ---
 Get-Process smpd -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 800
-if ($useCred) {
+if ($smpdCred) {
     Start-Process -FilePath $smpd -ArgumentList '-d', $dbg -Credential $cred -WorkingDirectory $proj
 } else {
     Start-Process -FilePath $smpd -ArgumentList '-d', $dbg -WorkingDirectory $proj
 }
 Start-Sleep -Seconds 2
-$runAs = if ($useCred) { $u } else { $me }
-Write-Host "[session] smpd (re)started sebagai '$runAs' (JANGAN tutup window smpd)."
+$smpdAs = if ($smpdCred) { $u } else { $me }
+Write-Host "[session] smpd jalan sebagai '$smpdAs' (JANGAN tutup; di slave-beda-user window smpd bisa tak terlihat tapi tetap jalan)."
 
-# --- buka GUI ---
-if ($useCred) {
+# --- buka GUI (sebagai user login di slave supaya terlihat) ---
+if ($guiCred) {
     Start-Process -FilePath $guiExe -ArgumentList $guiArgs -Credential $cred -WorkingDirectory $proj
 } else {
     Start-Process -FilePath $guiExe -ArgumentList $guiArgs -WorkingDirectory $proj
 }
-Write-Host "[session] GUI dibuka sebagai '$runAs': $guiExe $($guiArgs -join ' ')"
+$guiAs = if ($guiCred) { $u } else { $me }
+Write-Host "[session] GUI dibuka sebagai '$guiAs': $guiExe $($guiArgs -join ' ')"
