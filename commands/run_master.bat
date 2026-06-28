@@ -14,43 +14,37 @@ if not "%errorLevel%"=="0" (
 call "%~dp0_config.bat"
 
 echo ============================================================
-echo  SETUP MASTER MS-MPI
+echo  SETUP MASTER MS-MPI  (sesi dijalankan sebagai %CLUSTER_USER%)
 echo ============================================================
 
-echo [1/5] Registry: izinkan remote launch akun lokal
+echo [1/6] Registry: izinkan remote launch akun lokal
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f >nul
 
-echo [2/5] Matikan firewall (akan dikembalikan oleh deactivate.bat)
+echo [2/6] Matikan firewall (akan dikembalikan oleh deactivate.bat)
 netsh advfirewall set allprofiles state off >nul
 
-echo [3/5] Disable + Stop MS-MPI Launch Service (cegah rebut port 8677 dgn smpd -d)
+echo [3/6] Disable + Stop MS-MPI Launch Service (cegah rebut port 8677 dgn smpd -d)
 sc config MsMpiLaunchSvc start= disabled >nul 2>&1
 net stop MsMpiLaunchSvc >nul 2>&1
 
-echo [4/5] Daftarkan kredensial slave (cmdkey)
-cmdkey /add:"%S1_HOST%" /user:"%S1_USER%" /pass:"%S1_PASS%" >nul
-echo     - %S1_HOST% (%S1_USER%)
-if defined S1_IP cmdkey /add:"%S1_IP%" /user:"%S1_USER%" /pass:"%S1_PASS%" >nul
-cmdkey /add:"%S2_HOST%" /user:"%S2_USER%" /pass:"%S2_PASS%" >nul
-echo     - %S2_HOST% (%S2_USER%)
-if defined S2_IP cmdkey /add:"%S2_IP%" /user:"%S2_USER%" /pass:"%S2_PASS%" >nul
+echo [4/6] Buat akun cluster '%CLUSTER_USER%' (sama di semua PC; INTI fix multi-PC)
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_users.ps1"
 
-echo [5/7] Perbaiki jaringan (matikan IPv6 + adapter sampah)
+echo [5/6] Perbaiki jaringan (matikan IPv6 + adapter sampah)
 call "%~dp0_netfix.bat"
 
-echo [6/7] Petakan hostname -^> IPv4 (hosts file)
+echo [6/6] Petakan hostname -^> IPv4 (hosts file)
 call "%~dp0_hostsfix.bat"
 
-echo [7/7] Restart SMPD daemon bersih (window terpisah, cwd = PROJECT_DIR)
-taskkill /IM smpd.exe /F >nul 2>&1
-start "SMPD" /D "%PROJECT_DIR%" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
-
 echo.
-echo Setup master selesai. Membuka GUI (role Master, engine mpi)...
-echo Jangan tutup window "SMPD".
+echo Menjalankan smpd + GUI sebagai akun cluster '%CLUSTER_USER%'...
+echo Jangan tutup window "smpd". GUI sudah role Master + engine mpi.
 echo.
 
-cd /d "%PROJECT_DIR%"
-python gui\alchemy_gui.py --role master --engine mpi
+set "GUI_ARGS=--role master --engine mpi"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_run_session.ps1"
 
+echo.
+echo (Window ini boleh diminimize. Tutup smpd hanya saat selesai / deactivate.)
+pause
 endlocal

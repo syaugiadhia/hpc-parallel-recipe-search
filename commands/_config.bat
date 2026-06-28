@@ -11,6 +11,21 @@ set "PROJECT_DIR=C:\tubes-2"
 :: Lokasi binary MS-MPI (folder yang berisi mpiexec.exe & smpd.exe)
 set "MSMPI_BIN=D:\Program Files\Microsoft MPI\Bin"
 
+:: Python yang punya dependency GUI (customtkinter, pillow). Pakai path lengkap
+:: karena GUI dijalankan sebagai akun cluster. Kosongkan untuk auto-detect.
+set "PYTHON_EXE=D:\Program Files\Python310\python.exe"
+
+:: =====================================================================
+:: AKUN CLUSTER (INTI MULTI-PC). MS-MPI butuh smpd+mpiexec dijalankan
+:: sebagai akun Windows yang SAMA (nama+password) di SEMUA PC, supaya
+:: auth dua-arah smpd lolos (slave manager connect-back ke master).
+:: Script auto-membuat akun ini (admin) di tiap PC saat run_*.bat, dan
+:: menjalankan smpd + GUI sebagai akun ini. Hapus dgn remove_users.bat.
+:: PASSWORD di sini HARUS sama dengan password akun itu di tiap PC.
+:: =====================================================================
+set "CLUSTER_USER=hp"
+set "CLUSTER_PASS=mrdx"
+
 :: --------- MASTER (untuk pemetaan hosts di SEMUA PC, termasuk slave) ---------
 :: Isi hostname + IP PC master. Dipakai _hostsfix supaya slave bisa resolve
 :: nama master (bantu handshake smpd dua arah / 1726). IP boleh dikosongkan

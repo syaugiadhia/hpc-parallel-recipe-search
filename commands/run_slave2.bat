@@ -14,35 +14,37 @@ if not "%errorLevel%"=="0" (
 call "%~dp0_config.bat"
 
 echo ============================================================
-echo  SETUP SLAVE 2 MS-MPI
+echo  SETUP SLAVE 2 MS-MPI  (sesi dijalankan sebagai %CLUSTER_USER%)
 echo ============================================================
 
-echo [1/4] Registry: izinkan remote launch akun lokal
+echo [1/6] Registry: izinkan remote launch akun lokal
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f >nul
 
-echo [2/4] Matikan firewall (akan dikembalikan oleh deactivate.bat)
+echo [2/6] Matikan firewall (akan dikembalikan oleh deactivate.bat)
 netsh advfirewall set allprofiles state off >nul
 
-echo [3/4] Disable + Stop MS-MPI Launch Service (cegah rebut port 8677 dgn smpd -d)
+echo [3/6] Disable + Stop MS-MPI Launch Service (cegah rebut port 8677 dgn smpd -d)
 sc config MsMpiLaunchSvc start= disabled >nul 2>&1
 net stop MsMpiLaunchSvc >nul 2>&1
 
-echo [4/6] Perbaiki jaringan (matikan IPv6 + adapter sampah)
+echo [4/6] Buat akun cluster '%CLUSTER_USER%' (sama di semua PC; INTI fix multi-PC)
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_users.ps1"
+
+echo [5/6] Perbaiki jaringan (matikan IPv6 + adapter sampah)
 call "%~dp0_netfix.bat"
 
-echo [5/6] Petakan hostname -^> IPv4 (hosts file)
+echo [6/6] Petakan hostname -^> IPv4 (hosts file)
 call "%~dp0_hostsfix.bat"
 
-echo [6/6] Restart SMPD daemon bersih (window terpisah, cwd = PROJECT_DIR)
-taskkill /IM smpd.exe /F >nul 2>&1
-start "SMPD" /D "%PROJECT_DIR%" "%MSMPI_BIN%\smpd.exe" -d %SMPD_DEBUG%
-
 echo.
-echo Setup slave selesai. Membuka GUI (role Slave, %S2_SLOTS% slot, auto-start)...
-echo Jangan tutup window "SMPD". Klik Accept saat master mengundang.
+echo Menjalankan smpd + GUI sebagai akun cluster '%CLUSTER_USER%' (Slave, %S2_SLOTS% slot, auto-start)...
+echo Jangan tutup window "smpd". Klik Accept saat master mengundang.
 echo.
 
-cd /d "%PROJECT_DIR%"
-python gui\alchemy_gui.py --role slave --slots %S2_SLOTS% --autostart
+set "GUI_ARGS=--role slave --slots %S2_SLOTS% --autostart"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0_run_session.ps1"
 
+echo.
+echo (Window ini boleh diminimize. Tutup smpd hanya saat selesai / deactivate.)
+pause
 endlocal

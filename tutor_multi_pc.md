@@ -6,7 +6,7 @@ Dokumen ini menjelaskan cara menjalankan project Little Alchemy HPC di 2 kompute
 
 Folder `commands/` berisi script yang membereskan semua konfigurasi MS-MPI secara otomatis (registry, firewall, kredensial `cmdkey`, `smpd` daemon, stop launch service) lalu membuka GUI di role yang benar.
 
-**Sekali edit:** buka `commands/_config.bat`, sesuaikan `PROJECT_DIR`, `MSMPI_BIN`, serta hostname/username/password/slots tiap slave.
+**Sekali edit:** buka `commands/_config.bat`, sesuaikan `PROJECT_DIR`, `MSMPI_BIN`, `PYTHON_EXE` (python yang punya customtkinter), **`CLUSTER_USER`/`CLUSTER_PASS`** (akun bersama yang dibuat & dipakai di semua PC — INTI multi-PC), serta IP/slots tiap slave. Script otomatis membuat akun cluster itu di tiap PC dan menjalankan smpd + GUI sebagai akun tersebut.
 
 Lalu cukup **dobel-klik** (script minta hak Administrator otomatis):
 
@@ -281,7 +281,9 @@ Solusi:
 
 Handshake GUI (status `connected`) hanya membuktikan GUI master bisa bicara dengan GUI slave lewat port 50555. Itu **tidak** menjamin MS-MPI bisa meluncurkan process ke slave. Kalau saat `Run`/`Compare` GUI menunggu lama (sekitar 60 detik) lalu gagal, hampir selalu MS-MPI gagal launch remote.
 
-Project ini memakai pendekatan **`smpd` daemon + `cmdkey`** (lihat folder `commands/`), bukan MS-MPI Launch Service. Keuntungannya: tiap PC boleh memakai **akun Windows yang berbeda** (username/password berbeda), karena `cmdkey` menyimpan kredensial per-host. (Sebaliknya, opsi `mpiexec -pwd` hanya mendukung satu akun untuk semua host.)
+Project ini memakai pendekatan **`smpd` daemon + akun bersama**. **PENTING (penyebab `error 1726` paling sering di workgroup):** MS-MPI butuh `smpd` + `mpiexec` dijalankan sebagai **akun Windows yang SAMA (username + password sama) di SEMUA PC**. Sebab auth smpd **dua arah**: master meluncurkan job ke slave (forward) **dan** manager di slave harus **connect back** ke master. Kalau akun beda, connect-back ditolak `error 5 (access denied)` → master melaporkan `1726`. (Anggapan lama "boleh beda akun pakai `cmdkey`" hanya benar untuk arah forward, jadi tidak cukup.)
+
+Karena itu `commands/` sekarang otomatis: **membuat akun cluster** (`CLUSTER_USER`/`CLUSTER_PASS` di `_config.bat`, default `hp`/`mrdx`) sebagai admin di tiap PC, lalu **menjalankan smpd + GUI sebagai akun itu**. Jadi semua node berjalan sebagai identitas yang sama dan auth dua arah lolos. Hapus akun bikinan ini kapan saja dengan `commands/remove_users.bat` (hanya menghapus akun bertanda, bukan akun aslimu).
 
 Agar berhasil, di tiap PC harus terpenuhi:
 

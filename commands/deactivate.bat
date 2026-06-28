@@ -40,7 +40,7 @@ echo [6/7] Aktifkan kembali adapter yang ter-disable + Tailscale service
 powershell -NoProfile -Command "Get-NetAdapter | Where-Object { $_.Status -eq 'Disabled' } | Enable-NetAdapter -Confirm:$false -ErrorAction SilentlyContinue; Start-Service -Name 'Tailscale' -ErrorAction SilentlyContinue; $ts='C:\Program Files\Tailscale\tailscale.exe'; if(Test-Path $ts){ & $ts up 2>$null }"
 
 echo [7/7] Bersihkan entri hosts file tubes-mpi
-powershell -NoProfile -Command "$h=\"$env:WINDIR\System32\drivers\etc\hosts\"; Set-Content -Path $h (@(Get-Content $h -ErrorAction SilentlyContinue | Where-Object { $_ -notmatch '# tubes-mpi' })) -Encoding ASCII"
+powershell -NoProfile -Command "$h=\"$env:WINDIR\System32\drivers\etc\hosts\"; $k=@(Get-Content $h -ErrorAction SilentlyContinue | Where-Object { $_ -notmatch '# tubes-mpi' }); [System.IO.File]::WriteAllLines($h,[string[]]$k)"
 
 echo.
 echo Pengaturan keamanan dan jaringan sudah dikembalikan.
