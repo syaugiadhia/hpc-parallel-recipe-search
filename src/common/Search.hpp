@@ -101,6 +101,11 @@ private:
     mutable SearchStats stats_;
     std::chrono::steady_clock::time_point startedAt_;
     std::int64_t nextProgressNode_ = 1000;
+    // Pengaman: batas node-visit + kedalaman supaya search SELALU berhenti & tak OOM
+    // (DFS di graf siklik bisa meledak eksponensial -> dulu seperti hang).
+    std::int64_t nodeBudget_ = 0;   // 0 = tak terbatas; di-set di search()/completePartial()
+    int depthCap_ = 0;              // 0 = tak terbatas
+    mutable bool aborted_ = false;  // true kalau budget terlampaui -> stop bertahap, kembalikan parsial
 };
 
 }  // namespace alchemy

@@ -548,6 +548,9 @@ void SearchEngine::memoStore(const std::string& key, const ExpandResult& result)
 }
 
 void SearchEngine::maybePrintNodeProgress() {
+    if (nodeBudget_ > 0 && stats_.nodesVisited > nodeBudget_) {
+        aborted_ = true;  // lewat budget -> hentikan bertahap (kembalikan hasil parsial)
+    }
     if (!options_.progress || stats_.nodesVisited < nextProgressNode_) {
         return;
     }

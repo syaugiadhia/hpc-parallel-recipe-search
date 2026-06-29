@@ -230,52 +230,129 @@ void writeBenchmarkRow(std::ofstream& csv,
         << csvEscape(outputs.imagePath) << "\n";
 }
 
+void sendStr(int dest, int tag, const std::string& s) {
+    MPI_Send(s.empty() ? nullptr : s.data(), static_cast<int>(s.size()), MPI_CHAR, dest, tag, MPI_COMM_WORLD);
+}
+
+std::string recvStr(const MPI_Status& st) {
+    int count = 0;
+    MPI_Get_count(&st, MPI_CHAR, &count);
+    std::string s(static_cast<std::size_t>(std::max(0, count)), '\0');
+    MPI_Recv(s.empty() ? nullptr : s.data(), count, MPI_CHAR, st.MPI_SOURCE, st.MPI_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    return s;
+}
+
+std::string benchmarkRowString(const alchemy::AppOptions& options, const std::string& target,
+                               const alchemy::SearchStats& stats, std::size_t recipeCount,
+                               const std::string& dotPath, const std::string& imagePath) {
+    std::ostringstream r;
+    r << csvEscape(target) << "," << alchemy::toString(options.algorithm) << ","
+      << alchemy::toString(options.mode) << "," << alchemy::toString(options.traceMode) << ","
+      << alchemy::toString(options.visualMode) << "," << stats.processes << ","
+      << recipeCount << "," << stats.nodesVisited << "," << stats.cacheHits << ","
+      << stats.cacheEntries << "," << std::fixed << std::setprecision(3) << stats.timeMs << ","
+      << stats.tasksProcessed << "," << std::fixed << std::setprecision(3) << stats.communicationMs << ","
+      << csvEscape(dotPath) << "," << csvEscape(imagePath) << "\n";
+    return r.str();
+}
+
+// Benchmark MPI: distribusi TARGET utuh antar-rank (data-parallel; tiap target independen ->
+// embarrassingly parallel, comm minim = cuma string baris CSV). Ini menggantikan distribusi
+// per-sub-task lama yang comm-bound. Master (rank 0) membagi target, worker mengerjakan
+// pencarian SERIAL penuh per target & mengirim balik baris hasil.
 int runBenchmark(alchemy::AppOptions options,
                  const alchemy::RecipeGraph& graph,
                  int rank,
                  int worldSize,
-                 const std::vector<std::string>& rankHostnames) {
+                 const std::vector<std::string>& /*rankHostnames*/) {
     std::vector<std::string> targets;
     if (rank == 0) {
         targets = alchemy::readBenchmarkTargets(options.benchmarkPath);
     }
-
     int targetCount = rank == 0 ? static_cast<int>(targets.size()) : 0;
     MPI_Bcast(&targetCount, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-    std::ofstream csv;
     const std::string baseOutput = options.outputPrefix;
+    const std::string header =
+        "target,algorithm,mode,trace_mode,visual_mode,processes,recipes_found,nodes_visited,"
+        "cache_hits,cache_entries,time_ms,tasks_processed,communication_ms,output_dot,output_image\n";
+
+    auto runOne = [&](const std::string& target) -> std::string {
+        auto ro = options;
+        ro.progress = false;
+        ro.target = target;
+        ro.outputPrefix = baseOutput + "_" + alchemy::sanitizeForPath(target) + "_np" + std::to_string(worldSize);
+        alchemy::ensureParentDirectory(ro.outputPrefix);
+        alchemy::SearchEngine engine(graph, ro);
+        auto result = engine.search(target);
+        result.stats.processes = worldSize;
+        auto outputs = alchemy::Visualizer::writeOutputs(result.target, result.recipes, result.stats, ro);
+        return benchmarkRowString(options, target, result.stats, result.recipes.size(), outputs.dotPath, outputs.imagePath);
+    };
+
+    // worldSize==1: tak ada worker -> rank 0 kerjakan semua serial.
+    if (worldSize <= 1) {
+        alchemy::ensureParentDirectory(baseOutput);
+        std::ofstream csv(baseOutput + ".csv");
+        if (!csv) throw std::runtime_error("Cannot write benchmark CSV: " + baseOutput + ".csv");
+        csv << header;
+        for (int i = 0; i < targetCount; ++i) csv << runOne(targets[static_cast<std::size_t>(i)]);
+        std::cout << "Benchmark CSV: " << baseOutput << ".csv\n";
+        return 0;
+    }
+
     if (rank == 0) {
         alchemy::ensureParentDirectory(baseOutput);
-        csv.open(baseOutput + ".csv");
-        if (!csv) {
-            throw std::runtime_error("Cannot write benchmark CSV: " + baseOutput + ".csv");
+        std::ofstream csv(baseOutput + ".csv");
+        if (!csv) throw std::runtime_error("Cannot write benchmark CSV: " + baseOutput + ".csv");
+        csv << header;
+        std::vector<std::string> rows(static_cast<std::size_t>(targetCount));
+        int nextTarget = 0;
+        int activeWorkers = worldSize - 1;
+        const double t0 = MPI_Wtime();
+        while (activeWorkers > 0) {
+            MPI_Status st;
+            MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &st);
+            if (st.MPI_TAG == alchemy::MPI_TAG_REQUEST) {
+                recvStr(st);  // request kosong
+                if (nextTarget < targetCount) {
+                    sendStr(st.MPI_SOURCE, alchemy::MPI_TAG_TASK,
+                            std::to_string(nextTarget) + " " + targets[static_cast<std::size_t>(nextTarget)]);
+                    ++nextTarget;
+                } else {
+                    sendStr(st.MPI_SOURCE, alchemy::MPI_TAG_STOP, "");
+                    --activeWorkers;
+                }
+            } else if (st.MPI_TAG == alchemy::MPI_TAG_RESULT) {
+                const std::string payload = recvStr(st);  // "idx|baris"
+                const auto bar = payload.find('|');
+                const int idx = std::stoi(payload.substr(0, bar));
+                rows[static_cast<std::size_t>(idx)] = payload.substr(bar + 1);
+            }
         }
-        csv << "target,algorithm,mode,trace_mode,visual_mode,processes,recipes_found,nodes_visited,"
-            << "cache_hits,cache_entries,time_ms,tasks_processed,communication_ms,output_dot,output_image\n";
-    }
-
-    for (int i = 0; i < targetCount; ++i) {
-        std::string target = rank == 0 ? targets[static_cast<std::size_t>(i)] : "";
-        broadcastString(target, rank);
-
-        auto runOptions = options;
-        runOptions.target = target;
-        runOptions.outputPrefix = baseOutput + "_" + alchemy::sanitizeForPath(target) + "_np" + std::to_string(worldSize);
-
-        if (rank == 0) {
-            auto run = alchemy::runMpiMaster(runOptions, graph, worldSize, rankHostnames);
-            writeBenchmarkRow(csv, runOptions, run);
-            std::cout << "MPI bench " << target << ": " << run.search.recipes.size()
-                      << " recipes, " << std::fixed << std::setprecision(3)
-                      << run.search.stats.timeMs << " ms\n";
-        } else {
-            alchemy::runMpiWorker(runOptions, graph, rank);
+        const double wall = (MPI_Wtime() - t0) * 1000.0;
+        for (const auto& row : rows) {
+            if (!row.empty()) csv << row;
         }
-    }
-
-    if (rank == 0) {
+        std::cout << "MPI benchmark total wall time: " << std::fixed << std::setprecision(3)
+                  << wall << " ms (ranks=" << worldSize << ", targets=" << targetCount << ")\n";
         std::cout << "Benchmark CSV: " << baseOutput << ".csv\n";
+    } else {
+        while (true) {
+            sendStr(0, alchemy::MPI_TAG_REQUEST, "");
+            MPI_Status st;
+            MPI_Probe(0, MPI_ANY_TAG, MPI_COMM_WORLD, &st);
+            if (st.MPI_TAG == alchemy::MPI_TAG_STOP) {
+                recvStr(st);
+                break;
+            }
+            const std::string taskMsg = recvStr(st);  // "idx target"
+            const auto sp = taskMsg.find(' ');
+            const int idx = std::stoi(taskMsg.substr(0, sp));
+            const std::string target = taskMsg.substr(sp + 1);
+            const std::string row = runOne(target);
+            sendStr(0, alchemy::MPI_TAG_RESULT, std::to_string(idx) + "|" + row);
+        }
     }
     return 0;
 }

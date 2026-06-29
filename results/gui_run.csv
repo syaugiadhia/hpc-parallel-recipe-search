@@ -1,0 +1,7 @@
+target,algorithm,mode,trace_mode,visual_mode,processes,threads_per_process,total_workers,recipes_found,nodes_visited,cache_hits,cache_entries,time_ms,tasks_processed,communication_ms,output_dot,output_image
+Fire,bfs,multiple,memo,shared,1,4,4,1,0,0,0,134.409,0,0.000,,
+Brick,bfs,multiple,memo,shared,1,4,4,1000,24829,0,0,4834.886,0,0.000,,
+Mud,bfs,multiple,memo,shared,1,4,4,1000,14576,0,0,3045.466,0,0.000,,
+Stone,bfs,multiple,memo,shared,1,4,4,1000,142789,0,0,18683.298,0,0.000,,
+Clay,bfs,multiple,memo,shared,1,4,4,1000,137935,0,0,19311.223,0,0.000,,
+Lava,bfs,multiple,memo,shared,1,4,4,1000,327874,0,0,93812.991,0,0.000,,

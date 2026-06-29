@@ -1374,6 +1374,11 @@ class AlchemyGui(ctk.CTk):
         openmp_exe = executable_path("alchemy_openmp")
         mpi_exe = executable_path("alchemy_mpi")
 
+        # Mode benchmark: tiap varian jalan --benchmark (banyak target -> paralel ANTAR-target).
+        # force_target=False supaya _base_args memasang --benchmark, bukan --target.
+        compare_benchmark = self.run_kind.get() == "benchmark"
+        force_target = not compare_benchmark
+
         for line in lines:
             keyword, _space, rest = line.partition(" ")
             keyword = keyword.lower()
@@ -1381,7 +1386,7 @@ class AlchemyGui(ctk.CTk):
             if keyword == "serial" and not rest:
                 slug = "serial"
                 output_prefix = f"{base_prefix}_compare_{slug}"
-                command = [str(serial_exe)] + self._base_args("json", output_prefix, include_mpi_options=False, force_target=True)
+                command = [str(serial_exe)] + self._base_args("json", output_prefix, include_mpi_options=False, force_target=force_target)
                 spec = {
                     "variant": "serial",
                     "engine": "serial",
@@ -1403,7 +1408,7 @@ class AlchemyGui(ctk.CTk):
                 output_prefix = f"{base_prefix}_compare_{slug}"
                 command = (
                     [str(openmp_exe)]
-                    + self._base_args("json", output_prefix, include_mpi_options=False, force_target=True)
+                    + self._base_args("json", output_prefix, include_mpi_options=False, force_target=force_target)
                     + ["--threads", str(thread_count)]
                 )
                 spec = {
@@ -1428,7 +1433,7 @@ class AlchemyGui(ctk.CTk):
                 command = (
                     self._local_mpi_prefix(process_count)
                     + [str(mpi_exe)]
-                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=force_target)
                 )
                 spec = {
                     "variant": f"mpi {process_count}",
@@ -1453,7 +1458,7 @@ class AlchemyGui(ctk.CTk):
                 command = (
                     self._local_mpi_prefix(process_count)
                     + [str(mpi_exe)]
-                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=force_target)
                     + ["--threads", str(thread_count)]
                 )
                 spec = {
@@ -1479,7 +1484,7 @@ class AlchemyGui(ctk.CTk):
                 command = (
                     mpi_prefix
                     + [str(mpi_exe)]
-                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                    + self._base_args("json", output_prefix, include_mpi_options=True, force_target=force_target)
                 )
                 spec = {
                     "variant": "multi " + ",".join(str(slots) for slots in slot_values),
@@ -1502,7 +1507,7 @@ class AlchemyGui(ctk.CTk):
                     command = (
                         self._mpi_prefix()
                         + [str(mpi_exe)]
-                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=force_target)
                         + ["--threads", str(thread_count)]
                     )
                     spec = {
@@ -1524,7 +1529,7 @@ class AlchemyGui(ctk.CTk):
                     command = (
                         mpi_prefix
                         + [str(mpi_exe)]
-                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=True)
+                        + self._base_args("json", output_prefix, include_mpi_options=True, force_target=force_target)
                         + ["--thread-profile", profile]
                     )
                     total_workers = sum(
@@ -1565,9 +1570,8 @@ class AlchemyGui(ctk.CTk):
         return replaced
 
     def run_compare(self):
-        if self.run_kind.get() == "benchmark":
-            messagebox.showinfo("Run Compare", "Compare runs use the current target. Switch Run type to target first.")
-            return
+        # Compare bisa jalan di mode target (1 target) ATAU benchmark (banyak target).
+        # Di benchmark, speedup/eff diambil dari "Benchmark total wall time" antar-target.
         self.last_format = self.image_format.get()
         try:
             specs = self._compare_variants()
@@ -1608,11 +1612,13 @@ class AlchemyGui(ctk.CTk):
                     bufsize=1,
                 )
                 assert self.proc.stdout is not None
+                output_lines = []
                 for line in self.proc.stdout:
                     self.log_queue.put(("log", line))
+                    output_lines.append(line)
                 rc = self.proc.wait()
                 self.proc = None
-                row = self._compare_row_from_json(spec, rc)
+                row = self._compare_row_from_json(spec, rc, "".join(output_lines))
                 rows.append(row)
                 self.log_queue.put(("log", f"\nCompare variant '{spec['variant']}' exited with code {rc}\n"))
                 if self.stop_requested:
@@ -1633,7 +1639,10 @@ class AlchemyGui(ctk.CTk):
                     self.log_queue.put(("log", f"Could not write partial compare CSV: {write_exc}\n"))
             self.log_queue.put(("compare_done", (False, "")))
 
-    def _compare_row_from_json(self, spec, return_code):
+    def _compare_row_from_json(self, spec, return_code, output_text=""):
+        # Mode benchmark: tak ada satu JSON tunggal -> baca CSV benchmark + wall-time dari stdout.
+        if self.run_kind.get() == "benchmark":
+            return self._compare_row_benchmark(spec, return_code, output_text)
         json_path = Path(spec["output_prefix"]).with_suffix(".json")
         row = {
             "variant": spec["variant"],
@@ -1665,6 +1674,59 @@ class AlchemyGui(ctk.CTk):
             row["total_workers"] = stats.get("total_workers", row["total_workers"])
         elif return_code == 0:
             row["status"] = "missing-json"
+        return row
+
+    def _compare_row_benchmark(self, spec, return_code, output_text):
+        """Baris compare untuk mode benchmark (paralel antar-target).
+
+        time_ms = "Benchmark total wall time" dari stdout (varian paralel: openmp/mpi).
+        Serial tak mencetak wall-time -> fallback ke JUMLAH time_ms per-target (= total
+        sekuensial), jadi speedup = total_serial / wall_paralel. recipes & comm dijumlah
+        dari CSV benchmark (<output_prefix>.csv)."""
+        csv_path = Path(spec["output_prefix"] + ".csv")
+        row = {
+            "variant": spec["variant"],
+            "engine": spec["engine"],
+            "processes": spec["processes"],
+            "threads_per_rank": spec.get("threads_per_rank", "1"),
+            "total_workers": spec.get("total_workers", spec["processes"]),
+            "host_profile": spec["host_profile"],
+            "recipes_found": "",
+            "time_ms": "",
+            "communication_ms": "",
+            "speedup_vs_serial": "",
+            "efficiency": "",
+            "output_json": str(csv_path),
+            "status": "ok" if return_code == 0 else f"failed:{return_code}",
+        }
+        sum_time = 0.0
+        sum_comm = 0.0
+        total_recipes = 0
+        have_csv = csv_path.exists()
+        if have_csv:
+            with csv_path.open(encoding="utf-8", newline="") as handle:
+                for record in csv.DictReader(handle):
+                    try:
+                        total_recipes += int(record.get("recipes_found", 0) or 0)
+                    except (TypeError, ValueError):
+                        pass
+                    try:
+                        sum_time += float(record.get("time_ms", 0) or 0)
+                    except (TypeError, ValueError):
+                        pass
+                    try:
+                        sum_comm += float(record.get("communication_ms", 0) or 0)
+                    except (TypeError, ValueError):
+                        pass
+            row["recipes_found"] = total_recipes
+            row["communication_ms"] = f"{sum_comm:.3f}"
+        match = re.search(r"total wall time:\s*([0-9.]+)\s*ms", output_text, re.IGNORECASE)
+        if match:
+            row["time_ms"] = float(match.group(1))
+        elif have_csv:
+            row["time_ms"] = round(sum_time, 3)
+        elif return_code == 0:
+            row["status"] = "missing-benchmark-csv"
         return row
 
     def _write_compare_csv(self, csv_path, rows):

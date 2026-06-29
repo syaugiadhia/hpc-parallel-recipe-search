@@ -135,17 +135,43 @@ int runBenchmark(alchemy::AppOptions options, const alchemy::RecipeGraph& graph)
     csv << "target,algorithm,mode,trace_mode,visual_mode,processes,threads_per_process,total_workers,"
         << "recipes_found,nodes_visited,cache_hits,cache_entries,time_ms,tasks_processed,communication_ms,output_dot,output_image\n";
 
-    for (const auto& target : targets) {
-        options.target = target;
-        options.outputPrefix = baseOutput + "_" + alchemy::sanitizeForPath(target);
-        alchemy::SearchEngine engine(graph, options);
-        auto result = engine.search(target);
-        auto outputs = alchemy::Visualizer::writeOutputs(result.target, result.recipes, result.stats, options);
-        writeBenchmarkRow(csv, options, result, outputs);
-        std::cout << "OpenMP bench " << target << ": " << result.recipes.size() << " recipes, "
-                  << std::fixed << std::setprecision(3) << result.stats.timeMs << " ms\n";
+    // PARALELISME ANTAR-TARGET: tiap target independen -> dibagi ke thread (data-parallel,
+    // embarrassingly parallel -> speedup ~linear). Tiap pencarian dijalankan SERIAL per-thread
+    // (useOpenmp=false) supaya tak ada nested-parallel; paralelismenya di loop target ini.
+    const int threadCount = std::max(1, options.threads);
+    struct BenchRow {
+        alchemy::SearchResult result;
+        alchemy::OutputFiles outputs;
+    };
+    std::vector<BenchRow> rows(targets.size());
+
+    const auto t0 = std::chrono::steady_clock::now();
+#pragma omp parallel for schedule(dynamic) num_threads(threadCount)
+    for (int i = 0; i < static_cast<int>(targets.size()); ++i) {
+        alchemy::AppOptions ro = options;
+        ro.useOpenmp = false;        // tiap target serial; paralel di antar-target
+        ro.threads = 1;
+        ro.progress = false;
+        ro.target = targets[static_cast<std::size_t>(i)];
+        ro.outputPrefix = baseOutput + "_" + alchemy::sanitizeForPath(ro.target);
+        alchemy::SearchEngine engine(graph, ro);  // engine per-thread (graph read-only -> aman)
+        auto result = engine.search(ro.target);
+        auto outputs = alchemy::Visualizer::writeOutputs(result.target, result.recipes, result.stats, ro);
+        // Catat paralelisme benchmark (N thread antar-target) untuk laporan.
+        result.stats.threadsPerProcess = threadCount;
+        result.stats.totalWorkers = threadCount;
+        rows[static_cast<std::size_t>(i)] = {std::move(result), std::move(outputs)};
+    }
+    const double totalMs = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count();
+
+    for (const auto& row : rows) {
+        writeBenchmarkRow(csv, options, row.result, row.outputs);
+        std::cout << "OpenMP bench " << row.result.target << ": " << row.result.recipes.size()
+                  << " recipes, " << std::fixed << std::setprecision(3) << row.result.stats.timeMs << " ms\n";
     }
 
+    std::cout << "Benchmark total wall time: " << std::fixed << std::setprecision(3)
+              << totalMs << " ms (threads=" << threadCount << ", targets=" << targets.size() << ")\n";
     std::cout << "Benchmark CSV: " << csvPath << "\n";
     return 0;
 }
