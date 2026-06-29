@@ -49,7 +49,7 @@ set "S2_USER=laptop-a5v4phah\hallo"
 set "S2_PASS=12345678"
 set "S2_SLOTS=20"
 :: (opsional) IP slave 2. Boleh dikosongkan.
-set "S2_IP="
+set "S2_IP=192.168.2.167"
 
 :: Prefix subnet cluster (opsional, akhiri titik). KOSONGKAN untuk AUTO-DETECT
 :: dari adapter default-route (disarankan). Isi hanya kalau mau memaksa subnet

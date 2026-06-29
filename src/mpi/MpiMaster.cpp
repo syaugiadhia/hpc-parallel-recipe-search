@@ -150,10 +150,11 @@ int uniformThreadCount(const std::vector<int>& values) {
     }) ? values.front() : 0;
 }
 
-std::string taskToPayload(int id, const RecipeTree& partial) {
+std::string taskToPayload(int id, const RecipeTree& partial, int taskLimit) {
     nlohmann::json json;
     json["id"] = id;
     json["partial"] = treeToJson(partial);
+    json["limit"] = taskLimit;  // sisa-limit: worker tak produksi lebih dari yang master butuh
     return json.dump();
 }
 
@@ -280,11 +281,8 @@ MpiRunResult runMpiMaster(AppOptions options,
         ? buildDirectRecipeTasks(graph, options.target)
         : buildMpiTasks(graph, options.target, options.splitDepth, maxTasks);
 
-    std::vector<std::string> payloads;
-    payloads.reserve(tasks.size());
-    for (std::size_t i = 0; i < tasks.size(); ++i) {
-        payloads.push_back(taskToPayload(static_cast<int>(i), tasks[i]));
-    }
+    // Payload task dibangun SAAT KIRIM (bukan pre-build) supaya bisa menyertakan
+    // sisa-limit terkini -> worker tak over-produksi (anti-comm/compute meledak).
 
     SearchStats stats;
     stats.processes = worldSize;
@@ -314,8 +312,13 @@ MpiRunResult runMpiMaster(AppOptions options,
 
         if (status.MPI_TAG == MPI_TAG_REQUEST) {
             receiveEmptyRequest(status, masterCommSeconds);
-            if (nextTask < payloads.size() && !limitReached(recipes.size(), limit)) {
-                sendString(status.MPI_SOURCE, MPI_TAG_TASK, payloads[nextTask], masterCommSeconds);
+            if (nextTask < tasks.size() && !limitReached(recipes.size(), limit)) {
+                const int taskLimit = options.mode == SearchMode::All
+                    ? 1
+                    : std::max(1, limit - static_cast<int>(recipes.size()));
+                sendString(status.MPI_SOURCE, MPI_TAG_TASK,
+                           taskToPayload(static_cast<int>(nextTask), tasks[nextTask], taskLimit),
+                           masterCommSeconds);
                 ++nextTask;
             } else {
                 sendString(status.MPI_SOURCE, MPI_TAG_STOP, "", masterCommSeconds);
@@ -329,7 +332,7 @@ MpiRunResult runMpiMaster(AppOptions options,
             if (options.mode == SearchMode::All && (resultMessages <= 10 || resultMessages % 10 == 0)) {
                 std::cerr << "[progress] mpi_results=" << resultMessages
                           << " tasks_sent=" << nextTask
-                          << " total_tasks=" << payloads.size()
+                          << " total_tasks=" << tasks.size()
                           << " recipes_found=" << recipes.size()
                           << " elapsed_ms=" << ((MPI_Wtime() - start) * 1000.0)
                           << "\n";

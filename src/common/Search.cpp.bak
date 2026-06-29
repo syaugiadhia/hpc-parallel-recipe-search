@@ -18,12 +18,8 @@ namespace {
 
 constexpr int kUnreachableDepth = std::numeric_limits<int>::max() / 4;
 
-// nameId = id elemen (RecipeGraph::idOf). Mengganti std::string name supaya
-// CompactNode trivially-copyable -> copy FrontierNode jadi memcpy POD (bukan
-// alokasi string per node). Ini inti optimasi paralel: copy jauh lebih murah,
-// RAM turun, dan ekspansi tidak lagi memory-bandwidth-bound.
 struct CompactNode {
-    int nameId = -1;
+    std::string name;
     int left = -1;
     int right = -1;
     int parent = -1;
@@ -106,11 +102,8 @@ int leafEstimate(const RecipeGraph& graph,
 }
 
 bool isExpandableCompactLeaf(const RecipeGraph& graph, const CompactNode& node) {
-    if (node.left >= 0 || node.right >= 0 || node.basic || node.nameId < 0) {
-        return false;
-    }
-    const std::string& name = graph.nameOfId(node.nameId);
-    return graph.hasElement(name) && !graph.isTerminal(name) && graph.hasRecipes(name);
+    return node.left < 0 && node.right < 0 && !node.basic && graph.hasElement(node.name) &&
+           !graph.isTerminal(node.name) && graph.hasRecipes(node.name);
 }
 
 int appendCompactTree(const RecipeGraph& graph,
@@ -125,7 +118,7 @@ int appendCompactTree(const RecipeGraph& graph,
 
     const auto canonical = graph.canonicalName(tree.name);
     CompactNode node;
-    node.nameId = graph.idOf(canonical);
+    node.name = canonical;
     node.parent = parent;
     node.basic = tree.basic || (tree.children.empty() && graph.isTerminal(canonical));
     const int index = static_cast<int>(nodes.size());
@@ -181,9 +174,10 @@ void refreshAncestorEstimates(std::vector<CompactNode>& nodes, int index) {
     }
 }
 
-bool pathContainsId(const std::vector<CompactNode>& nodes, int leafIndex, int targetId) {
+bool pathContainsName(const std::vector<CompactNode>& nodes, int leafIndex, const std::string& name) {
+    const auto key = RecipeGraph::normalize(name);
     for (int index = leafIndex; index >= 0; index = nodes[index].parent) {
-        if (nodes[index].nameId == targetId) {
+        if (RecipeGraph::normalize(nodes[index].name) == key) {
             return true;
         }
     }
@@ -196,21 +190,21 @@ CompactNode makeCompactLeaf(const RecipeGraph& graph,
                             const std::unordered_map<std::string, int>& shortestDepths) {
     const auto canonical = graph.canonicalName(name);
     CompactNode node;
-    node.nameId = graph.idOf(canonical);
+    node.name = canonical;
     node.parent = parent;
     node.basic = graph.isTerminal(canonical);
     node.estimate = leafEstimate(graph, canonical, node.basic, shortestDepths);
     return node;
 }
 
-RecipeTree compactToRecipeTree(const RecipeGraph& graph, const std::vector<CompactNode>& nodes, int index) {
+RecipeTree compactToRecipeTree(const std::vector<CompactNode>& nodes, int index) {
     const auto& node = nodes[index];
     RecipeTree tree;
-    tree.name = graph.nameOfId(node.nameId);
+    tree.name = node.name;
     tree.basic = node.basic;
     if (node.left >= 0 && node.right >= 0) {
-        tree.children.push_back(compactToRecipeTree(graph, nodes, node.left));
-        tree.children.push_back(compactToRecipeTree(graph, nodes, node.right));
+        tree.children.push_back(compactToRecipeTree(nodes, node.left));
+        tree.children.push_back(compactToRecipeTree(nodes, node.right));
     }
     return tree;
 }
@@ -224,7 +218,7 @@ std::string compactSignature(const std::vector<CompactNode>& nodes, int index) {
         std::sort(childSignatures.begin(), childSignatures.end());
     }
 
-    std::string signature = std::to_string(node.nameId) + "(";
+    std::string signature = node.name + "(";
     for (std::size_t i = 0; i < childSignatures.size(); ++i) {
         if (i != 0) {
             signature += ",";
@@ -249,13 +243,11 @@ FrontierExpansion expandFrontierState(const RecipeGraph& graph,
         return output;
     }
 
-    const std::string& canonicalLeaf = graph.nameOfId(current.nodes[leafIndex].nameId);
+    const auto canonicalLeaf = current.nodes[leafIndex].name;
     output.nodesVisited = 1;
     for (const auto& recipe : graph.recipesFor(canonicalLeaf)) {
-        const int firstId = graph.idOf(recipe.first);
-        const int secondId = graph.idOf(recipe.second);
-        if (pathContainsId(current.nodes, leafIndex, firstId) ||
-            pathContainsId(current.nodes, leafIndex, secondId)) {
+        if (pathContainsName(current.nodes, leafIndex, recipe.first) ||
+            pathContainsName(current.nodes, leafIndex, recipe.second)) {
             output.cycleBlocked = true;
             continue;
         }
@@ -614,7 +606,7 @@ SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazy(const RecipeTree& 
         if (current.openLeaves.empty()) {
             const auto signature = compactSignature(current.nodes, 0);
             if (seenFinalSignatures.insert(signature).second) {
-                result.trees.push_back(compactToRecipeTree(graph_, current.nodes, 0));
+                result.trees.push_back(compactToRecipeTree(current.nodes, 0));
                 printBfsProgress(current.estimate, result.trees.size());
             }
             continue;
@@ -626,15 +618,13 @@ SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazy(const RecipeTree& 
             continue;
         }
 
-        const std::string& canonicalLeaf = graph_.nameOfId(current.nodes[leafIndex].nameId);
+        const auto canonicalLeaf = current.nodes[leafIndex].name;
         ++stats_.nodesVisited;
         maybePrintNodeProgress();
 
         for (const auto& recipe : graph_.recipesFor(canonicalLeaf)) {
-            const int firstId = graph_.idOf(recipe.first);
-            const int secondId = graph_.idOf(recipe.second);
-            if (pathContainsId(current.nodes, leafIndex, firstId) ||
-                pathContainsId(current.nodes, leafIndex, secondId)) {
+            if (pathContainsName(current.nodes, leafIndex, recipe.first) ||
+                pathContainsName(current.nodes, leafIndex, recipe.second)) {
                 result.cycleBlocked = true;
                 continue;
             }
@@ -703,7 +693,7 @@ SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazyOpenmp(const Recipe
         if (current.openLeaves.empty()) {
             const auto signature = compactSignature(current.nodes, 0);
             if (seenFinalSignatures.insert(signature).second) {
-                result.trees.push_back(compactToRecipeTree(graph_, current.nodes, 0));
+                result.trees.push_back(compactToRecipeTree(current.nodes, 0));
                 printBfsProgress(current.estimate, result.trees.size());
             }
             continue;
@@ -723,21 +713,10 @@ SearchEngine::ExpandResult SearchEngine::expandPartialBfsLazyOpenmp(const Recipe
         }
 
         std::vector<FrontierExpansion> expansions(batch.size());
-        // Hanya fork/join tim thread kalau batch cukup besar untuk menutup overheadnya.
-        // Di workload besar, banyak level frontier punya batch kecil; fork/join per level
-        // (dulu tanpa syarat) bikin openmp lebih lambat dari serial. Output sama persis
-        // (ekspansi identik, cuma dihitung serial saat batch kecil).
-        if (static_cast<int>(batch.size()) >= 2 * threadCount) {
 #pragma omp parallel for schedule(dynamic) num_threads(threadCount)
-            for (int i = 0; i < static_cast<int>(batch.size()); ++i) {
-                expansions[static_cast<std::size_t>(i)] =
-                    expandFrontierState(graph_, depthMap, std::move(batch[static_cast<std::size_t>(i)]));
-            }
-        } else {
-            for (int i = 0; i < static_cast<int>(batch.size()); ++i) {
-                expansions[static_cast<std::size_t>(i)] =
-                    expandFrontierState(graph_, depthMap, std::move(batch[static_cast<std::size_t>(i)]));
-            }
+        for (int i = 0; i < static_cast<int>(batch.size()); ++i) {
+            expansions[static_cast<std::size_t>(i)] =
+                expandFrontierState(graph_, depthMap, std::move(batch[static_cast<std::size_t>(i)]));
         }
 
         for (auto& expansion : expansions) {

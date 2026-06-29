@@ -26,6 +26,10 @@ public:
     void markTerminal(const std::string& name);
     std::string canonicalName(const std::string& name) const;
     const std::vector<RecipePair>& recipesFor(const std::string& name) const;
+    // Interning: id = posisi di insertionOrder_ (stabil, dibangun saat load,
+    // read-only saat search -> aman dipanggil dari region paralel).
+    int idOf(const std::string& name) const;        // -1 kalau bukan elemen
+    const std::string& nameOfId(int id) const;
     std::vector<std::string> allElements() const;
     std::size_t elementCount() const;
     std::size_t recipeCount() const;
@@ -36,6 +40,7 @@ private:
     std::string ensureElement(const std::string& name);
 
     std::unordered_map<std::string, std::string> canonicalByLower_;
+    std::unordered_map<std::string, int> idByLower_;
     std::unordered_map<std::string, std::vector<RecipePair>> recipesByResult_;
     std::unordered_map<std::string, std::unordered_set<std::string>> recipePairKeysByResult_;
     std::unordered_set<std::string> basicLower_;

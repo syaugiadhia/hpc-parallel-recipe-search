@@ -78,7 +78,8 @@ void runMpiWorker(const AppOptions& options, const RecipeGraph& graph, int rank)
         const int taskId = task.value("id", -1);
         const RecipeTree partial = treeFromJson(task.at("partial"));
 
-        const int taskLimit = options.mode == SearchMode::All ? 1 : options.limit;
+        // Pakai sisa-limit dari master (anti over-produksi). Fallback ke perilaku lama.
+        const int taskLimit = task.value("limit", options.mode == SearchMode::All ? 1 : options.limit);
         auto result = engine.completePartial(partial, taskLimit, false);
         const std::string payload = resultToPayload(rank, taskId, result, communicationSinceLastResult * 1000.0);
         communicationSinceLastResult = 0.0;

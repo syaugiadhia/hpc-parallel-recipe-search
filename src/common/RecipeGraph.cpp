@@ -46,8 +46,22 @@ std::string RecipeGraph::ensureElement(const std::string& name) {
         return found->second;
     }
     canonicalByLower_[lower] = name;
+    idByLower_[lower] = static_cast<int>(insertionOrder_.size());
     insertionOrder_.push_back(name);
     return name;
+}
+
+int RecipeGraph::idOf(const std::string& name) const {
+    const auto it = idByLower_.find(normalize(name));
+    return it == idByLower_.end() ? -1 : it->second;
+}
+
+const std::string& RecipeGraph::nameOfId(int id) const {
+    static const std::string kEmpty;
+    if (id < 0 || id >= static_cast<int>(insertionOrder_.size())) {
+        return kEmpty;
+    }
+    return insertionOrder_[static_cast<std::size_t>(id)];
 }
 
 void RecipeGraph::addElement(const std::string& name) {
